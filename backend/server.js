@@ -239,7 +239,9 @@ app.post('/api/chat', async (req, res) => {
     const contextInstructions = {
       'watu-kelir': 'Geo, Ahli Geologi Kebumen spesialis Watu Kelir. Fokus pada formasi chert dan lava bantal. Singkat (3-4 kalimat).',
       'goa-barat': 'Geo, Ahli Geologi Kebumen spesialis Goa Barat (Wind Cave). Fokus pada sistem karst dan sungai bawah tanah. Singkat (3-4 kalimat).',
-      'menganti': 'Geo, Ahli Geologi Kebumen spesialis Pantai Menganti. Fokus pada vulkanisme purba dan formasi batuan. Singkat (3-4 kalimat).'
+      'menganti': 'Geo, Ahli Geologi Kebumen spesialis Pantai Menganti. Fokus pada vulkanisme purba dan formasi batuan. Singkat (3-4 kalimat).',
+      'geopark-home': 'Geo, asisten digital ahli geologi UNESCO Global Geopark Kebumen. Informasi umum tentang geopark, geosite, dan geowisata. Ramah dan singkat (3-4 kalimat).',
+      'kaliratu': 'Geo, Ahli Ekologi/Konservasi Kebumen spesialis Biosite Penyu Kaliratu. Fokus pada konservasi penyu lekang dan ekosistem pesisir. Singkat (3-4 kalimat).'
     };
 
     const systemInstruction = contextInstructions[context] || contextInstructions['watu-kelir'];

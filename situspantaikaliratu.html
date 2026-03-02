@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geo-Scan Geopark Edition - Penyu Kaliratu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <link rel="stylesheet" href="css/kaliratu.css" />
+  </head>
+  <body
+    class="min-h-screen bg-slate-50 font-sans text-slate-900 pb-24 select-none overflow-x-hidden"
+  >
+    <header
+      class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-50 px-4 py-3 flex justify-between items-center shadow-sm"
+    >
+      <div class="flex items-center gap-2 text-left">
+        <img
+          src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+          alt="Logo Kebumen Geopark"
+          class="w-10 h-10 object-contain"
+        />
+        <div>
+          <h1 class="text-sm font-black leading-tight uppercase tracking-tight">
+            GEO-SCAN
+          </h1>
+          <p
+            id="header-status"
+            class="text-[9px] text-sky-600 uppercase tracking-widest font-bold"
+          >
+            UNESCO Global Geopark
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button
+          onclick="toggleLanguage()"
+          class="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition-colors border border-slate-200 active:scale-95"
+        >
+          <i data-lucide="languages" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span
+            id="lang-label"
+            class="text-[10px] font-bold text-slate-700 uppercase"
+            >ID</span
+          >
+        </button>
+        <div class="flex items-center border-l pl-3 border-slate-200">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/7/71/Lambang_Kabupaten_Kebumen.jpg"
+            alt="Lambang Kabupaten Kebumen"
+            class="h-10 w-auto object-contain"
+          />
+        </div>
+      </div>
+    </header>
+
+    <main id="main-view">
+      <div class="relative h-72 bg-slate-200 overflow-hidden" id="carousel">
+        <div id="slide-container" class="absolute inset-0"></div>
+        <div
+          id="slide-indicators"
+          class="absolute top-4 right-4 flex gap-1.5 z-10"
+        ></div>
+        <div class="absolute bottom-6 left-5 right-5 text-white z-10 text-left">
+          <h2
+            id="hero-title"
+            class="text-3xl font-black leading-none mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] uppercase"
+          >
+            Penyu Kaliratu
+          </h2>
+          <div
+            class="flex items-center gap-1 text-slate-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+          >
+            <i data-lucide="map-pin" class="w-3 h-3 text-red-500"></i>
+            <span
+              id="hero-location"
+              class="text-xs font-medium tracking-tight uppercase tracking-widest"
+              >Jogosimo, Kebumen</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 mt-6 grid grid-cols-2 gap-3">
+        <div
+          class="bg-amber-50 border border-amber-100 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center"
+        >
+          <p
+            id="stat-rarity-label"
+            class="text-[10px] font-bold text-amber-600 uppercase mb-2 tracking-tight"
+          >
+            Status Biosite
+          </p>
+          <div class="flex gap-1">
+            <i
+              data-lucide="heart"
+              class="w-4 h-4 text-red-500 fill-red-500"
+            ></i>
+            <i
+              data-lucide="heart"
+              class="w-4 h-4 text-red-500 fill-red-500"
+            ></i>
+            <i
+              data-lucide="heart"
+              class="w-4 h-4 text-red-500 fill-red-500"
+            ></i>
+            <i
+              data-lucide="heart"
+              class="w-4 h-4 text-red-500 fill-red-500"
+            ></i>
+            <i
+              data-lucide="heart"
+              class="w-4 h-4 text-red-500 fill-red-500"
+            ></i>
+          </div>
+          <p
+            id="stat-rarity-status"
+            class="text-[9px] font-black text-amber-700 mt-2 uppercase tracking-tighter"
+          >
+            PERLINDUNGAN VITAL
+          </p>
+        </div>
+        <div
+          class="bg-sky-50 border border-sky-100 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center"
+        >
+          <p
+            id="stat-status-label"
+            class="text-[10px] font-bold text-sky-600 uppercase mb-2 tracking-tight"
+          >
+            Status Kawasan
+          </p>
+          <div class="flex items-center gap-1">
+            <i data-lucide="globe" class="w-4 h-4 text-sky-500"></i>
+            <span
+              class="text-xs font-black text-sky-700 uppercase tracking-tighter"
+              >UNESCO Global</span
+            >
+          </div>
+          <p
+            id="stat-heritage-label"
+            class="text-[9px] font-black text-sky-700 mt-2 uppercase tracking-tighter"
+          >
+            Warisan Dunia
+          </p>
+        </div>
+      </div>
+
+      <div class="px-5 mt-8">
+        <div class="flex gap-6 border-b border-slate-200">
+          <button
+            id="tab-overview"
+            onclick="switchTab('overview')"
+            class="pb-2 text-xs font-bold uppercase tracking-wider transition-all text-sky-600 border-b-2 border-sky-600"
+          >
+            Edukasi
+          </button>
+          <button
+            id="tab-history"
+            onclick="switchTab('history')"
+            class="pb-2 text-xs font-bold uppercase tracking-wider transition-all text-slate-400"
+          >
+            Timeline
+          </button>
+        </div>
+      </div>
+
+      <div id="content-area" class="px-5 mt-6 pb-10 space-y-8">
+        <div id="view-overview" class="space-y-8">
+          <section>
+            <h3
+              id="edu-title"
+              class="font-black text-lg text-slate-800 mb-3 italic flex items-center gap-2 uppercase tracking-tight text-left"
+            >
+              <i data-lucide="book-open" class="w-5 h-5 text-sky-600"></i>
+              Keajaiban Kaliratu
+            </h3>
+            <div
+              class="bg-sky-50 border-l-4 border-sky-500 p-4 rounded-r-2xl shadow-sm space-y-2"
+            >
+              <p
+                id="edu-desc"
+                class="text-sm text-slate-700 leading-relaxed font-medium text-left"
+              >
+                Konservasi Penyu Kaliratu adalah pusat pelestarian penyu lekang
+                dan penyu hijau yang dikelola secara swadaya oleh masyarakat
+                desa Jogosimo.
+              </p>
+            </div>
+          </section>
+
+          <section
+            class="bg-blue-50 p-5 rounded-2xl border border-blue-100 shadow-sm text-left"
+          >
+            <h4
+              id="unesco-title"
+              class="font-bold text-blue-800 flex items-center gap-2 mb-3 uppercase text-sm"
+            >
+              <i data-lucide="check-circle" class="w-4 h-4 text-blue-600"></i>
+              Mengapa Diangkat UNESCO?
+            </h4>
+            <p
+              id="unesco-desc"
+              class="text-xs text-blue-900 leading-relaxed font-medium"
+            >
+              Sebagai biosite resmi, Kaliratu membuktikan bahwa pilar konservasi
+              UNESCO mencakup hubungan harmonis antara manusia dan ekosistem
+              hayati.
+            </p>
+          </section>
+
+          <section
+            class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-left"
+          >
+            <h4
+              id="legend-title"
+              class="font-bold text-slate-800 flex items-center gap-2 mb-3 uppercase text-sm"
+            >
+              <i data-lucide="landmark" class="w-4 h-4 text-amber-500"></i>
+              Mengapa disebut "Kaliratu"?
+            </h4>
+            <p id="legend-desc" class="text-xs text-slate-600 leading-relaxed">
+              Kaliratu berasal dari pertemuan muara sungai dan laut kidul yang
+              dianggap sakral.
+            </p>
+          </section>
+
+          <section class="grid grid-cols-1 gap-4 text-left">
+            <h4
+              id="geo-analysis-title"
+              class="font-bold text-slate-800 text-sm uppercase flex items-center gap-2"
+            >
+              <i data-lucide="microscope" class="w-4 h-4 text-sky-600"></i>
+              Analisis Biosite
+            </h4>
+            <div
+              class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"
+            >
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <p
+                  id="chert-title"
+                  class="text-xs font-black text-slate-800 uppercase"
+                >
+                  Penyu Lekang (Olive Ridley)
+                </p>
+              </div>
+              <p
+                id="chert-desc"
+                class="text-[11px] text-slate-500 leading-relaxed"
+              >
+                Spesies penyu yang paling setia mendarat di pesisir selatan.
+              </p>
+            </div>
+            <div
+              class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"
+            >
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <p
+                  id="lava-title"
+                  class="text-xs font-black text-slate-800 uppercase"
+                >
+                  Habitat Pantai Pasir
+                </p>
+              </div>
+              <p
+                id="lava-desc"
+                class="text-[11px] text-slate-500 leading-relaxed"
+              >
+                Karakteristik pasir yang hangat dan bersih di Jogosimo.
+              </p>
+            </div>
+          </section>
+
+          <section
+            class="bg-slate-900 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden text-left"
+          >
+            <div class="relative z-10 flex justify-between items-center">
+              <div class="flex items-center gap-4">
+                <button
+                  id="audio-btn"
+                  onclick="handleAudioPlay()"
+                  class="bg-white text-slate-900 p-3 rounded-full shadow-lg active:scale-95 transition-transform flex items-center justify-center"
+                >
+                  <i
+                    id="audio-icon"
+                    data-lucide="play"
+                    class="w-5 h-5 fill-current"
+                  ></i>
+                </button>
+                <div>
+                  <h4
+                    id="audio-title"
+                    class="font-bold text-sm italic tracking-tight"
+                  >
+                    Pemandu Suara AI
+                  </h4>
+                  <p
+                    id="audio-status"
+                    class="text-[10px] opacity-60 uppercase font-bold tracking-tighter"
+                  >
+                    Bacakan Seluruh Info Situs
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              id="audio-progress-container"
+              class="absolute bottom-0 left-0 right-0 h-1 bg-sky-500/30 hidden"
+            >
+              <div class="h-full bg-sky-500 animate-progress"></div>
+            </div>
+          </section>
+
+          <div class="pt-10 pb-4 border-t border-slate-200 text-center">
+            <p
+              id="supported-by-label"
+              class="text-[9px] font-bold text-slate-400 uppercase mb-4 tracking-[0.2em]"
+            >
+              Didukung Oleh
+            </p>
+            <div class="flex justify-around items-center gap-6 flex-wrap px-4">
+              <img
+                src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+                class="h-10 object-contain"
+                alt="Kebumen Geopark"
+              />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/7/71/Lambang_Kabupaten_Kebumen.jpg"
+                class="h-10 object-contain"
+                alt="Pemkab Kebumen"
+              />
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6NiLBrpE5XvpewWqMsu-BadPFEvnO0XbdA&s"
+                class="h-10 object-contain"
+                alt="Kemenparekraf"
+              />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Logo_Pesona_Indonesia_%28Kementerian_Pariwisata%29.png"
+                class="h-10 object-contain"
+                alt="Pesona Indonesia"
+              />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Logo_UNESCO_2021.svg/1280px-Logo_UNESCO_2021.svg.png"
+                class="h-8 object-contain"
+                alt="UNESCO"
+              />
+            </div>
+            <div class="mt-8 text-center">
+              <p
+                id="copyright"
+                class="text-[8px] font-medium text-slate-400 tracking-widest uppercase"
+              >
+                © 2026 Badan Pengelola Kebumen Geopark
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="view-history"
+          class="hidden space-y-8 relative before:absolute before:w-1 before:h-full before:bg-slate-200 before:left-[19px] py-4 text-left"
+        >
+          <div class="relative pl-14">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-sky-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white"
+            >
+              <i data-lucide="home" class="w-5"></i>
+            </div>
+            <h4
+              id="time1-date"
+              class="text-[10px] font-bold text-sky-600 uppercase tracking-widest mb-1"
+            >
+              Tahun 2012
+            </h4>
+            <p
+              id="time1-event"
+              class="text-sm font-black text-slate-800 italic uppercase"
+            >
+              Kesadaran Komunitas
+            </p>
+            <p id="time1-desc" class="text-xs text-slate-500 mt-2">
+              Warga Jogosimo mulai melindungi telur penyu dari ancaman predator.
+            </p>
+          </div>
+          <div class="relative pl-14 pb-20">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-indigo-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white"
+            >
+              <i data-lucide="globe" class="w-5"></i>
+            </div>
+            <h4
+              id="time4-date"
+              class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-1"
+            >
+              9 September 2024
+            </h4>
+            <p
+              id="time4-event"
+              class="text-sm font-black text-slate-800 italic uppercase"
+            >
+              UNESCO GLOBAL GEOPARK
+            </p>
+            <p id="time4-desc" class="text-xs text-slate-500 mt-2">
+              Kaliratu resmi menjadi biosite unggulan warisan dunia UNESCO.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <button
+      onclick="openChat()"
+      id="chat-fab"
+      class="fixed bottom-28 right-6 z-[90] bg-sky-600 text-white p-4 rounded-2xl shadow-2xl active:scale-90 transition-transform flex items-center gap-2 group"
+    >
+      <i data-lucide="sparkles" class="w-6 h-6 animate-pulse"></i>
+      <span
+        id="chat-fab-label"
+        class="text-[10px] font-black uppercase tracking-tighter pr-2"
+        >✨ Chat Geo</span
+      >
+    </button>
+
+    <div
+      id="chat-modal"
+      class="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm hidden flex-col justify-end"
+    >
+      <div
+        class="bg-white rounded-t-[2.5rem] h-[80vh] flex flex-col shadow-2xl border-t border-slate-200"
+      >
+        <div
+          class="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/80 rounded-t-[2.5rem]"
+        >
+          <div class="flex items-center gap-3">
+            <div class="bg-sky-100 p-2 rounded-xl">
+              <i data-lucide="sparkles" class="w-5 h-5 text-sky-600"></i>
+            </div>
+            <h3
+              id="chat-title"
+              class="font-black text-slate-800 uppercase tracking-tight"
+            >
+              Tanya Geo ✨
+            </h3>
+          </div>
+          <button
+            onclick="closeChat()"
+            class="p-2 bg-slate-200/50 rounded-full text-slate-500"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+          <div
+            id="chat-welcome"
+            class="bg-slate-100 p-4 rounded-2xl rounded-bl-none max-w-[85%] text-xs text-slate-700 leading-relaxed font-medium"
+          >
+            Halo! Saya Asisten Geo. Ada yang ingin kamu ketahui tentang Penyu
+            Kaliratu?
+          </div>
+        </div>
+        <form
+          id="chat-form"
+          onsubmit="handleAskGemini(event)"
+          class="p-4 border-t border-slate-100 bg-white"
+        >
+          <div class="relative flex items-center">
+            <input
+              id="chat-input"
+              type="text"
+              placeholder="Tanyakan apapun..."
+              class="w-full bg-slate-100 border-none rounded-2xl py-4 pl-5 pr-14 text-sm focus:ring-2 focus:ring-sky-500 outline-none transition-all"
+            />
+            <button
+              type="submit"
+              class="absolute right-2 p-2.5 bg-sky-600 text-white rounded-xl active:scale-95 transition-transform"
+            >
+              <i data-lucide="send" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div
+      id="ar-view"
+      class="fixed inset-0 z-[100] bg-black hidden flex flex-col"
+    >
+      <div id="qr-reader" class="flex-1 w-full h-full"></div>
+      <button
+        onclick="stopAR()"
+        class="absolute top-6 right-6 bg-white/20 p-2 rounded-full text-white"
+      >
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-slate-200 px-8 py-4 flex justify-center items-center z-[80] rounded-t-3xl shadow-lg"
+    >
+      <button
+        onclick="startAR()"
+        class="bg-gradient-to-tr from-sky-600 to-blue-500 -mt-14 p-5 rounded-full shadow-2xl border-8 border-slate-50 text-white active:scale-90 transition-transform cursor-pointer"
+      >
+        <i data-lucide="camera" class="w-8 h-8"></i>
+      </button>
+    </nav>
+
+    <script src="js/kaliratu.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

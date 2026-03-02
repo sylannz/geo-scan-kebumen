@@ -230,7 +230,7 @@ function initCarousel() {
 // Audio Functions
 async function handleAudioPlay() {
   if (STATE.audioPlaying) {
-    STATE.audioSource.pause();
+    if (STATE.audioSource) STATE.audioSource.pause();
     STATE.audioPlaying = false;
     updateAudioBtn(false);
     return;
@@ -240,44 +240,38 @@ async function handleAudioPlay() {
   setText('audio-status', t.audioBtnLoading);
   getElement('audio-progress-container').classList.remove('hidden');
 
+  const fullText = `${t.audioDesc} Mari jelajahi ${t.siteTitle}. ${t.eduDesc}. ${t.unescoDesc}. ${t.legendDesc}`;
+
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${CONFIG.apiKey}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: `${t.audioDesc} ${t.eduDesc}` }] }],
-          generationConfig: { responseModalities: ['AUDIO'] },
-        }),
-      }
-    );
+    const response = await fetch(CONFIG.ttsBackendUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: fullText,
+        language: STATE.language
+      })
+    });
 
-    const result = await response.json();
-    const audioPart = result.candidates?.[0]?.content?.parts?.find(
-      (p) => p.inlineData
-    );
-
-    if (audioPart) {
-      const audioBlob = new Blob(
-        [
-          Uint8Array.from(atob(audioPart.inlineData.data), (c) =>
-            c.charCodeAt(0)
-          ),
-        ],
-        { type: 'audio/wav' }
-      );
-      STATE.audioSource = new Audio(URL.createObjectURL(audioBlob));
-      STATE.audioPlaying = true;
-      STATE.audioSource.play();
-      updateAudioBtn(true);
-      STATE.audioSource.onended = () => {
-        STATE.audioPlaying = false;
-        updateAudioBtn(false);
-      };
+    const contentType = response.headers.get('content-type');
+    
+    if (!response.ok || contentType?.includes('application/json')) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'TTS error');
     }
+
+    const audioBlob = await response.blob();
+    const audioUrl = URL.createObjectURL(audioBlob);
+    STATE.audioSource = new Audio(audioUrl);
+    STATE.audioPlaying = true;
+    STATE.audioSource.play();
+    updateAudioBtn(true);
+    STATE.audioSource.onended = () => {
+      STATE.audioPlaying = false;
+      updateAudioBtn(false);
+    };
   } catch (err) {
-    console.error('Audio error:', err);
-    setText('audio-status', 'Error.');
+    console.error('[TTS] Error:', err);
+    setText('audio-status', t.audioBtnIdle);
   }
 }
 
