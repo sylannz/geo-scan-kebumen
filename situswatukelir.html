@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geo-Scan Geopark Edition</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- HTML5 QR Code Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+      @keyframes scan {
+        0% {
+          top: 0%;
+          opacity: 0.8;
+        }
+        50% {
+          top: 100%;
+          opacity: 1;
+        }
+        100% {
+          top: 0%;
+          opacity: 0.8;
+        }
+      }
+      @keyframes progress {
+        0% {
+          width: 0%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+      .animate-scan {
+        animation: scan 2s infinite;
+      }
+      .animate-progress {
+        animation: progress 30s linear infinite;
+      }
+
+      /* Hide scrollbar */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* QR Reader Video Adjustment */
+      #qr-reader video {
+        object-fit: cover !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-slate-50 font-sans text-slate-900 pb-24 select-none overflow-x-hidden"
+  >
+    <!-- Header Area -->
+    <header
+      class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-50 px-4 py-3 flex justify-between items-center shadow-sm"
+    >
+      <div class="flex items-center gap-2 text-left">
+        <img
+          src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+          alt="Kebumen Geopark Logo"
+          class="w-10 h-10 object-contain"
+        />
+        <div>
+          <h1 class="text-sm font-black leading-tight uppercase tracking-tight">
+            GEO-SCAN
+          </h1>
+          <p
+            id="header-status"
+            class="text-[9px] text-sky-600 uppercase tracking-widest font-bold"
+          >
+            UNESCO Global Geopark
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button
+          onclick="toggleLanguage()"
+          class="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition-colors border border-slate-200 active:scale-95"
+        >
+          <i data-lucide="languages" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span
+            id="lang-label"
+            class="text-[10px] font-bold text-slate-700 uppercase"
+            >ID</span
+          >
+        </button>
+
+        <div class="flex items-center border-l pl-3 border-slate-200">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/7/71/Lambang_Kabupaten_Kebumen.jpg"
+            alt="Lambang Kabupaten Kebumen"
+            class="h-10 w-auto object-contain"
+          />
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-view">
+      <!-- Hero Slider Area -->
+      <div class="relative h-72 bg-slate-200 overflow-hidden" id="carousel">
+        <div id="slide-container" class="absolute inset-0"></div>
+        <div
+          id="slide-indicators"
+          class="absolute top-4 right-4 flex gap-1.5 z-10"
+        ></div>
+
+        <div class="absolute bottom-6 left-5 right-5 text-white z-10 text-left">
+          <h2
+            id="hero-title"
+            class="text-3xl font-black leading-none mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] uppercase"
+          >
+            Situs Watu Kelir
+          </h2>
+          <div
+            class="flex items-center gap-1 text-slate-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+          >
+            <i data-lucide="map-pin" class="w-3 h-3 text-red-500"></i>
+            <span
+              id="hero-location"
+              class="text-xs font-medium tracking-tight uppercase tracking-widest"
+              >Karangsambung, Kebumen</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Indicators -->
+      <div class="px-5 mt-6 grid grid-cols-2 gap-3">
+        <div
+          class="bg-amber-50 border border-amber-100 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center"
+        >
+          <p
+            id="stat-rarity-label"
+            class="text-[10px] font-bold text-amber-600 uppercase mb-2 tracking-tight"
+          >
+            Kelangkaan Situs
+          </p>
+          <div class="flex gap-1">
+            <i
+              data-lucide="star"
+              class="w-4 h-4 text-amber-500 fill-amber-500"
+            ></i>
+            <i
+              data-lucide="star"
+              class="w-4 h-4 text-amber-500 fill-amber-500"
+            ></i>
+            <i
+              data-lucide="star"
+              class="w-4 h-4 text-amber-500 fill-amber-500"
+            ></i>
+            <i
+              data-lucide="star"
+              class="w-4 h-4 text-amber-500 fill-amber-500"
+            ></i>
+            <i
+              data-lucide="star"
+              class="w-4 h-4 text-amber-500 fill-amber-500"
+            ></i>
+          </div>
+          <p
+            id="stat-rarity-status"
+            class="text-[9px] font-black text-amber-700 mt-2 uppercase tracking-tighter"
+          >
+            SANGAT LANGKA
+          </p>
+        </div>
+        <div
+          class="bg-sky-50 border border-sky-100 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center"
+        >
+          <p
+            id="stat-status-label"
+            class="text-[10px] font-bold text-sky-600 uppercase mb-2 tracking-tight"
+          >
+            Status Kawasan
+          </p>
+          <div class="flex items-center gap-1">
+            <i data-lucide="globe" class="w-4 h-4 text-sky-500"></i>
+            <span
+              class="text-xs font-black text-sky-700 uppercase tracking-tighter"
+              >UNESCO Global</span
+            >
+          </div>
+          <p
+            id="stat-heritage-label"
+            class="text-[9px] font-black text-sky-700 mt-2 uppercase tracking-tighter"
+          >
+            Warisan Dunia
+          </p>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="px-5 mt-8">
+        <div class="flex gap-6 border-b border-slate-200">
+          <button
+            id="tab-overview"
+            onclick="switchTab('overview')"
+            class="pb-2 text-xs font-bold uppercase tracking-wider transition-all text-sky-600 border-b-2 border-sky-600"
+          >
+            Edukasi
+          </button>
+          <button
+            id="tab-history"
+            onclick="switchTab('history')"
+            class="pb-2 text-xs font-bold uppercase tracking-wider transition-all text-slate-400"
+          >
+            Timeline
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="content-area" class="px-5 mt-6 pb-10 space-y-8">
+        <!-- Education View -->
+        <div id="view-overview" class="space-y-8">
+          <section>
+            <h3
+              id="edu-title"
+              class="font-black text-lg text-slate-800 mb-3 italic flex items-center gap-2 uppercase tracking-tight text-left"
+            >
+              <i data-lucide="book-open" class="w-5 h-5 text-sky-600"></i>
+              Keajaiban Watu Kelir
+            </h3>
+            <div
+              class="bg-sky-50 border-l-4 border-sky-500 p-4 rounded-r-2xl shadow-sm space-y-2"
+            >
+              <p
+                id="edu-desc"
+                class="text-sm text-slate-700 leading-relaxed font-medium text-left"
+              >
+                Watu Kelir adalah monumen alam yang membuktikan bahwa Kebumen
+                merupakan "Lantai Samudra yang Terangkat". Terbentuk 120 juta
+                tahun lalu di kedalaman 4.000 meter, batuan ini naik ke
+                permukaan akibat proses tektonik lempeng yang dahsyat selama
+                jutaan tahun.
+              </p>
+            </div>
+          </section>
+
+          <section
+            class="bg-blue-50 p-5 rounded-2xl border border-blue-100 shadow-sm text-left"
+          >
+            <h4
+              id="unesco-title"
+              class="font-bold text-blue-800 flex items-center gap-2 mb-3 uppercase text-sm"
+            >
+              <i data-lucide="check-circle" class="w-4 h-4 text-blue-600"></i>
+              Mengapa Diangkat UNESCO?
+            </h4>
+            <p
+              id="unesco-desc"
+              class="text-xs text-blue-900 leading-relaxed font-medium"
+            >
+              Situs ini diakui dunia karena merupakan laboratorium geologi alam
+              yang sangat langka, membuktikan proses subduksi lempeng tektonik
+              yang mengangkat lantai samudera purba ke daratan. Nilai warisan
+              ini memenuhi kriteria ketat UNESCO dalam aspek perlindungan
+              geologi, edukasi, dan pemberdayaan masyarakat lokal.
+            </p>
+          </section>
+
+          <section
+            class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-left"
+          >
+            <h4
+              id="legend-title"
+              class="font-bold text-slate-800 flex items-center gap-2 mb-3 uppercase text-sm"
+            >
+              <i data-lucide="landmark" class="w-4 h-4 text-amber-500"></i>
+              Mengapa disebut "Kelir"?
+            </h4>
+            <p id="legend-desc" class="text-xs text-slate-600 leading-relaxed">
+              "Kelir" dalam bahasa Jawa berarti layar untuk pertunjukan Wayang
+              Kulit. Formasi batuan vertikal yang tersusun rapi di sini
+              menyerupai layar tersebut, menciptakan perpaduan antara ilmu
+              pengetahuan dan budaya lokal.
+            </p>
+          </section>
+
+          <section class="grid grid-cols-1 gap-4 text-left">
+            <h4
+              id="geo-analysis-title"
+              class="font-bold text-slate-800 text-sm uppercase flex items-center gap-2"
+            >
+              <i data-lucide="microscope" class="w-4 h-4 text-sky-600"></i>
+              Analisis Geologis
+            </h4>
+            <div
+              class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"
+            >
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                <p
+                  id="chert-title"
+                  class="text-xs font-black text-slate-800 uppercase"
+                >
+                  Rijang (Red Chert)
+                </p>
+              </div>
+              <p
+                id="chert-desc"
+                class="text-[11px] text-slate-500 leading-relaxed"
+              >
+                Batuan sedimen laut sangat dalam. Warna merahnya berasal dari
+                oksida besi dan akumulasi fosil mikroskopis Radiolaria.
+              </p>
+            </div>
+            <div
+              class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"
+            >
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <p
+                  id="lava-title"
+                  class="text-xs font-black text-slate-800 uppercase"
+                >
+                  Lava Bantal (Pillow Lava)
+                </p>
+              </div>
+              <p
+                id="lava-desc"
+                class="text-[11px] text-slate-500 leading-relaxed"
+              >
+                Terbentuk saat magma panas meletus di bawah air laut dingin.
+                Mendingin seketika dan membentuk pola bulat seperti bantal.
+              </p>
+            </div>
+          </section>
+
+          <section
+            class="bg-slate-900 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden text-left"
+          >
+            <div class="relative z-10 flex justify-between items-center">
+              <div class="flex items-center gap-4">
+                <button
+                  id="audio-btn"
+                  onclick="handleAudioPlay()"
+                  class="bg-white text-slate-900 p-3 rounded-full shadow-lg active:scale-95 transition-transform flex items-center justify-center"
+                >
+                  <i
+                    id="audio-icon"
+                    data-lucide="play"
+                    class="w-5 h-5 fill-current"
+                  ></i>
+                </button>
+                <div>
+                  <h4
+                    id="audio-title"
+                    class="font-bold text-sm italic tracking-tight"
+                  >
+                    Pemandu Suara AI
+                  </h4>
+                  <p
+                    id="audio-status"
+                    class="text-[10px] opacity-60 uppercase font-bold tracking-tighter"
+                  >
+                    Bacakan Seluruh Info Situs
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              id="audio-progress-container"
+              class="absolute bottom-0 left-0 right-0 h-1 bg-sky-500/30 hidden"
+            >
+              <div class="h-full bg-sky-500 animate-progress"></div>
+            </div>
+          </section>
+
+          <!-- Footer -->
+          <div class="pt-10 pb-4 border-t border-slate-200 text-center">
+            <p
+              id="supported-by-label"
+              class="text-[9px] font-bold text-slate-400 uppercase mb-4 tracking-[0.2em]"
+            >
+              Didukung Oleh
+            </p>
+            <div class="flex justify-around items-center gap-6 flex-wrap px-4">
+              <img
+                src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+                class="h-10 object-contain"
+                alt="Kebumen Geopark"
+              />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/7/71/Lambang_Kabupaten_Kebumen.jpg"
+                class="h-10 object-contain"
+                alt="Pemkab Kebumen"
+              />
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6NiLBrpE5XvpewWqMsu-BadPFEvnO0XbdA&s"
+                class="h-10 object-contain"
+                alt="Kemenparekraf"
+              />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Logo_Pesona_Indonesia_%28Kementerian_Pariwisata%29.png"
+                class="h-10 object-contain"
+                alt="Pesona Indonesia"
+              />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Logo_UNESCO_2021.svg/1280px-Logo_UNESCO_2021.svg.png"
+                class="h-8 object-contain"
+                alt="UNESCO"
+              />
+            </div>
+            <div class="mt-8 text-center">
+              <p
+                id="copyright"
+                class="text-[8px] font-medium text-slate-400 tracking-widest uppercase"
+              >
+                © 2026 Badan Pengelola Kebumen Geopark
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline View (RESTORED VERSION) -->
+        <div
+          id="view-history"
+          class="hidden space-y-8 relative before:absolute before:w-1 before:h-full before:bg-slate-200 before:left-[19px] py-4 text-left"
+        >
+          <div class="relative pl-14">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-sky-600 rounded-full border-4 border-white shadow-md flex items-center justify-center"
+            >
+              <i data-lucide="waves" class="w-5 h-5 text-white"></i>
+            </div>
+            <h4
+              id="time1-date"
+              class="text-[10px] font-bold text-sky-600 uppercase tracking-widest mb-1"
+            >
+              120 Juta Tahun Lalu
+            </h4>
+            <p
+              id="time1-event"
+              class="text-sm font-black text-slate-800 italic uppercase"
+            >
+              Kelahiran Samudra
+            </p>
+            <p
+              id="time1-desc"
+              class="text-xs text-slate-500 mt-2 leading-relaxed"
+            >
+              Terbentuk di Samudra Tethys. Erupsi gunung api bawah laut
+              membentuk lava bantal di dasar samudera terdalam (kedalaman 4 km).
+            </p>
+          </div>
+          <div class="relative pl-14">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-amber-500 rounded-full border-4 border-white shadow-md flex items-center justify-center"
+            >
+              <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+            </div>
+            <h4
+              id="time2-date"
+              class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1"
+            >
+              70 Juta Tahun Lalu
+            </h4>
+            <p
+              id="time2-event"
+              class="text-sm font-black text-slate-800 italic uppercase"
+            >
+              Tabrakan Lempeng
+            </p>
+            <p
+              id="time2-desc"
+              class="text-xs text-slate-500 mt-2 leading-relaxed"
+            >
+              Tabrakan lempeng raksasa. Lempeng Indo-Australia menabrak Lempeng
+              Eurasia sehingga dasar samudera mulai terangkat.
+            </p>
+          </div>
+          <div class="relative pl-14">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-red-600 rounded-full border-4 border-white shadow-md flex items-center justify-center"
+            >
+              <i data-lucide="mountain" class="w-5 h-5 text-white"></i>
+            </div>
+            <h4
+              id="time3-date"
+              class="text-[10px] font-bold text-red-600 uppercase tracking-widest mb-1"
+            >
+              30 Juta Tahun Lalu
+            </h4>
+            <p
+              id="time3-event"
+              class="text-sm font-black text-slate-800 italic uppercase"
+            >
+              Pengangkatan Daratan
+            </p>
+            <p
+              id="time3-desc"
+              class="text-xs text-slate-500 mt-2 leading-relaxed"
+            >
+              Daratan Karangsambung muncul. Proses tektonik memunculkan lantai
+              samudera purba ke permukaan bumi Kebumen utara.
+            </p>
+          </div>
+          <div class="relative pl-14 pb-20">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-indigo-600 rounded-full border-4 border-white shadow-md flex items-center justify-center"
+            >
+              <i data-lucide="globe" class="w-5 h-5 text-white"></i>
+            </div>
+            <h4
+              id="time4-date"
+              class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-1"
+            >
+              9 September 2024
+            </h4>
+            <p
+              id="time4-event"
+              class="text-sm font-black text-slate-800 italic uppercase"
+            >
+              UNESCO GLOBAL GEOPARK
+            </p>
+            <p
+              id="time4-desc"
+              class="text-xs text-slate-500 mt-2 leading-relaxed"
+            >
+              Situs Watu Kelir resmi diakui dunia sebagai bagian dari UNESCO
+              Global Geopark, warisan geologi langka yang dilindungi secara
+              internasional.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Chat Geo FAB -->
+    <button
+      onclick="openChat()"
+      id="chat-fab"
+      class="fixed bottom-28 right-6 z-[90] bg-sky-600 text-white p-4 rounded-2xl shadow-2xl active:scale-90 transition-transform flex items-center gap-2 group"
+    >
+      <i data-lucide="sparkles" class="w-6 h-6 animate-pulse"></i>
+      <span
+        id="chat-fab-label"
+        class="text-[10px] font-black uppercase tracking-tighter pr-2"
+        >✨ Chat Geo</span
+      >
+    </button>
+
+    <!-- Chat Modal -->
+    <div
+      id="chat-modal"
+      class="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm hidden flex-col justify-end"
+    >
+      <div
+        class="bg-white rounded-t-[2.5rem] h-[80vh] flex flex-col shadow-2xl border-t border-slate-200"
+      >
+        <div
+          class="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/80 rounded-t-[2.5rem]"
+        >
+          <div class="flex items-center gap-3">
+            <div class="bg-sky-100 p-2 rounded-xl">
+              <i data-lucide="sparkles" class="w-5 h-5 text-sky-600"></i>
+            </div>
+            <h3
+              id="chat-title"
+              class="font-black text-slate-800 uppercase tracking-tight"
+            >
+              Tanya Geo ✨
+            </h3>
+          </div>
+          <button
+            onclick="closeChat()"
+            class="p-2 bg-slate-200/50 rounded-full text-slate-500"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+          <div
+            id="chat-welcome"
+            class="bg-slate-100 p-4 rounded-2xl rounded-bl-none max-w-[85%] text-xs text-slate-700 leading-relaxed font-medium"
+          >
+            Halo! Saya Asisten Geo. Ada yang ingin kamu ketahui tentang Watu
+            Kelir?
+          </div>
+        </div>
+        <form
+          id="chat-form"
+          onsubmit="handleAskGemini(event)"
+          class="p-4 border-t border-slate-100 bg-white"
+        >
+          <div class="relative flex items-center">
+            <input
+              id="chat-input"
+              type="text"
+              placeholder="Tanyakan apapun..."
+              class="w-full bg-slate-100 border-none rounded-2xl py-4 pl-5 pr-14 text-sm focus:ring-2 focus:ring-sky-500 outline-none transition-all"
+            />
+            <button
+              type="submit"
+              class="absolute right-2 p-2.5 bg-sky-600 text-white rounded-xl active:scale-95 transition-transform"
+            >
+              <i data-lucide="send" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Scanner Overlay (QR ONLY) -->
+    <div
+      id="ar-view"
+      class="fixed inset-0 z-[100] bg-black hidden flex flex-col"
+    >
+      <div id="qr-reader" class="flex-1 w-full h-full"></div>
+      <div
+        class="absolute inset-0 flex flex-col items-center justify-between py-10 px-6 pointer-events-none"
+      >
+        <button
+          onclick="stopAR()"
+          class="absolute top-6 right-6 bg-white/20 backdrop-blur-md p-2 rounded-full text-white border border-white/30 pointer-events-auto"
+        >
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <div
+          id="ar-scanning"
+          class="flex-1 flex flex-col items-center justify-center"
+        >
+          <div
+            class="w-72 h-72 border-2 border-dashed border-sky-400/50 rounded-3xl relative overflow-hidden"
+          >
+            <div class="absolute w-full h-1 bg-sky-400 animate-scan"></div>
+          </div>
+          <p
+            id="ar-scanning-text"
+            class="mt-8 text-white font-bold animate-pulse tracking-widest bg-black/40 px-6 py-2 rounded-full uppercase text-[10px]"
+          >
+            Memindai Barcode/QR...
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-slate-200 px-8 py-4 flex justify-center items-center z-[80] rounded-t-3xl shadow-lg"
+    >
+      <button
+        onclick="startAR()"
+        class="bg-gradient-to-tr from-sky-600 to-blue-500 -mt-14 p-5 rounded-full shadow-2xl border-8 border-slate-50 text-white active:scale-90 transition-transform cursor-pointer"
+      >
+        <i data-lucide="camera" class="w-8 h-8"></i>
+      </button>
+    </nav>
+
+    <script>
+      const apiKey = "AIzaSyAwCiatC61rnWXuCnjTajzy6YFUHysna0A";
+      let language = "id";
+      let currentSlide = 0;
+      let audioPlaying = false;
+      let audioCache = { id: null, en: null };
+      let audioSource = null;
+      let isTyping = false;
+      let html5QrCode = null;
+
+      const translations = {
+        id: {
+          siteTitle: "Situs Watu Kelir",
+          location: "Karangsambung, Kebumen",
+          rarityLabel: "Kelangkaan Situs",
+          rarityStatus: "SANGAT LANGKA",
+          statusLabel: "Status Kawasan",
+          heritageLabel: "Warisan Dunia",
+          tabEdu: "Edukasi",
+          tabTime: "Timeline",
+          eduTitle: "Keajaiban Watu Kelir",
+          eduDesc:
+            'Watu Kelir adalah monumen alam yang membuktikan bahwa Kebumen merupakan "Lantai Samudra yang Terangkat".',
+          unescoTitle: "Mengapa Diangkat UNESCO?",
+          unescoDesc:
+            "Situs ini diakui dunia karena merupakan laboratorium geologi alam yang sangat langka, membuktikan proses subduksi lempeng tektonik.",
+          legendTitle: 'Mengapa disebut "Kelir"?',
+          legendDesc:
+            '"Kelir" dalam bahasa Jawa berarti layar untuk pertunjukan Wayang Kulit.',
+          geoAnalysisTitle: "Analisis Geologis",
+          chertTitle: "Rijang (Red Chert)",
+          chertDesc: "Batuan sedimen laut sangat dalam.",
+          lavaTitle: "Lava Bantal (Pillow Lava)",
+          lavaDesc:
+            "Terbentuk saat magma panas meletus di bawah air laut dingin.",
+          audioTitle: "Pemandu Suara AI",
+          audioDesc:
+            "Bacakan narasi Bahasa Indonesia dengan nada pemandu profesional: ",
+          audioBtnIdle: "Bacakan Seluruh Info Situs",
+          audioBtnPlaying: "Sedang Membacakan...",
+          audioBtnLoading: "Sedang Menyiapkan Suara...",
+          time1Date: "120 Juta Tahun Lalu",
+          time1Event: "Kelahiran Samudra",
+          time1Desc:
+            "Terbentuk di Samudra Tethys. Erupsi gunung api bawah laut membentuk lava bantal di kedalaman 4 km.",
+          time2Date: "70 Juta Tahun Lalu",
+          time2Event: "Tabrakan Lempeng",
+          time2Desc:
+            "Tabrakan lempeng raksasa. Lempeng Indo-Australia menabrak Lempeng Eurasia.",
+          time3Date: "30 Juta Tahun Lalu",
+          time3Event: "Pengangkatan Daratan",
+          time3Desc:
+            "Daratan Karangsambung muncul. Proses tektonik memunculkan lantai samudera purba ke permukaan.",
+          time4Date: "9 September 2024",
+          time4Event: "UNESCO GLOBAL GEOPARK",
+          time4Desc:
+            "Situs Watu Kelir resmi diakui dunia sebagai bagian dari UNESCO Global Geopark.",
+          supportedBy: "Didukung Oleh",
+          aiChatTitle: "Tanya Geo ✨",
+          aiChatPlaceholder: "Tanyakan apapun...",
+          aiChatWelcome: "Halo! Saya Asisten Geo. Ada yang ingin kamu ketahui?",
+          scanning: "Memindai Barcode/QR...",
+        },
+        en: {
+          siteTitle: "Watu Kelir Geosite",
+          location: "Karangsambung, Kebumen",
+          rarityLabel: "Site Rarity",
+          rarityStatus: "EXTREMELY RARE",
+          statusLabel: "Area Status",
+          heritageLabel: "World Heritage",
+          tabEdu: "Education",
+          tabTime: "Timeline",
+          eduTitle: "The Miracle of Watu Kelir",
+          eduDesc: 'Watu Kelir proves Kebumen is a "Raised Ocean Floor".',
+          unescoTitle: "Why UNESCO Recognition?",
+          unescoDesc:
+            "Recognized as a rare natural geological laboratory, proving the tectonic plate subduction process.",
+          legendTitle: 'Why is it called "Kelir"?',
+          legendDesc:
+            '"Kelir" in Javanese means the screen used in Wayang Kulit performances.',
+          geoAnalysisTitle: "Geological Analysis",
+          chertTitle: "Red Chert",
+          chertDesc: "Deep-sea sedimentary rock.",
+          lavaTitle: "Pillow Lava",
+          lavaDesc: "Formed when magma erupts under cold seawater.",
+          audioTitle: "AI Voice Guide",
+          audioDesc: "Read the narration in a professional English accent: ",
+          audioBtnIdle: "Read All Site Information",
+          audioBtnPlaying: "Reading Narration...",
+          audioBtnLoading: "Preparing Voice...",
+          time1Date: "120 Million Years Ago",
+          time1Event: "Oceanic Birth",
+          time1Desc:
+            "Born in the Tethys Ocean. Submarine volcanic eruptions formed pillow lavas at 4 km depth.",
+          time2Date: "70 Million Years Ago",
+          time2Event: "Plate Collision",
+          time2Desc:
+            "Giant Plate Collision. The Indo-Australian plate collided with Eurasia, uplifting the seabed.",
+          time3Date: "30 Million Years Ago",
+          time3Event: "Land Uplift",
+          time3Desc:
+            "Karangsambung Landmass. Tectonic processes brought the floor to the surface.",
+          time4Date: "September 9, 2024",
+          time4Event: "UNESCO GLOBAL GEOPARK",
+          time4Desc:
+            "Watu Kelir Site is officially recognized as part of the UNESCO Global Geopark.",
+          supportedBy: "Supported By",
+          aiChatTitle: "Ask Geo ✨",
+          aiChatPlaceholder: "Ask anything...",
+          aiChatWelcome: "Hello! I am your Geo Assistant.",
+          scanning: "Scanning Barcode/QR...",
+        },
+      };
+
+      const geositeImages = [
+        "images/watturijang.jpg",
+        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1000",
+        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=1000",
+      ];
+
+      function updateUI() {
+        const t = translations[language];
+        document.getElementById("lang-label").innerText =
+          language.toUpperCase();
+        document.getElementById("hero-title").innerText = t.siteTitle;
+        document.getElementById("stat-rarity-label").innerText = t.rarityLabel;
+        document.getElementById("stat-rarity-status").innerText =
+          t.rarityStatus;
+        document.getElementById("tab-overview").innerText = t.tabEdu;
+        document.getElementById("tab-history").innerText = t.tabTime;
+        document.getElementById("edu-title").innerHTML =
+          `<i data-lucide="book-open" class="w-5 h-5 text-sky-600"></i> ${t.eduTitle}`;
+        document.getElementById("unesco-title").innerHTML =
+          `<i data-lucide="check-circle" class="w-4 h-4 text-blue-600"></i> ${t.unescoTitle}`;
+        document.getElementById("legend-title").innerHTML =
+          `<i data-lucide="landmark" class="w-4 h-4 text-amber-500"></i> ${t.legendTitle}`;
+        document.getElementById("geo-analysis-title").innerHTML =
+          `<i data-lucide="microscope" class="w-4 h-4 text-sky-600"></i> ${t.geoAnalysisTitle}`;
+        document.getElementById("audio-title").innerText = t.audioTitle;
+        if (!audioPlaying)
+          document.getElementById("audio-status").innerText = t.audioBtnIdle;
+        document.getElementById("supported-by-label").innerText = t.supportedBy;
+        document.getElementById("chat-fab-label").innerText =
+          `✨ ${t.aiChatTitle.replace("✨", "")}`;
+        document.getElementById("ar-scanning-text").innerText = t.scanning;
+
+        // Restore Timeline Content
+        document.getElementById("time1-date").innerText = t.time1Date;
+        document.getElementById("time1-event").innerText = t.time1Event;
+        document.getElementById("time1-desc").innerText = t.time1Desc;
+        document.getElementById("time2-date").innerText = t.time2Date;
+        document.getElementById("time2-event").innerText = t.time2Event;
+        document.getElementById("time2-desc").innerText = t.time2Desc;
+        document.getElementById("time3-date").innerText = t.time3Date;
+        document.getElementById("time3-event").innerText = t.time3Event;
+        document.getElementById("time3-desc").innerText = t.time3Desc;
+        document.getElementById("time4-date").innerText = t.time4Date;
+        document.getElementById("time4-event").innerText = t.time4Event;
+        document.getElementById("time4-desc").innerText = t.time4Desc;
+
+        lucide.createIcons();
+      }
+
+      function toggleLanguage() {
+        language = language === "id" ? "en" : "id";
+        updateUI();
+      }
+
+      function switchTab(tab) {
+        const isOverview = tab === "overview";
+        document
+          .getElementById("view-overview")
+          .classList.toggle("hidden", !isOverview);
+        document
+          .getElementById("view-history")
+          .classList.toggle("hidden", isOverview);
+        document
+          .getElementById("tab-overview")
+          .classList.toggle("text-sky-600", isOverview);
+        document
+          .getElementById("tab-overview")
+          .classList.toggle("border-b-2", isOverview);
+        document
+          .getElementById("tab-history")
+          .classList.toggle("text-sky-600", !isOverview);
+        document
+          .getElementById("tab-history")
+          .classList.toggle("border-b-2", !isOverview);
+        document
+          .getElementById("tab-overview")
+          .classList.toggle("text-slate-400", !isOverview);
+        document
+          .getElementById("tab-history")
+          .classList.toggle("text-slate-400", isOverview);
+      }
+
+      function initCarousel() {
+        const container = document.getElementById("slide-container");
+        const indicatorContainer = document.getElementById("slide-indicators");
+        geositeImages.forEach((url, i) => {
+          const slide = document.createElement("div");
+          slide.className = `absolute inset-0 transition-opacity duration-1000 ease-in-out ${i === 0 ? "opacity-100" : "opacity-0"}`;
+          slide.id = `slide-${i}`;
+          slide.innerHTML = `<img src="${url}" class="w-full h-full object-cover">`;
+          container.appendChild(slide);
+          const dot = document.createElement("div");
+          dot.id = `dot-${i}`;
+          dot.className = `h-1 rounded-full transition-all duration-300 ${i === 0 ? "w-6 bg-sky-500" : "w-2 bg-white/50"}`;
+          indicatorContainer.appendChild(dot);
+        });
+        setInterval(() => {
+          const prev = currentSlide;
+          currentSlide = (currentSlide + 1) % geositeImages.length;
+          document.getElementById(`slide-${prev}`).style.opacity = "0";
+          document.getElementById(`slide-${currentSlide}`).style.opacity = "1";
+          document.getElementById(`dot-${prev}`).className =
+            `h-1 rounded-full transition-all duration-300 w-2 bg-white/50`;
+          document.getElementById(`dot-${currentSlide}`).className =
+            `h-1 rounded-full transition-all duration-300 w-6 bg-sky-500`;
+        }, 5000);
+      }
+
+      async function handleAudioPlay() {
+        if (audioPlaying) {
+          audioSource.pause();
+          audioPlaying = false;
+          updateAudioBtn(false);
+          return;
+        }
+        const t = translations[language];
+        document.getElementById("audio-status").innerText = t.audioBtnLoading;
+        document
+          .getElementById("audio-progress-container")
+          .classList.remove("hidden");
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                contents: [
+                  { parts: [{ text: `${t.audioDesc} ${t.eduDesc}` }] },
+                ],
+                generationConfig: { responseModalities: ["AUDIO"] },
+              }),
+            },
+          );
+          const result = await response.json();
+          const audioPart = result.candidates?.[0]?.content?.parts?.find(
+            (p) => p.inlineData,
+          );
+          if (audioPart) {
+            const audioBlob = new Blob(
+              [
+                Uint8Array.from(atob(audioPart.inlineData.data), (c) =>
+                  c.charCodeAt(0),
+                ),
+              ],
+              { type: "audio/wav" },
+            );
+            audioSource = new Audio(URL.createObjectURL(audioBlob));
+            audioPlaying = true;
+            audioSource.play();
+            updateAudioBtn(true);
+            audioSource.onended = () => {
+              audioPlaying = false;
+              updateAudioBtn(false);
+            };
+          }
+        } catch (err) {
+          console.error(err);
+          document.getElementById("audio-status").innerText = "Error.";
+        }
+      }
+
+      function updateAudioBtn(isPlaying) {
+        document
+          .getElementById("audio-icon")
+          .setAttribute("data-lucide", isPlaying ? "pause" : "play");
+        document.getElementById("audio-status").innerText = isPlaying
+          ? translations[language].audioBtnPlaying
+          : translations[language].audioBtnIdle;
+        document
+          .getElementById("audio-progress-container")
+          .classList.toggle("hidden", !isPlaying);
+        lucide.createIcons();
+      }
+
+      function openChat() {
+        document.getElementById("chat-modal").classList.remove("hidden");
+        document.getElementById("chat-modal").classList.add("flex");
+      }
+      function closeChat() {
+        document.getElementById("chat-modal").classList.remove("flex");
+        document.getElementById("chat-modal").classList.add("hidden");
+      }
+
+      async function handleAskGemini(e) {
+        e.preventDefault();
+        const input = document.getElementById("chat-input");
+        const text = input.value.trim();
+        if (!text || isTyping) return;
+        const messages = document.getElementById("chat-messages");
+        messages.innerHTML += `<div class="flex justify-end"><div class="p-4 rounded-2xl max-w-[85%] text-xs bg-sky-600 text-white rounded-br-none shadow-md">${text}</div></div>`;
+        input.value = "";
+        isTyping = true;
+        try {
+          const res = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: text }] }],
+                systemInstruction: {
+                  parts: [
+                    {
+                      text: `Geo, Ahli Geologi Kebumen. Singkat (3-4 kalimat). Bahasa: ${language === "id" ? "Indonesia" : "English"}.`,
+                    },
+                  ],
+                },
+              }),
+            },
+          );
+          const data = await res.json();
+          const aiResponse =
+            data.candidates?.[0]?.content?.parts?.[0]?.text || "Error.";
+          messages.innerHTML += `<div class="flex justify-start"><div class="p-4 rounded-2xl max-w-[85%] text-xs bg-slate-100 text-slate-700 rounded-bl-none border border-slate-200">${aiResponse}</div></div>`;
+        } catch (err) {
+          console.error(err);
+        } finally {
+          isTyping = false;
+          messages.scrollTop = messages.scrollHeight;
+        }
+      }
+
+      async function startAR() {
+        document.getElementById("ar-view").classList.remove("hidden");
+        html5QrCode = new Html5Qrcode("qr-reader");
+        try {
+          await html5QrCode.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            (decodedText) => {
+              if (decodedText.startsWith("http"))
+                window.location.href = decodedText;
+              else
+                window.location.href =
+                  "https://www.google.com/search?q=" +
+                  encodeURIComponent(decodedText);
+              stopAR();
+            },
+            () => {},
+          );
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function stopAR() {
+        if (html5QrCode)
+          html5QrCode
+            .stop()
+            .finally(() =>
+              document.getElementById("ar-view").classList.add("hidden"),
+            );
+        else document.getElementById("ar-view").classList.add("hidden");
+      }
+
+      window.onload = () => {
+        initCarousel();
+        updateUI();
+      };
+    </script>
+  </body>
+</html>
