@@ -2,7 +2,7 @@
 
 // Configuration
 const CONFIG = {
-  ttsBackendUrl: 'http://localhost:3000/api/tts',
+  ttsBackendUrl: '/.netlify/functions/tts',
   chatBackendUrl: 'http://localhost:3000/api/chat',
   geositeContext: 'goa-barat',
   carouselInterval: 5000,

@@ -1,0 +1,8 @@
+[build]
+  command = "npm install && cd backend && npm install"
+  functions = "backend" # Mengarahkan ke direktori backend Anda
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/server/:splat"
+  status = 200

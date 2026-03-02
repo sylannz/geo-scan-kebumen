@@ -9,7 +9,7 @@ const CONFIG = {
   geminiApiKey: "AIzaSyCM5M2dK_En2nGekqFLQ0GqmR1SsxAQd60",
   geminiChatEndpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent",
   // Backend TTS API
-  ttsBackendUrl: "http://localhost:3000/api/tts",
+  ttsBackendUrl: "/.netlify/functions/tts",
   carouselInterval: 5000,
   qrScanConfig: {
     fps: 10,

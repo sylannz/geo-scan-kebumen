@@ -7,7 +7,7 @@
 // ============================================
 const CONFIG = {
   // Backend APIs
-  ttsBackendUrl: "http://localhost:3000/api/tts",
+  ttsBackendUrl: "/.netlify/functions/tts",
   chatBackendUrl: "http://localhost:3000/api/chat",
   geositeContext: "watu-kelir",
   carouselInterval: 5000,

@@ -166,8 +166,8 @@ function handleAskGemini() { /* ... */ }
 ### Backend TTS API
 
 ```javascript
-// POST /api/tts
-const response = await fetch('http://localhost:3000/api/tts', {
+// POST /api/tts (Netlify function)
+const response = await fetch('/.netlify/functions/tts', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -231,7 +231,7 @@ Natural voice menggunakan VoiceRSS API melalui backend proxy:
 
 ```javascript
 async function handleAudioPlay() {
-  const response = await fetch('http://localhost:3000/api/tts', {
+  const response = await fetch('/.netlify/functions/tts', {
     method: 'POST',
     body: JSON.stringify({
       text: TRANSLATIONS[STATE.language].eduDesc,
@@ -356,7 +356,7 @@ Backend hanya menerima request dari:
 curl http://localhost:3000/api/health
 
 # TTS test
-curl -X POST http://localhost:3000/api/tts \
+curl -X POST https://<your-netlify-site>/.netlify/functions/tts \
   -H "Content-Type: application/json" \
   -d '{"text":"Test audio","language":"id"}' \
   --output test.mp3

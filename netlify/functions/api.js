@@ -327,12 +327,12 @@ app.use((err, req, res, next) => {
 // ============================================
 // SERVER START
 // ============================================
-import serverless from "serverless-http";
-// ... kode express Anda ...
-export const handler = serverless(app);
-
-allowedOrigins: [
-  "http://localhost:5500",
-  "http://localhost:3000",
-  "https://geo-scankebumen.netlify.app/", // Tambahkan URL Netlify Anda di sini
-];
+app.listen(CONFIG.port, () => {
+  console.log("============================================");
+  console.log("  GEO-SCAN TTS Backend Server");
+  console.log("============================================");
+  console.log(`  Server running on port ${CONFIG.port}`);
+  console.log(`  Health check: http://localhost:${CONFIG.port}/api/health`);
+  console.log(`  TTS endpoint: http://localhost:${CONFIG.port}/api/tts`);
+  console.log("============================================");
+});
