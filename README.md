@@ -4,23 +4,26 @@ Aplikasi web interaktif untuk eksplorasi geosite di **Kebumen UNESCO Global Geop
 
 ## 🌋 Tentang Project
 
-Geo-Scan adalah platform edukasi digital yang menghadirkan pengalaman eksplorasi geologi secara interaktif untuk 3 geosite utama:
+Geo-Scan adalah platform edukasi digital yang menghadirkan pengalaman eksplorasi geologi secara interaktif untuk 4 geosite di Kebumen UNESCO Global Geopark:
 - **Watu Kelir** - Formasi Chert & Lava Bantal
 - **Goa Barat** - Sistem Gua Karst dengan Sungai Bawah Tanah  
 - **Pantai Menganti** - Bukti Vulkanisme Purba
+- **Konservasi Kaliratu** - Biosite Penyu & Konservasi Pesisir
 
 ## ✨ Fitur Utama
 
 ### 🎯 Core Features
+- **Landing Page**: Hero carousel, weather widget, map view, dan quick navigation
 - **Dual Language**: Indonesia & English dengan toggle dinamis
 - **Hero Carousel**: Auto-sliding image gallery untuk setiap geosite
 - **Timeline Geologis**: Visualisasi kronologi formasi geologis
 - **Tab Navigation**: Switch antara konten Edukasi dan Timeline
+- **Weather Integration**: Real-time cuaca Kebumen dengan Open-Meteo API
 
 ### 🤖 AI-Powered Features
-- **AI Voice Guide**: Text-to-Speech natural dengan VoiceRSS API
-- **AI Chat Assistant**: Tanya jawab dengan Gemini AI tentang geologi
-- **Context-Aware**: AI disesuaikan dengan geosite yang sedang dilihat
+- **AI Voice Guide**: Text-to-Speech natural dengan VoiceRSS API via backend
+- **AI Chat Assistant**: Tanya jawab dengan Google Gemini AI tentang geologi
+- **Context-Aware Chat**: AI disesuaikan dengan 5 konteks (home + 4 geosite)
 
 ### 📱 Interactive Features
 - **AR QR Scanner**: Scan barcode/QR untuk navigasi atau info tambahan
@@ -32,22 +35,29 @@ Geo-Scan adalah platform edukasi digital yang menghadirkan pengalaman eksplorasi
 ```
 geo-scan/
 ├── css/
+│   ├── index.css            # Styling untuk Landing Page
 │   ├── watu-kelir.css       # Styling untuk Watu Kelir
 │   ├── goa-barat.css        # Styling untuk Goa Barat
-│   └── menganti.css         # Styling untuk Pantai Menganti
+│   ├── menganti.css         # Styling untuk Pantai Menganti
+│   └── kaliratu.css         # Styling untuk Kaliratu Biosite
 ├── js/
+│   ├── index.js             # Logic untuk Landing Page (Clean Architecture)
 │   ├── watu-kelir.js        # Logic untuk Watu Kelir (Clean Architecture)
 │   ├── goa-barat.js         # Logic untuk Goa Barat (Clean Architecture)
-│   └── menganti.js          # Logic untuk Pantai Menganti (Clean Architecture)
+│   ├── menganti.js          # Logic untuk Pantai Menganti (Clean Architecture)
+│   └── kaliratu.js          # Logic untuk Kaliratu (Clean Architecture)
 ├── backend/
-│   ├── server.js            # Express server untuk TTS API proxy
-│   ├── package.json         # Backend dependencies
+│   ├── server.js            # Express server untuk TTS & Chat API proxy
+│   ├── package.json         # Backend dependencies (express, cors, node-fetch, @google/generative-ai)
 │   ├── .env                 # Environment variables (gitignored)
 │   ├── .env.example         # Template untuk .env
 │   └── README.md            # Backend documentation
+├── images/                  # Local images (watturijang.jpg, etc.)
+├── index.html               # Landing Page / Home
 ├── situswatukelir.html      # Halaman Watu Kelir
 ├── situsgoabarat.html       # Halaman Goa Barat
 ├── situsmenganti.html       # Halaman Pantai Menganti
+├── situspantaikaliratu.html # Halaman Kaliratu Biosite
 └── README.md                # Dokumentasi ini
 ```
 
@@ -63,7 +73,7 @@ geo-scan/
 ### 1. Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/sylannz/geo-scan-kebumen
 cd geo-scan
 ```
 
@@ -75,7 +85,7 @@ npm install
 cp .env.example .env
 ```
 
-Edit `.env` dan tambahkan API key Anda:
+Edit `.env` dan tambahkan API key:
 ```env
 PORT=3000
 VOICERSS_API_KEY=your_api_key_here
@@ -91,6 +101,11 @@ npm run dev
 
 Backend akan berjalan di `http://localhost:3000`
 
+Endpoints yang tersedia:
+- `GET /api/health` - Health check
+- `POST /api/tts` - Text-to-Speech (VoiceRSS)
+- `POST /api/chat` - AI Chat (Google Gemini)
+
 ### 4. Start Frontend
 
 Gunakan Live Server di VS Code atau web server lainnya:
@@ -100,21 +115,15 @@ Gunakan Live Server di VS Code atau web server lainnya:
 - Right-click `situswatukelir.html` → "Open with Live Server"
 - Browser akan otomatis terbuka di `http://localhost:5500`
 
-**Dengan Python**:
-```bash
-python -m http.server 5500
-```
 
-**Dengan PHP**:
-```bash
-php -S localhost:5500
-```
 
-### 5. Akses Aplikasi
+### 5. Akses Web
 
+- Landing Page: http://localhost:5500/index.html
 - Watu Kelir: http://localhost:5500/situswatukelir.html
 - Goa Barat: http://localhost:5500/situsgoabarat.html
 - Pantai Menganti: http://localhost:5500/situsmenganti.html
+- Kaliratu Biosite: http://localhost:5500/situspantaikaliratu.html
 
 ## 🎨 Clean Architecture
 
@@ -168,26 +177,35 @@ const response = await fetch('http://localhost:3000/api/tts', {
 });
 
 const audioBlob = await response.blob();
-const audio = new Audio(URL.createObjectURL(audioBlob));
+const audioUrl = URL.createObjectURL(audioBlob);
+const audio = new Audio(audioUrl);
 audio.play();
 ```
 
-### Gemini AI Chat
+### Backend Chat API
 
 ```javascript
-const response = await fetch(
-  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
-  {
-    method: 'POST',
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: userQuestion }] }],
-      systemInstruction: {
-        parts: [{ text: 'Geo, Geologi Kebumen. Singkat (3 kalimat).' }]
-      }
-    })
-  }
-);
+// POST /api/chat
+const response = await fetch('http://localhost:3000/api/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    text: 'Apa itu formasi chert?',
+    context: 'watu-kelir', // atau: 'goa-barat', 'menganti', 'kaliratu', 'geopark-home'
+    language: 'id' // atau 'en'
+  })
+});
+
+const data = await response.json();
+console.log(data.reply); // Respons dari Gemini AI
 ```
+
+**Context-Aware Instructions:**
+- `watu-kelir`: Ahli formasi chert, lava bantal, geologi laut dalam
+- `goa-barat`: Ahli sistem karst, sungai bawah tanah, speleologi
+- `menganti`: Ahli vulkanisme purba, batuan beku, geomorfologi pesisir
+- `kaliratu`: Ahli konservasi penyu, biosite, ekosistem pesisir
+- `geopark-home`: Pemandu umum Kebumen UNESCO Global Geopark
 
 ## 🎯 Key Features Implementation
 
@@ -409,6 +427,10 @@ pm2 start server.js --name geo-scan-backend
 
 ## 📈 Future Enhancements
 
+- [x] Landing page dengan hero carousel ✅
+- [x] Weather integration untuk Kebumen ✅
+- [x] Backend API proxy untuk TTS & Chat ✅
+- [x] Context-aware AI untuk setiap geosite ✅
 - [ ] Database untuk menyimpan chat history
 - [ ] User authentication & personalized experience
 - [ ] Offline mode dengan Service Worker
@@ -416,9 +438,9 @@ pm2 start server.js --name geo-scan-backend
 - [ ] GPS integration untuk location-based content
 - [ ] Admin panel untuk manage content
 - [ ] Analytics dashboard
-- [ ] Multi-geosite navigation menu
 - [ ] Search functionality
 - [ ] Favorites/bookmarks feature
+- [ ] Virtual tour 360° untuk setiap geosite
 
 ## 👥 Contributing
 
@@ -437,7 +459,8 @@ MIT License - Free to use for personal and commercial projects.
 
 ### APIs & Services
 - **VoiceRSS**: Text-to-Speech API
-- **Google Gemini**: AI Chat Assistant
+- **Google Gemini AI**: AI Chat Assistant (@google/generative-ai SDK)
+- **Open-Meteo**: Free weather API untuk Kebumen
 - **Unsplash**: High-quality geosite images
 - **Tailwind CSS**: UI framework
 - **Lucide Icons**: Icon library
@@ -459,5 +482,6 @@ Untuk pertanyaan atau issue:
 **Built with ❤️ for Kebumen UNESCO Global Geopark**
 
 **Status**: ✅ Production Ready
-**Version**: 1.0.0
-**Last Updated**: September 2024
+**Version**: 2.0.0
+**Last Updated**: March 2026
+**Features**: 5 Pages (1 Landing + 4 Geosites), Backend API Proxy, Context-Aware AI Chat, Weather Integration

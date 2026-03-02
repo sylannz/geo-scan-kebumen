@@ -285,28 +285,7 @@ async function handleAudioPlay() {
   } catch (err) {
     console.error('[TTS] Error:', err);
     setText('audio-status', t.audioBtnIdle);
-
-    if (audioPart) {
-      const audioBlob = new Blob(
-        [
-          Uint8Array.from(atob(audioPart.inlineData.data), (c) =>
-            c.charCodeAt(0)
-          ),
-        ],
-        { type: 'audio/wav' }
-      );
-      STATE.audioSource = new Audio(URL.createObjectURL(audioBlob));
-      STATE.audioPlaying = true;
-      STATE.audioSource.play();
-      updateAudioBtn(true);
-      STATE.audioSource.onended = () => {
-        STATE.audioPlaying = false;
-        updateAudioBtn(false);
-      };
-    }
-  } catch (err) {
-    console.error('Audio error:', err);
-    setText('audio-status', 'Error.');
+    getElement('audio-progress-container').classList.add('hidden');
   }
 }
 
