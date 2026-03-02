@@ -13,8 +13,8 @@ const CONFIG = {
   carouselInterval: 5000,
   qrScanConfig: {
     fps: 10,
-    qrbox: 250
-  }
+    qrbox: 250,
+  },
 };
 
 const STATE = {
@@ -24,7 +24,7 @@ const STATE = {
   audioCache: { id: null, en: null },
   audioSource: null,
   isTyping: false,
-  html5QrCode: null
+  html5QrCode: null,
 };
 
 // ============================================
@@ -41,38 +41,46 @@ const TRANSLATIONS = {
     tabEdu: "Edukasi",
     tabTime: "Timeline",
     eduTitle: "Keajaiban Watu Kelir",
-    eduDesc: 'Watu Kelir adalah monumen alam yang membuktikan bahwa Kebumen merupakan "Lantai Samudra yang Terangkat".',
+    eduDesc:
+      'Watu Kelir adalah monumen alam yang membuktikan bahwa Kebumen merupakan "Lantai Samudra yang Terangkat".',
     unescoTitle: "Mengapa Diangkat UNESCO?",
-    unescoDesc: "Situs ini diakui dunia karena merupakan laboratorium geologi alam yang sangat langka, membuktikan proses subduksi lempeng tektonik.",
+    unescoDesc:
+      "Situs ini diakui dunia karena merupakan laboratorium geologi alam yang sangat langka, membuktikan proses subduksi lempeng tektonik.",
     legendTitle: 'Mengapa disebut "Kelir"?',
-    legendDesc: '"Kelir" dalam bahasa Jawa berarti layar untuk pertunjukan Wayang Kulit.',
+    legendDesc:
+      '"Kelir" dalam bahasa Jawa berarti layar untuk pertunjukan Wayang Kulit.',
     geoAnalysisTitle: "Analisis Geologis",
     chertTitle: "Rijang (Red Chert)",
     chertDesc: "Batuan sedimen laut sangat dalam.",
     lavaTitle: "Lava Bantal (Pillow Lava)",
     lavaDesc: "Terbentuk saat magma panas meletus di bawah air laut dingin.",
     audioTitle: "Pemandu Suara AI",
-    audioDesc: "Bacakan narasi Bahasa Indonesia dengan nada pemandu profesional: ",
+    audioDesc:
+      "Bacakan narasi Bahasa Indonesia dengan nada pemandu profesional: ",
     audioBtnIdle: "Bacakan Seluruh Info Situs",
     audioBtnPlaying: "Sedang Membacakan...",
     audioBtnLoading: "Sedang Menyiapkan Suara...",
     time1Date: "120 Juta Tahun Lalu",
     time1Event: "Kelahiran Samudra",
-    time1Desc: "Terbentuk di Samudra Tethys. Erupsi gunung api bawah laut membentuk lava bantal di kedalaman 4 km.",
+    time1Desc:
+      "Terbentuk di Samudra Tethys. Erupsi gunung api bawah laut membentuk lava bantal di kedalaman 4 km.",
     time2Date: "70 Juta Tahun Lalu",
     time2Event: "Tabrakan Lempeng",
-    time2Desc: "Tabrakan lempeng raksasa. Lempeng Indo-Australia menabrak Lempeng Eurasia.",
+    time2Desc:
+      "Tabrakan lempeng raksasa. Lempeng Indo-Australia menabrak Lempeng Eurasia.",
     time3Date: "30 Juta Tahun Lalu",
     time3Event: "Pengangkatan Daratan",
-    time3Desc: "Daratan Karangsambung muncul. Proses tektonik memunculkan lantai samudera purba ke permukaan.",
+    time3Desc:
+      "Daratan Karangsambung muncul. Proses tektonik memunculkan lantai samudera purba ke permukaan.",
     time4Date: "9 September 2024",
     time4Event: "UNESCO GLOBAL GEOPARK",
-    time4Desc: "Situs Watu Kelir resmi diakui dunia sebagai bagian dari UNESCO Global Geopark.",
+    time4Desc:
+      "Situs Watu Kelir resmi diakui dunia sebagai bagian dari UNESCO Global Geopark.",
     supportedBy: "Didukung Oleh",
     aiChatTitle: "Tanya Geo ✨",
     aiChatPlaceholder: "Tanyakan apapun...",
     aiChatWelcome: "Halo! Saya Asisten Geo. Ada yang ingin kamu ketahui?",
-    scanning: "Memindai Barcode/QR..."
+    scanning: "Memindai Barcode/QR...",
   },
   en: {
     siteTitle: "Watu Kelir Geosite",
@@ -86,9 +94,11 @@ const TRANSLATIONS = {
     eduTitle: "The Miracle of Watu Kelir",
     eduDesc: 'Watu Kelir proves Kebumen is a "Raised Ocean Floor".',
     unescoTitle: "Why UNESCO Recognition?",
-    unescoDesc: "Recognized as a rare natural geological laboratory, proving the tectonic plate subduction process.",
+    unescoDesc:
+      "Recognized as a rare natural geological laboratory, proving the tectonic plate subduction process.",
     legendTitle: 'Why is it called "Kelir"?',
-    legendDesc: '"Kelir" in Javanese means the screen used in Wayang Kulit performances.',
+    legendDesc:
+      '"Kelir" in Javanese means the screen used in Wayang Kulit performances.',
     geoAnalysisTitle: "Geological Analysis",
     chertTitle: "Red Chert",
     chertDesc: "Deep-sea sedimentary rock.",
@@ -101,22 +111,26 @@ const TRANSLATIONS = {
     audioBtnLoading: "Preparing Voice...",
     time1Date: "120 Million Years Ago",
     time1Event: "Oceanic Birth",
-    time1Desc: "Born in the Tethys Ocean. Submarine volcanic eruptions formed pillow lavas at 4 km depth.",
+    time1Desc:
+      "Born in the Tethys Ocean. Submarine volcanic eruptions formed pillow lavas at 4 km depth.",
     time2Date: "70 Million Years Ago",
     time2Event: "Plate Collision",
-    time2Desc: "Giant Plate Collision. The Indo-Australian plate collided with Eurasia, uplifting the seabed.",
+    time2Desc:
+      "Giant Plate Collision. The Indo-Australian plate collided with Eurasia, uplifting the seabed.",
     time3Date: "30 Million Years Ago",
     time3Event: "Land Uplift",
-    time3Desc: "Karangsambung Landmass. Tectonic processes brought the floor to the surface.",
+    time3Desc:
+      "Karangsambung Landmass. Tectonic processes brought the floor to the surface.",
     time4Date: "September 9, 2024",
     time4Event: "UNESCO GLOBAL GEOPARK",
-    time4Desc: "Watu Kelir Site is officially recognized as part of the UNESCO Global Geopark.",
+    time4Desc:
+      "Watu Kelir Site is officially recognized as part of the UNESCO Global Geopark.",
     supportedBy: "Supported By",
     aiChatTitle: "Ask Geo ✨",
     aiChatPlaceholder: "Ask anything...",
     aiChatWelcome: "Hello! I am your Geo Assistant.",
-    scanning: "Scanning Barcode/QR..."
-  }
+    scanning: "Scanning Barcode/QR...",
+  },
 };
 
 // ============================================
@@ -125,7 +139,7 @@ const TRANSLATIONS = {
 const GEOSITE_IMAGES = [
   "images/watturijang.jpg",
   "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=1000"
+  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=1000",
 ];
 
 // ============================================
@@ -152,7 +166,7 @@ const DOM = {
   toggleClass: (id, className, condition) => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle(className, condition);
-  }
+  },
 };
 
 // ============================================
@@ -176,10 +190,22 @@ function updateUI() {
   DOM.setText("tab-history", t.tabTime);
 
   // Update education section
-  DOM.setHTML("edu-title", `<i data-lucide="book-open" class="w-5 h-5 text-sky-600"></i> ${t.eduTitle}`);
-  DOM.setHTML("unesco-title", `<i data-lucide="check-circle" class="w-4 h-4 text-blue-600"></i> ${t.unescoTitle}`);
-  DOM.setHTML("legend-title", `<i data-lucide="landmark" class="w-4 h-4 text-amber-500"></i> ${t.legendTitle}`);
-  DOM.setHTML("geo-analysis-title", `<i data-lucide="microscope" class="w-4 h-4 text-sky-600"></i> ${t.geoAnalysisTitle}`);
+  DOM.setHTML(
+    "edu-title",
+    `<i data-lucide="book-open" class="w-5 h-5 text-sky-600"></i> ${t.eduTitle}`,
+  );
+  DOM.setHTML(
+    "unesco-title",
+    `<i data-lucide="check-circle" class="w-4 h-4 text-blue-600"></i> ${t.unescoTitle}`,
+  );
+  DOM.setHTML(
+    "legend-title",
+    `<i data-lucide="landmark" class="w-4 h-4 text-amber-500"></i> ${t.legendTitle}`,
+  );
+  DOM.setHTML(
+    "geo-analysis-title",
+    `<i data-lucide="microscope" class="w-4 h-4 text-sky-600"></i> ${t.geoAnalysisTitle}`,
+  );
 
   // Update audio section
   DOM.setText("audio-title", t.audioTitle);
@@ -298,8 +324,12 @@ function initCarousel() {
     // Update indicators
     const prevDot = DOM.getElement(`dot-${prev}`);
     const currentDot = DOM.getElement(`dot-${STATE.currentSlide}`);
-    if (prevDot) prevDot.className = "h-1 rounded-full transition-all duration-300 w-2 bg-white/50";
-    if (currentDot) currentDot.className = "h-1 rounded-full transition-all duration-300 w-6 bg-sky-500";
+    if (prevDot)
+      prevDot.className =
+        "h-1 rounded-full transition-all duration-300 w-2 bg-white/50";
+    if (currentDot)
+      currentDot.className =
+        "h-1 rounded-full transition-all duration-300 w-6 bg-sky-500";
   }, CONFIG.carouselInterval);
 }
 
@@ -328,52 +358,58 @@ async function handleAudioPlay() {
   try {
     // Prepare text to speak
     const textToSpeak = `${t.eduDesc} ${t.unescoDesc}`;
-    
+
     console.log(`[TTS] Requesting audio from backend...`);
 
     // Call backend TTS API
     const response = await fetch(CONFIG.ttsBackendUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         text: textToSpeak,
-        language: STATE.language
-      })
+        language: STATE.language,
+      }),
     });
 
     // Check if response is JSON error
-    const contentType = response.headers.get('content-type');
-    console.log(`[TTS] Response status: ${response.status}, content-type: ${contentType}`);
-    
-    if (!response.ok || contentType?.includes('application/json')) {
+    const contentType = response.headers.get("content-type");
+    console.log(
+      `[TTS] Response status: ${response.status}, content-type: ${contentType}`,
+    );
+
+    if (!response.ok || contentType?.includes("application/json")) {
       const errorData = await response.json();
-      console.error('[TTS] Backend error:', errorData);
-      throw new Error(errorData.message || errorData.error || 'Backend TTS error');
+      console.error("[TTS] Backend error:", errorData);
+      throw new Error(
+        errorData.message || errorData.error || "Backend TTS error",
+      );
     }
 
     // Get audio blob from response
     const audioBlob = await response.blob();
-    console.log(`[TTS] Audio received, size: ${audioBlob.size} bytes, type: ${audioBlob.type}`);
+    console.log(
+      `[TTS] Audio received, size: ${audioBlob.size} bytes, type: ${audioBlob.type}`,
+    );
 
     // Create audio URL and play
     const audioUrl = URL.createObjectURL(audioBlob);
     STATE.audioSource = new Audio(audioUrl);
-    
+
     STATE.audioSource.onloadstart = () => {
-      console.log('[TTS] Audio loading...');
+      console.log("[TTS] Audio loading...");
     };
 
     STATE.audioSource.oncanplay = () => {
-      console.log('[TTS] Audio ready, playing...');
+      console.log("[TTS] Audio ready, playing...");
       STATE.audioPlaying = true;
       STATE.audioSource.play();
       updateAudioBtn(true);
     };
 
     STATE.audioSource.onended = () => {
-      console.log('[TTS] Audio ended');
+      console.log("[TTS] Audio ended");
       STATE.audioPlaying = false;
       updateAudioBtn(false);
       // Clean up blob URL
@@ -381,16 +417,15 @@ async function handleAudioPlay() {
     };
 
     STATE.audioSource.onerror = (err) => {
-      console.error('[TTS] Audio playback error:', err);
+      console.error("[TTS] Audio playback error:", err);
       STATE.audioPlaying = false;
       updateAudioBtn(false);
       DOM.setText("audio-status", "Error memutar audio");
       DOM.addClass("audio-progress-container", "hidden");
       URL.revokeObjectURL(audioUrl);
     };
-
   } catch (err) {
-    console.error('[TTS] Error:', err);
+    console.error("[TTS] Error:", err);
     DOM.setText("audio-status", `Error: ${err.message}`);
     DOM.addClass("audio-progress-container", "hidden");
     STATE.audioPlaying = false;
@@ -431,19 +466,19 @@ async function handleAskGemini(e) {
     const res = await fetch(CONFIG.chatBackendUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         text: text,
         context: CONFIG.geositeContext,
-        language: STATE.language
-      })
+        language: STATE.language,
+      }),
     });
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
-      console.error('[CHAT] Backend error:', errorData);
-      throw new Error(errorData.message || 'Chat request failed');
+      console.error("[CHAT] Backend error:", errorData);
+      throw new Error(errorData.message || "Chat request failed");
     }
 
     const data = await res.json();
@@ -475,11 +510,13 @@ async function startAR() {
         if (decodedText.startsWith("http")) {
           window.location.href = decodedText;
         } else {
-          window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(decodedText);
+          window.location.href =
+            "https://www.google.com/search?q=" +
+            encodeURIComponent(decodedText);
         }
         stopAR();
       },
-      () => {} // Error callback (silent)
+      () => {}, // Error callback (silent)
     );
   } catch (err) {
     console.error("QR Scanner Error:", err);
@@ -489,11 +526,9 @@ async function startAR() {
 
 function stopAR() {
   if (STATE.html5QrCode) {
-    STATE.html5QrCode
-      .stop()
-      .finally(() => {
-        DOM.addClass("ar-view", "hidden");
-      });
+    STATE.html5QrCode.stop().finally(() => {
+      DOM.addClass("ar-view", "hidden");
+    });
   } else {
     DOM.addClass("ar-view", "hidden");
   }

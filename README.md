@@ -5,14 +5,16 @@ Aplikasi web interaktif untuk eksplorasi geosite di **Kebumen UNESCO Global Geop
 ## 🌋 Tentang Project
 
 Geo-Scan adalah platform edukasi digital yang menghadirkan pengalaman eksplorasi geologi secara interaktif untuk 4 geosite di Kebumen UNESCO Global Geopark:
+
 - **Watu Kelir** - Formasi Chert & Lava Bantal
-- **Goa Barat** - Sistem Gua Karst dengan Sungai Bawah Tanah  
+- **Goa Barat** - Sistem Gua Karst dengan Sungai Bawah Tanah
 - **Pantai Menganti** - Bukti Vulkanisme Purba
 - **Konservasi Kaliratu** - Biosite Penyu & Konservasi Pesisir
 
 ## ✨ Fitur Utama
 
 ### 🎯 Core Features
+
 - **Landing Page**: Hero carousel, weather widget, map view, dan quick navigation
 - **Dual Language**: Indonesia & English dengan toggle dinamis
 - **Hero Carousel**: Auto-sliding image gallery untuk setiap geosite
@@ -21,11 +23,13 @@ Geo-Scan adalah platform edukasi digital yang menghadirkan pengalaman eksplorasi
 - **Weather Integration**: Real-time cuaca Kebumen dengan Open-Meteo API
 
 ### 🤖 AI-Powered Features
+
 - **AI Voice Guide**: Text-to-Speech natural dengan VoiceRSS API via backend
 - **AI Chat Assistant**: Tanya jawab dengan Google Gemini AI tentang geologi
 - **Context-Aware Chat**: AI disesuaikan dengan 5 konteks (home + 4 geosite)
 
 ### 📱 Interactive Features
+
 - **AR QR Scanner**: Scan barcode/QR untuk navigasi atau info tambahan
 - **Touch-Optimized**: UI dirancang untuk pengalaman mobile-first
 - **Smooth Animations**: Transisi dan animasi yang fluid
@@ -86,6 +90,7 @@ cp .env.example .env
 ```
 
 Edit `.env` dan tambahkan API key:
+
 ```env
 PORT=3000
 VOICERSS_API_KEY=your_api_key_here
@@ -102,6 +107,7 @@ npm run dev
 Backend akan berjalan di `http://localhost:3000`
 
 Endpoints yang tersedia:
+
 - `GET /api/health` - Health check
 - `POST /api/tts` - Text-to-Speech (VoiceRSS)
 - `POST /api/chat` - AI Chat (Google Gemini)
@@ -111,11 +117,10 @@ Endpoints yang tersedia:
 Gunakan Live Server di VS Code atau web server lainnya:
 
 **Dengan Live Server (VS Code)**:
+
 - Install extension "Live Server"
 - Right-click `situswatukelir.html` → "Open with Live Server"
 - Browser akan otomatis terbuka di `http://localhost:5500`
-
-
 
 ### 5. Akses Web
 
@@ -132,34 +137,45 @@ Setiap file JavaScript menggunakan clean architecture pattern:
 ```javascript
 // Configuration
 const CONFIG = {
-  apiKey: 'xxx',
+  apiKey: "xxx",
   carouselInterval: 5000,
   // ...
 };
 
 // State Management
 const STATE = {
-  language: 'id',
+  language: "id",
   currentSlide: 0,
   // ...
 };
 
 // Translations
 const TRANSLATIONS = {
-  id: { /* Indonesia */ },
-  en: { /* English */ }
+  id: {
+    /* Indonesia */
+  },
+  en: {
+    /* English */
+  },
 };
 
 // DOM Utilities
 const getElement = (id) => document.getElementById(id);
-const setText = (id, text) => { /* ... */ };
+const setText = (id, text) => {
+  /* ... */
+};
 
 // Modular Functions
-function initCarousel() { /* ... */ }
-function handleAudioPlay() { /* ... */ }
-function handleAskGemini() { /* ... */ }
+function initCarousel() {
+  /* ... */
+}
+function handleAudioPlay() {
+  /* ... */
+}
+function handleAskGemini() {
+  /* ... */
+}
 ```
-
 
 ## 🔌 API Integration
 
@@ -167,13 +183,13 @@ function handleAskGemini() { /* ... */ }
 
 ```javascript
 // POST /api/tts (Netlify function)
-const response = await fetch('/.netlify/functions/tts', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("/.netlify/functions/tts", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    text: 'Your text here',
-    language: 'id' // atau 'en'
-  })
+    text: "Your text here",
+    language: "id", // atau 'en'
+  }),
 });
 
 const audioBlob = await response.blob();
@@ -186,14 +202,14 @@ audio.play();
 
 ```javascript
 // POST /api/chat
-const response = await fetch('http://localhost:3000/api/chat', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("http://localhost:3000/api/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    text: 'Apa itu formasi chert?',
-    context: 'watu-kelir', // atau: 'goa-barat', 'menganti', 'kaliratu', 'geopark-home'
-    language: 'id' // atau 'en'
-  })
+    text: "Apa itu formasi chert?",
+    context: "watu-kelir", // atau: 'goa-barat', 'menganti', 'kaliratu', 'geopark-home'
+    language: "id", // atau 'en'
+  }),
 });
 
 const data = await response.json();
@@ -201,6 +217,7 @@ console.log(data.reply); // Respons dari Gemini AI
 ```
 
 **Context-Aware Instructions:**
+
 - `watu-kelir`: Ahli formasi chert, lava bantal, geologi laut dalam
 - `goa-barat`: Ahli sistem karst, sungai bawah tanah, speleologi
 - `menganti`: Ahli vulkanisme purba, batuan beku, geomorfologi pesisir
@@ -231,14 +248,14 @@ Natural voice menggunakan VoiceRSS API melalui backend proxy:
 
 ```javascript
 async function handleAudioPlay() {
-  const response = await fetch('/.netlify/functions/tts', {
-    method: 'POST',
+  const response = await fetch("/.netlify/functions/tts", {
+    method: "POST",
     body: JSON.stringify({
       text: TRANSLATIONS[STATE.language].eduDesc,
-      language: STATE.language
-    })
+      language: STATE.language,
+    }),
   });
-  
+
   const audioBlob = await response.blob();
   const audio = new Audio(URL.createObjectURL(audioBlob));
   audio.play();
@@ -251,13 +268,13 @@ Menggunakan library `html5-qrcode`:
 
 ```javascript
 async function startAR() {
-  const html5QrCode = new Html5Qrcode('qr-reader');
+  const html5QrCode = new Html5Qrcode("qr-reader");
   await html5QrCode.start(
-    { facingMode: 'environment' },
+    { facingMode: "environment" },
     { fps: 10, qrbox: 250 },
     (decodedText) => {
       window.location.href = decodedText;
-    }
+    },
   );
 }
 ```
@@ -272,7 +289,7 @@ function initCarousel() {
     // Create slide element
     // Create indicator dot
   });
-  
+
   setInterval(() => {
     // Switch to next slide
     // Update indicator
@@ -283,18 +300,21 @@ function initCarousel() {
 ## 🎨 Styling & UI
 
 ### Tech Stack
+
 - **Tailwind CSS**: Utility-first CSS framework via CDN
 - **Lucide Icons**: Beautiful icon set
 - **Custom Animations**: Scan animation untuk AR, progress bar
 - **Responsive**: Mobile-first design
 
 ### Color Palette
+
 - Primary: Sky Blue (#0ea5e9)
 - Secondary: Amber (#f59e0b)
 - Background: Slate (#f8fafc)
 - Text: Slate (#0f172a)
 
 ### Typography
+
 - Font: System Sans-serif stack
 - Headings: Bold, uppercase, tracking-tight
 - Body: Medium weight, relaxed leading
@@ -302,6 +322,7 @@ function initCarousel() {
 ## 🔐 Security & Best Practices
 
 ### Environment Variables
+
 ```bash
 # .env (gitignored)
 VOICERSS_API_KEY=xxxxx
@@ -309,12 +330,15 @@ GEMINI_API_KEY=xxxxx  # Exposed di frontend (OK untuk demo)
 ```
 
 ### CORS Protection
+
 Backend hanya menerima request dari:
+
 - `http://localhost:5500`
 - `http://127.0.0.1:5500`
 - `http://localhost:3000`
 
 ### Input Validation
+
 - Text length limitation
 - Language code validation
 - Error handling untuk API failures
@@ -322,12 +346,14 @@ Backend hanya menerima request dari:
 ## 📊 Performance Optimization
 
 ### Frontend
+
 - Lazy load images dengan Unsplash CDN
 - Minimal dependencies (hanya CDN libraries)
 - Efficient DOM manipulation dengan utility functions
 - Debounced event handlers
 
 ### Backend
+
 - Response caching potential (dapat diimplementasi)
 - Efficient error detection (< 1000 bytes check)
 - Minimal middleware stack
@@ -337,6 +363,7 @@ Backend hanya menerima request dari:
 ### Manual Testing Checklist
 
 **Watu Kelir Page**:
+
 - [ ] Language toggle berfungsi (ID ↔ EN)
 - [ ] Carousel auto-slide setiap 5 detik
 - [ ] Tab switching (Edukasi ↔ Timeline)
@@ -346,6 +373,7 @@ Backend hanya menerima request dari:
 - [ ] QR scan redirect ke URL yang benar
 
 **Goa Barat & Menganti Pages**:
+
 - [ ] Same tests as Watu Kelir
 - [ ] Content spesifik untuk masing-masing geosite
 
@@ -367,28 +395,33 @@ curl -X POST https://<your-netlify-site>/.netlify/functions/tts \
 ### Frontend Issues
 
 **Audio tidak play**:
+
 - Check backend server running di port 3000
 - Check browser console untuk CORS error
 - Verify API key valid di backend `.env`
 
 **AR Scanner tidak berfungsi**:
+
 - Browser harus support getUserMedia API
 - Pastikan HTTPS (atau localhost untuk testing)
 - Allow camera permission
 
 **Images tidak load**:
+
 - Check internet connection (Unsplash CDN)
 - Check browser console untuk 404 errors
 
 ### Backend Issues
 
 **Port 3000 already in use**:
+
 ```bash
 lsof -i :3000
 kill -9 <PID>
 ```
 
 **API Key error**:
+
 ```bash
 # Check .env file
 cat backend/.env
@@ -409,6 +442,7 @@ Deploy ke Netlify, Vercel, atau GitHub Pages:
 ```
 
 **Environment**:
+
 - Update backend URL di `CONFIG.ttsBackendUrl`
 - Update CORS `allowedOrigins` di backend
 
@@ -445,6 +479,7 @@ pm2 start server.js --name geo-scan-backend
 ## 👥 Contributing
 
 Contributions are welcome! Please:
+
 1. Fork repository
 2. Create feature branch (`git checkout -b feature/amazing`)
 3. Commit changes (`git commit -m 'Add amazing feature'`)
@@ -458,6 +493,7 @@ MIT License - Free to use for personal and commercial projects.
 ## 🙏 Credits
 
 ### APIs & Services
+
 - **VoiceRSS**: Text-to-Speech API
 - **Google Gemini AI**: AI Chat Assistant (@google/generative-ai SDK)
 - **Open-Meteo**: Free weather API untuk Kebumen
@@ -467,12 +503,14 @@ MIT License - Free to use for personal and commercial projects.
 - **html5-qrcode**: QR Scanner library
 
 ### Data & Content
+
 - **Kebumen Geopark**: Geological data & information
 - **UNESCO Global Geopark**: Recognition & guidelines
 
 ## 📞 Support
 
 Untuk pertanyaan atau issue:
+
 - Create issue di repository
 - Email: [your-email]
 - Documentation: See `backend/README.md` for backend details
