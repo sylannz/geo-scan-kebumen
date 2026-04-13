@@ -694,9 +694,10 @@
       </div>
     </div>
 
+    <script src="api-config.js"></script>
     <script>
       lucide.createIcons();
-      const apiKey = "";
+      // apiKey is loaded from api-config.js
       let isPlaying = false,
         currentAudio = null;
 
@@ -940,7 +941,7 @@
         }
         try {
           const res = await fetchWithRetry(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

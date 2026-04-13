@@ -1,1136 +1,992 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Geo-Scan - Genteng Sokka (Warisan Budaya)</title>
-    <!-- Tailwind & Icons -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- LIBRARY UNTUK VIRTUAL TOUR 360 -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geo-Scan - Genteng Sokka (Warisan Budaya)</title>
+  <!-- Tailwind & Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
-      body {
-        font-family: "Plus Jakarta Sans", sans-serif;
-        background-color: #f8fafc;
-        overflow-x: hidden;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      ::-webkit-scrollbar {
-        display: none;
-      }
+  <!-- LIBRARY UNTUK VIRTUAL TOUR 360 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
-      @keyframes popIn {
-        0% {
-          transform: translateY(-100%);
-          opacity: 0;
-        }
-        100% {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-      .animate-popIn {
-        animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background-color: #f8fafc;
+      overflow-x: hidden;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: translateY(-100%);
+        opacity: 0;
       }
 
-      @keyframes progress {
-        0% {
-          width: 0%;
-        }
-        100% {
-          width: 100%;
-        }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
       }
-      .animate-progress {
-        animation: progress 30s linear infinite;
+    }
+
+    .animate-popIn {
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes progress {
+      0% {
+        width: 0%;
       }
 
-      #panorama {
+      100% {
         width: 100%;
-        height: 100%;
       }
-    </style>
-  </head>
-  <body class="min-h-screen bg-slate-50 text-slate-900 pb-24 text-left">
-    <!-- Header dengan Logo -->
-    <header
-      class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-50 px-4 py-3 flex justify-between items-center shadow-sm"
-    >
-      <div class="flex items-center gap-3 text-left">
-        <button
-          onclick="window.history.back()"
-          class="p-2 bg-slate-100 rounded-full transition-transform active:scale-90"
-        >
-          <i data-lucide="arrow-left" class="w-4 h-4 text-slate-600"></i>
-        </button>
-        <img
-          src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
-          class="w-10 h-10 object-contain"
-          alt="Logo Geopark"
-        />
-        <div>
-          <h1
-            class="text-sm font-black leading-tight uppercase tracking-tight text-slate-800"
-          >
-            GEO-SCAN
-          </h1>
-          <p
-            class="text-[9px] text-sky-600 uppercase tracking-widest font-bold"
-          >
-            Jelajah Budaya
-          </p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <span
-          class="bg-amber-50 text-amber-600 text-[9px] font-bold px-2 py-1 rounded-md border border-amber-100 uppercase font-black tracking-tighter"
-          >Warisan Budaya</span
-        >
-      </div>
-    </header>
+    }
 
-    <!-- Modal Badge Gamifikasi (Kategori Budaya - Amber) -->
+    .animate-progress {
+      animation: progress 30s linear infinite;
+    }
+
+    #panorama {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900 pb-24 text-left">
+  <!-- Header dengan Logo -->
+  <header
+    class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-50 px-4 py-3 flex justify-between items-center shadow-sm">
+    <div class="flex items-center gap-3 text-left">
+      <button onclick="window.history.back()"
+        class="p-2 bg-slate-100 rounded-full transition-transform active:scale-90">
+        <i data-lucide="arrow-left" class="w-4 h-4 text-slate-600"></i>
+      </button>
+      <img
+        src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+        class="w-10 h-10 object-contain" alt="Logo Geopark" />
+      <div>
+        <h1 class="text-sm font-black leading-tight uppercase tracking-tight text-slate-800">
+          GEO-SCAN
+        </h1>
+        <p class="text-[9px] text-sky-600 uppercase tracking-widest font-bold">
+          Jelajah Budaya
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span
+        class="bg-amber-50 text-amber-600 text-[9px] font-bold px-2 py-1 rounded-md border border-amber-100 uppercase font-black tracking-tighter">Warisan
+        Budaya</span>
+    </div>
+  </header>
+
+  <!-- Modal Badge Gamifikasi (Kategori Budaya - Amber) -->
+  <div id="badge-popup"
+    class="fixed top-24 inset-x-0 mx-auto z-[100] w-[90%] max-w-sm bg-white rounded-3xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-2 border-amber-400 hidden items-center gap-4 animate-popIn">
     <div
-      id="badge-popup"
-      class="fixed top-24 inset-x-0 mx-auto z-[100] w-[90%] max-w-sm bg-white rounded-3xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-2 border-amber-400 hidden items-center gap-4 animate-popIn"
-    >
-      <div
-        class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center shrink-0 border border-amber-100 shadow-inner"
-      >
-        <i data-lucide="home" class="w-8 h-8 text-amber-600"></i>
-      </div>
-      <div class="text-left flex-1">
-        <p
-          class="text-[10px] font-black text-amber-600 uppercase tracking-[0.2em] mb-0.5"
-        >
-          Lencana Terbuka!
-        </p>
-        <p class="text-base font-black text-slate-800 leading-tight">
-          Genteng Sokka
-        </p>
-        <p class="text-[10px] text-slate-400 font-medium italic">
-          Tersimpan di Geo-Passport
-        </p>
-      </div>
-      <button
-        onclick="
+      class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center shrink-0 border border-amber-100 shadow-inner">
+      <i data-lucide="home" class="w-8 h-8 text-amber-600"></i>
+    </div>
+    <div class="text-left flex-1">
+      <p class="text-[10px] font-black text-amber-600 uppercase tracking-[0.2em] mb-0.5">
+        Lencana Terbuka!
+      </p>
+      <p class="text-base font-black text-slate-800 leading-tight">
+        Genteng Sokka
+      </p>
+      <p class="text-[10px] text-slate-400 font-medium italic">
+        Tersimpan di Geo-Passport
+      </p>
+    </div>
+    <button onclick="
           document
             .getElementById('badge-popup')
             .classList.replace('flex', 'hidden')
-        "
-        class="p-1 text-slate-300 hover:text-slate-500 transition-colors"
-      >
-        <i data-lucide="x" class="w-5 h-5"></i>
+        " class="p-1 text-slate-300 hover:text-slate-500 transition-colors">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+  </div>
+
+  <!-- Modal Kuis Lencana Dinamis -->
+  <div id="quiz-modal"
+    class="fixed inset-0 z-[150] bg-black/60 backdrop-blur-sm hidden flex-col justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div
+      class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl transform scale-95 transition-transform duration-300 mx-auto"
+      id="quiz-content">
+      <div class="flex items-center gap-3 mb-4 border-b pb-3">
+        <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
+          <i data-lucide="help-circle" class="w-5 h-5 text-amber-600"></i>
+        </div>
+        <div class="text-left flex-1">
+          <h3 class="font-black text-slate-800 uppercase tracking-tight leading-none mb-1">
+            Kuis Lencana
+          </h3>
+          <p id="quiz-progress" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+            Pertanyaan 1 dari 5
+          </p>
+        </div>
+      </div>
+      <p id="quiz-question-text" class="text-sm font-bold text-slate-800 mb-5 leading-relaxed text-left">
+        Memuat pertanyaan...
+      </p>
+      <div class="space-y-2 text-left" id="quiz-options">
+        <!-- Opsi akan digenerate oleh Javascript -->
+      </div>
+      <p id="quiz-feedback" class="text-xs font-bold text-center mt-4 hidden"></p>
+      <button id="quiz-close-btn" onclick="closeQuiz()"
+        class="mt-4 w-full text-[10px] text-slate-400 font-bold uppercase tracking-widest hover:text-slate-600 text-center transition-colors">
+        Batal
       </button>
     </div>
+  </div>
 
-    <!-- Modal Kuis Lencana Dinamis -->
-    <div
-      id="quiz-modal"
-      class="fixed inset-0 z-[150] bg-black/60 backdrop-blur-sm hidden flex-col justify-center p-4 opacity-0 transition-opacity duration-300"
-    >
-      <div
-        class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl transform scale-95 transition-transform duration-300 mx-auto"
-        id="quiz-content"
-      >
-        <div class="flex items-center gap-3 mb-4 border-b pb-3">
-          <div
-            class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600"
-          >
-            <i data-lucide="help-circle" class="w-5 h-5 text-amber-600"></i>
-          </div>
-          <div class="text-left flex-1">
-            <h3
-              class="font-black text-slate-800 uppercase tracking-tight leading-none mb-1"
-            >
-              Kuis Lencana
-            </h3>
-            <p
-              id="quiz-progress"
-              class="text-[10px] text-slate-500 font-bold uppercase tracking-widest"
-            >
-              Pertanyaan 1 dari 5
-            </p>
-          </div>
-        </div>
-        <p
-          id="quiz-question-text"
-          class="text-sm font-bold text-slate-800 mb-5 leading-relaxed text-left"
-        >
-          Memuat pertanyaan...
+  <main>
+    <!-- Hero Area (Image Carousel) -->
+    <div class="relative h-80 bg-slate-900 overflow-hidden text-left">
+      <!-- Kontainer Slide Otomatis -->
+      <div id="hero-carousel" class="absolute inset-0 w-full h-full">
+        <!-- Slide 1 (Aktif pertama kali) -->
+        <img src="images/situsgentengsokka/gentengsokka.webp"
+          class="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-60 z-10"
+          alt="Pabrik Genteng Sokka" onerror="
+              this.src =
+                'https://images.unsplash.com/photo-https://cdn0-production-images-kly.akamaized.net/77a5NJ0Bz9RMlZW5ZvHU1-HFgDQ=/500x281/smart/filters:quality(75):strip_icc()/kly-media-production/medias/1753465/original/029325200_1509169788-PABRIK_GENTENG_SOKA-Muhamad_Ridlo.JPG-3174152e008a?auto=format&fit=crop&q=80&w=1000'
+            " />
+        <!-- Slide 2 -->
+        <img src="images/situsgentengsokka/gentengsokka2.webp"
+          class="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0 z-0"
+          alt="Cerobong Genteng Sokka" onerror="
+              this.src =
+                'https://images.unsplash.com/photo-1542125387-https://www.gentengsokka.id/wp-content/uploads/2025/12/hero-3.webp?auto=format&fit=crop&q=80&w=1000'
+            " />
+      </div>
+
+      <div class="absolute bottom-20 left-5 right-5 text-white z-20 text-left">
+        <span
+          class="bg-amber-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest mb-2 inline-block shadow-md font-black italic text-left">Industri
+          Rakyat Pejagoan</span>
+        <h2 class="text-3xl font-black leading-none mb-1 drop-shadow-lg uppercase tracking-tight text-left text-left">
+          Genteng Sokka
+        </h2>
+        <p class="text-xs font-medium tracking-widest text-slate-200 flex items-center gap-1 drop-shadow-md text-left">
+          <i data-lucide="hammer" class="w-3 h-3 text-amber-400"></i> Warisan:
+          Kerajinan Tanah Liat
         </p>
-        <div class="space-y-2 text-left" id="quiz-options">
-          <!-- Opsi akan digenerate oleh Javascript -->
-        </div>
-        <p
-          id="quiz-feedback"
-          class="text-xs font-bold text-center mt-4 hidden"
-        ></p>
-        <button
-          id="quiz-close-btn"
-          onclick="closeQuiz()"
-          class="mt-4 w-full text-[10px] text-slate-400 font-bold uppercase tracking-widest hover:text-slate-600 text-center transition-colors"
-        >
-          Batal
+      </div>
+
+      <div class="absolute bottom-5 left-5 right-5 z-20 text-left">
+        <button onclick="openVR()"
+          class="w-full bg-white/20 backdrop-blur-xl border border-white/40 text-white rounded-2xl py-3 px-4 flex items-center justify-between shadow-2xl active:scale-95 transition-all text-left">
+          <div class="flex items-center gap-3 text-left">
+            <div class="bg-amber-500 p-2 rounded-xl shadow-lg">
+              <i data-lucide="view" class="w-5 h-5 text-white"></i>
+            </div>
+            <div class="text-left text-white text-left">
+              <p class="text-sm font-black uppercase tracking-tight leading-none mb-1">
+                Virtual Galeri 360°
+              </p>
+              <p class="text-[9px] font-medium opacity-80 uppercase tracking-widest font-black text-left">
+                Sentuh & Jelajahi Pabrik
+              </p>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-white"></i>
         </button>
       </div>
     </div>
 
-    <main>
-      <!-- Hero Area (Image Carousel) -->
-      <div class="relative h-80 bg-slate-900 overflow-hidden text-left">
-        <!-- Kontainer Slide Otomatis -->
-        <div id="hero-carousel" class="absolute inset-0 w-full h-full">
-          <!-- Slide 1 (Aktif pertama kali) -->
-          <img
-            src="images/situsgentengsokka/gentengsokka.webp"
-            class="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-60 z-10"
-            alt="Pabrik Genteng Sokka"
-            onerror="
-              this.src =
-                'https://images.unsplash.com/photo-https://cdn0-production-images-kly.akamaized.net/77a5NJ0Bz9RMlZW5ZvHU1-HFgDQ=/500x281/smart/filters:quality(75):strip_icc()/kly-media-production/medias/1753465/original/029325200_1509169788-PABRIK_GENTENG_SOKA-Muhamad_Ridlo.JPG-3174152e008a?auto=format&fit=crop&q=80&w=1000'
-            "
-          />
-          <!-- Slide 2 -->
-          <img
-            src="images/situsgentengsokka/gentengsokka2.webp"
-            class="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0 z-0"
-            alt="Cerobong Genteng Sokka"
-            onerror="
-              this.src =
-                'https://images.unsplash.com/photo-1542125387-https://www.gentengsokka.id/wp-content/uploads/2025/12/hero-3.webp?auto=format&fit=crop&q=80&w=1000'
-            "
-          />
-        </div>
-
-        <div
-          class="absolute bottom-20 left-5 right-5 text-white z-20 text-left"
-        >
-          <span
-            class="bg-amber-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest mb-2 inline-block shadow-md font-black italic text-left"
-            >Industri Rakyat Pejagoan</span
-          >
-          <h2
-            class="text-3xl font-black leading-none mb-1 drop-shadow-lg uppercase tracking-tight text-left text-left"
-          >
-            Genteng Sokka
-          </h2>
-          <p
-            class="text-xs font-medium tracking-widest text-slate-200 flex items-center gap-1 drop-shadow-md text-left"
-          >
-            <i data-lucide="hammer" class="w-3 h-3 text-amber-400"></i> Warisan:
-            Kerajinan Tanah Liat
-          </p>
-        </div>
-
-        <div class="absolute bottom-5 left-5 right-5 z-20 text-left">
-          <button
-            onclick="openVR()"
-            class="w-full bg-white/20 backdrop-blur-xl border border-white/40 text-white rounded-2xl py-3 px-4 flex items-center justify-between shadow-2xl active:scale-95 transition-all text-left"
-          >
-            <div class="flex items-center gap-3 text-left">
-              <div class="bg-amber-500 p-2 rounded-xl shadow-lg">
-                <i data-lucide="view" class="w-5 h-5 text-white"></i>
-              </div>
-              <div class="text-left text-white text-left">
-                <p
-                  class="text-sm font-black uppercase tracking-tight leading-none mb-1"
-                >
-                  Virtual Galeri 360°
-                </p>
-                <p
-                  class="text-[9px] font-medium opacity-80 uppercase tracking-widest font-black text-left"
-                >
-                  Sentuh & Jelajahi Pabrik
-                </p>
-              </div>
-            </div>
-            <i data-lucide="chevron-right" class="w-5 h-5 text-white"></i>
-          </button>
-        </div>
+    <!-- Tab Navigasi -->
+    <div class="px-5 mt-6 text-left">
+      <div
+        class="flex gap-4 border-b border-slate-200 overflow-x-auto pb-2 hide-scrollbar text-left text-left text-left">
+        <button onclick="switchTab('edu')" id="tab-edu"
+          class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-amber-600 border-b-2 border-amber-600 transition-all text-left">
+          Info & Kualitas
+        </button>
+        <button onclick="switchTab('origin')" id="tab-origin"
+          class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-slate-400 transition-all text-left text-left">
+          Sejarah Asal
+        </button>
+        <button onclick="switchTab('kids')" id="tab-kids"
+          class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-slate-400 transition-all flex items-center gap-1 text-left">
+          Geo-Kids <i data-lucide="smile" class="w-3 h-3 text-left"></i>
+        </button>
       </div>
+    </div>
 
-      <!-- Tab Navigasi -->
-      <div class="px-5 mt-6 text-left">
-        <div
-          class="flex gap-4 border-b border-slate-200 overflow-x-auto pb-2 hide-scrollbar text-left text-left text-left"
-        >
-          <button
-            onclick="switchTab('edu')"
-            id="tab-edu"
-            class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-amber-600 border-b-2 border-amber-600 transition-all text-left"
-          >
-            Info & Kualitas
-          </button>
-          <button
-            onclick="switchTab('origin')"
-            id="tab-origin"
-            class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-slate-400 transition-all text-left text-left"
-          >
-            Sejarah Asal
-          </button>
-          <button
-            onclick="switchTab('kids')"
-            id="tab-kids"
-            class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-slate-400 transition-all flex items-center gap-1 text-left"
-          >
-            Geo-Kids <i data-lucide="smile" class="w-3 h-3 text-left"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- KONTEN TABS -->
-      <div class="px-5 mt-6 space-y-8 pb-10 text-left">
-        <!-- 1. VIEW EDU -->
-        <div id="view-edu" class="space-y-8 block text-left">
-          <section class="text-left">
-            <h3
-              class="font-black text-lg text-slate-800 mb-3 flex items-center gap-2 uppercase tracking-tight text-left"
-            >
-              <i data-lucide="gem" class="w-5 h-5 text-amber-600 text-left"></i>
-              Kualitas & Tradisi Tanah Liat
-            </h3>
-            <div
-              class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-left"
-            >
-              <p
-                class="text-sm text-slate-700 leading-relaxed font-medium text-left"
-              >
-                Industri Genteng Sokka tidak lepas dari keahlian dasar
-                masyarakat Kebumen dalam mengolah tanah liat. Jauh sebelum
-                industri genteng muncul pada tahun 1920-an, warga setempat telah
-                lebih dulu memiliki tradisi kuat dalam pembuatan gerabah yang
-                sangat fungsional.
-              </p>
-              <p
-                class="text-sm text-slate-700 leading-relaxed font-medium text-left mt-3"
-              >
-                Penelitian sejarah menunjukkan bahwa tanah di wilayah ini memang
-                memiliki potensi besar sebagai bahan bangunan berkualitas, yang
-                akhirnya menjadi fondasi bagi lahirnya merek legendaris Genteng
-                Sokka.
-              </p>
-              <div class="space-y-3 pt-4 text-left">
-                <div
-                  class="flex items-start gap-3 bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left"
-                >
-                  <div class="p-2 bg-amber-500 rounded-lg text-white text-left">
-                    <i data-lucide="history" class="w-4 h-4 text-white"></i>
-                  </div>
-                  <div class="text-left text-left">
-                    <p
-                      class="text-xs font-black text-amber-800 uppercase tracking-tight text-left"
-                    >
-                      Warisan Gerabah Gebangsari
-                    </p>
-                    <p
-                      class="text-[11px] text-amber-700 leading-snug text-left text-left mt-1"
-                    >
-                      Sebelum abad ke-20, masyarakat Gebangsari, Kecamatan
-                      Klirong telah ahli membuat alat rumah tangga (tungku,
-                      gentong, padasan, blengker, jambangan, kendil, cowek,
-                      jubek). Keahlian turun-temurun ini konon merupakan hasil
-                      interaksi dengan kebudayaan China.
-                    </p>
-                  </div>
+    <!-- KONTEN TABS -->
+    <div class="px-5 mt-6 space-y-8 pb-10 text-left">
+      <!-- 1. VIEW EDU -->
+      <div id="view-edu" class="space-y-8 block text-left">
+        <section class="text-left">
+          <h3 class="font-black text-lg text-slate-800 mb-3 flex items-center gap-2 uppercase tracking-tight text-left">
+            <i data-lucide="gem" class="w-5 h-5 text-amber-600 text-left"></i>
+            Kualitas & Tradisi Tanah Liat
+          </h3>
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-left">
+            <p class="text-sm text-slate-700 leading-relaxed font-medium text-left">
+              Industri Genteng Sokka tidak lepas dari keahlian dasar
+              masyarakat Kebumen dalam mengolah tanah liat. Jauh sebelum
+              industri genteng muncul pada tahun 1920-an, warga setempat telah
+              lebih dulu memiliki tradisi kuat dalam pembuatan gerabah yang
+              sangat fungsional.
+            </p>
+            <p class="text-sm text-slate-700 leading-relaxed font-medium text-left mt-3">
+              Penelitian sejarah menunjukkan bahwa tanah di wilayah ini memang
+              memiliki potensi besar sebagai bahan bangunan berkualitas, yang
+              akhirnya menjadi fondasi bagi lahirnya merek legendaris Genteng
+              Sokka.
+            </p>
+            <div class="space-y-3 pt-4 text-left">
+              <div class="flex items-start gap-3 bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left">
+                <div class="p-2 bg-amber-500 rounded-lg text-white text-left">
+                  <i data-lucide="history" class="w-4 h-4 text-white"></i>
                 </div>
-                <div
-                  class="flex items-start gap-3 bg-sky-50 p-4 rounded-2xl border border-sky-100 text-left"
-                >
-                  <div class="p-2 bg-sky-500 rounded-lg text-white text-left">
-                    <i data-lucide="microscope" class="w-4 h-4 text-white"></i>
-                  </div>
-                  <div class="text-left text-left">
-                    <p
-                      class="text-xs font-black text-sky-800 uppercase tracking-tight text-left"
-                    >
-                      Riset Kolonial Belanda
-                    </p>
-                    <p
-                      class="text-[11px] text-sky-700 leading-snug text-left text-left mt-1"
-                    >
-                      Pada tahun 1920-an, Pemerintah Kolonial Belanda melalui
-                      Balai Keramik di Bandung melakukan pemetaan daerah yang
-                      memiliki tanah bagus untuk bahan atap. Kebumen pun diakui
-                      sebagai salah satu daerah dengan potensi sentra genteng
-                      terbaik.
-                    </p>
-                  </div>
-                </div>
-                <div
-                  class="flex items-start gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left"
-                >
-                  <div class="p-2 bg-slate-500 rounded-lg text-white text-left">
-                    <i data-lucide="award" class="w-4 h-4 text-white"></i>
-                  </div>
-                  <div class="text-left">
-                    <p
-                      class="text-xs font-black text-slate-800 uppercase tracking-tight text-left"
-                    >
-                      Kualitas & Jenis Genteng
-                    </p>
-                    <p class="text-[11px] text-slate-700 leading-snug mt-1">
-                      Kualitas Genteng Sokka sangat diakui hingga dulu digunakan
-                      untuk atap pabrik-pabrik gula di seluruh Jawa. Kini,
-                      genteng Sokka memiliki banyak varian (seperti Plentong,
-                      Morando, dan Kerepus) dengan harga terjangkau namun mutu
-                      tetap prima.
-                    </p>
-                  </div>
+                <div class="text-left text-left">
+                  <p class="text-xs font-black text-amber-800 uppercase tracking-tight text-left">
+                    Warisan Gerabah Gebangsari
+                  </p>
+                  <p class="text-[11px] text-amber-700 leading-snug text-left text-left mt-1">
+                    Sebelum abad ke-20, masyarakat Gebangsari, Kecamatan
+                    Klirong telah ahli membuat alat rumah tangga (tungku,
+                    gentong, padasan, blengker, jambangan, kendil, cowek,
+                    jubek). Keahlian turun-temurun ini konon merupakan hasil
+                    interaksi dengan kebudayaan China.
+                  </p>
                 </div>
               </div>
-            </div>
-          </section>
-
-          <!-- AUDIO PENDAMPING BELAJAR -->
-          <section
-            class="bg-slate-900 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden text-left"
-          >
-            <div
-              class="relative z-10 flex justify-between items-center text-left"
-            >
-              <div class="flex items-center gap-4 text-left">
-                <button
-                  onclick="handleAudioPlay()"
-                  id="audio-btn"
-                  class="bg-white text-slate-900 p-3 rounded-full shadow-lg active:scale-95 transition-transform flex items-center justify-center text-left text-left"
-                >
-                  <i
-                    id="audio-icon"
-                    data-lucide="play"
-                    class="w-5 h-5 fill-current text-slate-800"
-                  ></i>
-                </button>
+              <div class="flex items-start gap-3 bg-sky-50 p-4 rounded-2xl border border-sky-100 text-left">
+                <div class="p-2 bg-sky-500 rounded-lg text-white text-left">
+                  <i data-lucide="microscope" class="w-4 h-4 text-white"></i>
+                </div>
+                <div class="text-left text-left">
+                  <p class="text-xs font-black text-sky-800 uppercase tracking-tight text-left">
+                    Riset Kolonial Belanda
+                  </p>
+                  <p class="text-[11px] text-sky-700 leading-snug text-left text-left mt-1">
+                    Pada tahun 1920-an, Pemerintah Kolonial Belanda melalui
+                    Balai Keramik di Bandung melakukan pemetaan daerah yang
+                    memiliki tanah bagus untuk bahan atap. Kebumen pun diakui
+                    sebagai salah satu daerah dengan potensi sentra genteng
+                    terbaik.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left">
+                <div class="p-2 bg-slate-500 rounded-lg text-white text-left">
+                  <i data-lucide="award" class="w-4 h-4 text-white"></i>
+                </div>
                 <div class="text-left">
-                  <h4
-                    class="font-bold text-sm tracking-tight text-left text-left"
-                  >
-                    Dengarkan Cerita Budaya
-                  </h4>
-                  <p
-                    id="audio-status"
-                    class="text-[10px] opacity-60 uppercase font-bold tracking-tighter text-left"
-                  >
-                    Kisah Tanah Liat Sokka
+                  <p class="text-xs font-black text-slate-800 uppercase tracking-tight text-left">
+                    Kualitas & Jenis Genteng
+                  </p>
+                  <p class="text-[11px] text-slate-700 leading-snug mt-1">
+                    Kualitas Genteng Sokka sangat diakui hingga dulu digunakan
+                    untuk atap pabrik-pabrik gula di seluruh Jawa. Kini,
+                    genteng Sokka memiliki banyak varian (seperti Plentong,
+                    Morando, dan Kerepus) dengan harga terjangkau namun mutu
+                    tetap prima.
                   </p>
                 </div>
               </div>
             </div>
-            <div
-              id="audio-progress-container"
-              class="absolute bottom-0 left-0 right-0 h-1 bg-amber-500/30 hidden text-left"
-            >
-              <div class="h-full bg-amber-500 animate-progress text-left"></div>
-            </div>
-          </section>
+          </div>
+        </section>
 
-          <!-- RINGKASAN TEKNIS LENGKAP -->
-          <section
-            class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left"
-          >
-            <h4
-              class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 italic text-left"
-            >
-              Data Warisan Industri Sokka
-            </h4>
-            <div class="grid grid-cols-2 gap-4 text-left text-left">
+        <!-- AUDIO PENDAMPING BELAJAR -->
+        <section class="bg-slate-900 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden text-left">
+          <div class="relative z-10 flex justify-between items-center text-left">
+            <div class="flex items-center gap-4 text-left">
+              <button onclick="handleAudioPlay()" id="audio-btn"
+                class="bg-white text-slate-900 p-3 rounded-full shadow-lg active:scale-95 transition-transform flex items-center justify-center text-left text-left">
+                <i id="audio-icon" data-lucide="play" class="w-5 h-5 fill-current text-slate-800"></i>
+              </button>
               <div class="text-left">
-                <p
-                  class="text-[9px] font-bold text-slate-400 uppercase text-left text-left"
-                >
-                  Pusat Gerabah Awal
-                </p>
-                <p
-                  class="text-xs font-black text-slate-700 uppercase text-left"
-                >
-                  Gebangsari, Klirong
-                </p>
-              </div>
-              <div class="text-left">
-                <p
-                  class="text-[9px] font-bold text-slate-400 uppercase text-left text-left"
-                >
-                  Bahan Baku Utama
-                </p>
-                <p class="text-xs font-black text-slate-700 text-left">
-                  Lempung Aluvial
-                </p>
-              </div>
-              <div class="text-left text-left">
-                <p
-                  class="text-[9px] font-bold text-slate-400 uppercase text-left text-left"
-                >
-                  Lokasi Pabrik Pertama
-                </p>
-                <p
-                  class="text-xs font-black text-slate-700 text-left text-left text-left"
-                >
-                  Kedawung, Pejagoan
-                </p>
-              </div>
-              <div class="text-left">
-                <p
-                  class="text-[9px] font-bold text-slate-400 uppercase text-left text-left"
-                >
-                  Varian Genteng
-                </p>
-                <p
-                  class="text-xs font-black text-slate-700 text-left text-left text-left"
-                >
-                  Plentong, Morando, Kerepus
+                <h4 class="font-bold text-sm tracking-tight text-left text-left">
+                  Dengarkan Cerita Budaya
+                </h4>
+                <p id="audio-status" class="text-[10px] opacity-60 uppercase font-bold tracking-tighter text-left">
+                  Kisah Tanah Liat Sokka
                 </p>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
+          <div id="audio-progress-container"
+            class="absolute bottom-0 left-0 right-0 h-1 bg-amber-500/30 hidden text-left">
+            <div class="h-full bg-amber-500 animate-progress text-left"></div>
+          </div>
+        </section>
 
-        <!-- 2. VIEW ASAL USUL -->
-        <div
-          id="view-origin"
-          class="hidden space-y-6 text-left relative before:absolute before:w-1 before:h-full before:bg-slate-200 before:left-[19px] py-4 text-left text-left"
-        >
-          <div class="relative pl-14 pb-8 text-left text-left text-left">
-            <div
-              class="absolute left-0 top-0 w-10 h-10 bg-slate-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left"
-            >
-              <i data-lucide="microscope" class="w-5 text-white"></i>
+        <!-- RINGKASAN TEKNIS LENGKAP -->
+        <section class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left">
+          <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 italic text-left">
+            Data Warisan Industri Sokka
+          </h4>
+          <div class="grid grid-cols-2 gap-4 text-left text-left">
+            <div class="text-left">
+              <p class="text-[9px] font-bold text-slate-400 uppercase text-left text-left">
+                Pusat Gerabah Awal
+              </p>
+              <p class="text-xs font-black text-slate-700 uppercase text-left">
+                Gebangsari, Klirong
+              </p>
             </div>
-            <h4
-              class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1 text-left"
-            >
-              Langkah 1: Riset Kolonial (1920)
-            </h4>
-            <p class="text-sm font-black text-slate-800 uppercase text-left">
-              Balai Keramik Bandung & H. Ahmad
-            </p>
-            <p
-              class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left text-left"
-            >
-              Tahun 1920-an, kolonial Belanda membentuk Balai Keramik di Bandung
-              untuk memetakan tanah bahan atap. Kebumen terbukti sangat
-              potensial. Orang Jawa pertama yang membuat kerajinan genteng
-              manual di sana adalah H. Ahmad, yang menjadi cikal bakal industri
-              ini.
-            </p>
-          </div>
-          <div class="relative pl-14 pb-8 text-left text-left text-left">
-            <div
-              class="absolute left-0 top-0 w-10 h-10 bg-amber-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left"
-            >
-              <i data-lucide="factory" class="w-5 text-white"></i>
+            <div class="text-left">
+              <p class="text-[9px] font-bold text-slate-400 uppercase text-left text-left">
+                Bahan Baku Utama
+              </p>
+              <p class="text-xs font-black text-slate-700 text-left">
+                Lempung Aluvial
+              </p>
             </div>
-            <h4
-              class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1 text-left"
-            >
-              Langkah 2: Revolusi Mesin Jerman
-            </h4>
-            <p class="text-sm font-black text-slate-800 uppercase text-left">
-              Pabrik "AB Sokka" H. Abu Ngamar
-            </p>
-            <p
-              class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left text-left"
-            >
-              H. Abu Ngamar (putra H. Ahmad) mendirikan pabrik berjarak 200m
-              dari Stasiun Sokka. Atas bantuan kawannya, seorang guru teknik
-              Belanda, didatangkanlah mesin dari Jerman. Merek "AB Sokka" pun
-              lahir dan banyak digunakan untuk atap pabrik gula di seluruh Jawa.
-            </p>
-          </div>
-          <div class="relative pl-14 text-left text-left text-left">
-            <div
-              class="absolute left-0 top-0 w-10 h-10 bg-sky-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left"
-            >
-              <i
-                data-lucide="landmark"
-                class="w-5 text-white text-left text-left"
-              ></i>
+            <div class="text-left text-left">
+              <p class="text-[9px] font-bold text-slate-400 uppercase text-left text-left">
+                Lokasi Pabrik Pertama
+              </p>
+              <p class="text-xs font-black text-slate-700 text-left text-left text-left">
+                Kedawung, Pejagoan
+              </p>
             </div>
-            <h4
-              class="text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 text-left text-left"
-            >
-              Langkah 3: Situs Sejarah
-            </h4>
-            <p
-              class="text-sm font-black text-slate-800 uppercase font-black text-left text-left"
-            >
-              Lima Cerobong Asap Kedawung
-            </p>
-            <p
-              class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left"
-            >
-              Sampai saat ini, di Dusun Sokka, Desa Kedawung, Pejagoan masih
-              dapat ditemui 5 cerobong pembakaran genteng tua serta sisa rel
-              dari dalam pabrik menuju Stasiun Sokka. Kualitas dan jenis genteng
-              (Plentong, Morando, dll) kini terus dilestarikan dengan harga
-              terjangkau.
-            </p>
-          </div>
-        </div>
-
-        <!-- 3. VIEW GEO-KIDS -->
-        <div
-          id="view-kids"
-          class="space-y-6 hidden text-left text-left text-left text-left"
-        >
-          <div
-            class="bg-gradient-to-b from-amber-300 to-amber-500 rounded-[2.5rem] p-6 text-white text-center shadow-lg relative overflow-hidden text-left border border-amber-200"
-          >
-            <i
-              data-lucide="cloud-rain"
-              class="absolute top-4 left-4 w-8 h-8 text-white/40 animate-pulse text-left text-left"
-            ></i>
-            <i
-              data-lucide="sun"
-              class="absolute top-10 right-4 w-6 h-6 text-white/30 animate-bounce text-left text-left"
-            ></i>
-
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3295/3295964.png"
-              class="w-20 h-20 mx-auto mb-4 drop-shadow-xl"
-              alt="Mascot"
-            />
-            <h3
-              class="font-black text-2xl uppercase tracking-tighter mb-2 drop-shadow-md text-center"
-            >
-              Halo Penjelajah Cilik!
-            </h3>
-            <p
-              class="text-sm font-medium leading-relaxed bg-white/20 p-3 rounded-xl border border-white/30 text-center text-left text-left text-left text-left"
-            >
-              Tahukah kamu? Zaman dahulu ada pabrik raksasa dengan 5 cerobong
-              asap sangat tinggi yang pakai mesin dari Jerman untuk membuat
-              genteng ini lho! Ayo lihat videonya!
-            </p>
-          </div>
-
-          <button
-            onclick="openAnimation()"
-            class="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black uppercase tracking-widest py-5 rounded-2xl shadow-xl shadow-yellow-100 border-b-4 border-yellow-600 active:scale-95 active:border-b-0 transition-all text-center flex items-center justify-center gap-2"
-          >
-            <i
-              data-lucide="play-circle"
-              class="w-6 h-6 text-yellow-900 text-left text-left"
-            ></i>
-            Tonton Pembuatan Genteng
-          </button>
-        </div>
-
-        <!-- Tombol Dapatkan Lencana (Kuis) -->
-        <div
-          id="badge-trigger-container"
-          class="mt-8 text-center bg-white p-6 rounded-3xl border border-amber-200 shadow-lg shadow-amber-100/50"
-        >
-          <div
-            class="w-16 h-16 mx-auto bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-3"
-          >
-            <i data-lucide="award" class="w-8 h-8"></i>
-          </div>
-          <h3
-            class="font-black text-slate-800 text-lg uppercase tracking-tight mb-1"
-          >
-            Tantangan Lencana
-          </h3>
-          <p class="text-xs font-medium text-slate-500 mb-4 max-w-sm mx-auto">
-            Uji pengetahuanmu dengan 10 pertanyaan seputar Genteng Sokka dan
-            dapatkan lencana eksklusif untuk Geo-Passport milikmu!
-          </p>
-          <button
-            onclick="startQuiz()"
-            class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-black uppercase tracking-widest py-4 px-8 rounded-2xl shadow-xl shadow-amber-200 active:scale-95 transition-all w-full md:w-auto"
-          >
-            Mulai Kuis Sekarang
-          </button>
-        </div>
-
-        <!-- LOGO DUKUNGAN -->
-        <div
-          class="pt-10 pb-4 border-t border-slate-200 text-center text-left text-left text-left"
-        >
-          <p
-            class="text-[9px] font-bold text-slate-400 uppercase mb-4 tracking-[0.2em] text-center font-black"
-          >
-            Pelestari Budaya Geopark
-          </p>
-          <div
-            class="flex justify-around items-center gap-6 flex-wrap px-4 text-left"
-          >
-            <img
-              src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
-              class="h-10 object-contain text-left"
-              alt="Kebumen Geopark"
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/7/71/Lambang_Kabupaten_Kebumen.jpg"
-              class="h-10 object-contain text-left"
-              alt="Pemkab Kebumen"
-            />
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6NiLBrpE5XvpewWqMsu-BadPFEvnO0XbdA&s"
-              class="h-10 object-contain text-left"
-              alt="Kemenparekraf"
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Logo_Pesona_Indonesia_%28Kementerian_Pariwisata%29.png"
-              class="h-10 object-contain text-left"
-              alt="Pesona Indonesia"
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Logo_UNESCO_2021.svg/1280px-Logo_UNESCO_2021.svg.png"
-              class="h-8 object-contain text-left"
-              alt="UNESCO"
-            />
-          </div>
-          <div class="mt-8 text-center text-left text-left">
-            <p
-              class="text-[8px] font-medium text-slate-400 tracking-widest uppercase font-black text-center"
-            >
-              © 2026 Badan Pengelola Kebumen Geopark
-            </p>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- Chat FAB -->
-    <button
-      onclick="openChat()"
-      class="fixed bottom-6 right-6 z-[90] bg-slate-900 text-white p-4 rounded-full shadow-2xl active:scale-90 transition-transform border border-white/20 text-left"
-    >
-      <i
-        data-lucide="sparkles"
-        class="w-6 h-6 text-amber-400 animate-pulse text-left"
-      ></i>
-    </button>
-
-    <!-- VR MODAL -->
-    <div
-      id="vr-modal"
-      class="fixed inset-0 z-[200] bg-black hidden flex flex-col text-left"
-    >
-      <div id="panorama"></div>
-      <div
-        class="absolute top-0 left-0 right-0 p-4 flex justify-between items-center bg-gradient-to-b from-black/90 to-transparent pointer-events-none text-left"
-      >
-        <div class="text-white pointer-events-auto text-left">
-          <h3
-            class="font-black text-lg shadow-sm uppercase tracking-tight text-left text-left"
-          >
-            Galeri Pabrik 360°
-          </h3>
-          <button
-            onclick="closeVR()"
-            class="bg-white/20 backdrop-blur-md p-2.5 rounded-full text-white pointer-events-auto border border-white/30 active:scale-90 transition-all text-left"
-          >
-            <i data-lucide="x" class="w-6 h-6 text-white text-left"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal Chat Gemini -->
-    <div
-      id="chat-modal"
-      class="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm hidden flex flex-col justify-end text-left text-left text-left"
-    >
-      <div
-        class="bg-white rounded-t-[2.5rem] h-[85vh] flex flex-col shadow-2xl border-t border-slate-200 overflow-hidden text-left text-left text-left text-left text-left"
-      >
-        <div
-          class="px-6 py-5 border-b flex justify-between items-center bg-slate-50 text-left text-left text-left text-left"
-        >
-          <div class="flex items-center gap-3 text-left">
-            <div
-              class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 border border-amber-200 text-left"
-            >
-              <i
-                data-lucide="hammer"
-                class="w-5 text-amber-600 text-left text-left text-left"
-              ></i>
-            </div>
-            <div class="text-left text-slate-800">
-              <h3
-                class="font-black text-sm uppercase leading-none mb-1 text-left"
-              >
-                Guru Geo AI
-              </h3>
-              <p
-                class="text-[9px] text-emerald-500 font-black uppercase tracking-widest animate-pulse text-left text-left"
-              >
-                Online
+            <div class="text-left">
+              <p class="text-[9px] font-bold text-slate-400 uppercase text-left text-left">
+                Varian Genteng
+              </p>
+              <p class="text-xs font-black text-slate-700 text-left text-left text-left">
+                Plentong, Morando, Kerepus
               </p>
             </div>
           </div>
-          <button
-            onclick="closeChat()"
-            class="p-2 bg-slate-100 rounded-full transition-colors active:bg-slate-200 text-left text-left text-left"
-          >
-            <i
-              data-lucide="x"
-              class="w-5 h-5 text-slate-400 text-left text-left"
-            ></i>
-          </button>
-        </div>
-        <div
-          id="chat-messages"
-          class="flex-1 p-5 overflow-y-auto flex flex-col gap-4 text-sm text-left leading-relaxed bg-slate-50/50 text-left"
-        >
+        </section>
+      </div>
+
+      <!-- 2. VIEW ASAL USUL -->
+      <div id="view-origin"
+        class="hidden space-y-6 text-left relative before:absolute before:w-1 before:h-full before:bg-slate-200 before:left-[19px] py-4 text-left text-left">
+        <div class="relative pl-14 pb-8 text-left text-left text-left">
           <div
-            class="bg-white p-4 rounded-3xl rounded-tl-sm self-start max-w-[85%] border border-slate-100 shadow-sm text-slate-700 text-left"
-          >
-            Halo! Aku Guru Geo. Penasaran kenapa tanah liat Sokka bisa sangat
-            kuat atau sejarah awal pabriknya? Yuk tanya aku!
+            class="absolute left-0 top-0 w-10 h-10 bg-slate-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left">
+            <i data-lucide="microscope" class="w-5 text-white"></i>
           </div>
+          <h4 class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1 text-left">
+            Langkah 1: Riset Kolonial (1920)
+          </h4>
+          <p class="text-sm font-black text-slate-800 uppercase text-left">
+            Balai Keramik Bandung & H. Ahmad
+          </p>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left text-left">
+            Tahun 1920-an, kolonial Belanda membentuk Balai Keramik di Bandung
+            untuk memetakan tanah bahan atap. Kebumen terbukti sangat
+            potensial. Orang Jawa pertama yang membuat kerajinan genteng
+            manual di sana adalah H. Ahmad, yang menjadi cikal bakal industri
+            ini.
+          </p>
         </div>
-        <div class="p-4 border-t bg-white flex gap-2 text-left">
-          <input
-            type="text"
-            id="chat-input"
-            placeholder="Tanya tentang Genteng Sokka..."
-            class="flex-1 bg-slate-100 rounded-2xl px-5 py-4 outline-none text-sm font-medium focus:ring-2 focus:ring-amber-400 transition-all text-left"
-            onkeypress="handleKeyPress(event)"
-          />
-          <button
-            onclick="sendChatMessage()"
-            class="w-14 h-14 bg-sky-600 rounded-2xl text-white flex items-center justify-center shadow-lg shadow-sky-200 active:scale-90 transition-all text-left"
-          >
-            <i
-              data-lucide="send"
-              class="w-6 ml-1 text-white text-left text-left text-left text-left"
-            ></i>
-          </button>
+        <div class="relative pl-14 pb-8 text-left text-left text-left">
+          <div
+            class="absolute left-0 top-0 w-10 h-10 bg-amber-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left">
+            <i data-lucide="factory" class="w-5 text-white"></i>
+          </div>
+          <h4 class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1 text-left">
+            Langkah 2: Revolusi Mesin Jerman
+          </h4>
+          <p class="text-sm font-black text-slate-800 uppercase text-left">
+            Pabrik "AB Sokka" H. Abu Ngamar
+          </p>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left text-left">
+            H. Abu Ngamar (putra H. Ahmad) mendirikan pabrik berjarak 200m
+            dari Stasiun Sokka. Atas bantuan kawannya, seorang guru teknik
+            Belanda, didatangkanlah mesin dari Jerman. Merek "AB Sokka" pun
+            lahir dan banyak digunakan untuk atap pabrik gula di seluruh Jawa.
+          </p>
+        </div>
+        <div class="relative pl-14 text-left text-left text-left">
+          <div
+            class="absolute left-0 top-0 w-10 h-10 bg-sky-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left">
+            <i data-lucide="landmark" class="w-5 text-white text-left text-left"></i>
+          </div>
+          <h4 class="text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 text-left text-left">
+            Langkah 3: Situs Sejarah
+          </h4>
+          <p class="text-sm font-black text-slate-800 uppercase font-black text-left text-left">
+            Lima Cerobong Asap Kedawung
+          </p>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left">
+            Sampai saat ini, di Dusun Sokka, Desa Kedawung, Pejagoan masih
+            dapat ditemui 5 cerobong pembakaran genteng tua serta sisa rel
+            dari dalam pabrik menuju Stasiun Sokka. Kualitas dan jenis genteng
+            (Plentong, Morando, dll) kini terus dilestarikan dengan harga
+            terjangkau.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3. VIEW GEO-KIDS -->
+      <div id="view-kids" class="space-y-6 hidden text-left text-left text-left text-left">
+        <div
+          class="bg-gradient-to-b from-amber-300 to-amber-500 rounded-[2.5rem] p-6 text-white text-center shadow-lg relative overflow-hidden text-left border border-amber-200">
+          <i data-lucide="cloud-rain"
+            class="absolute top-4 left-4 w-8 h-8 text-white/40 animate-pulse text-left text-left"></i>
+          <i data-lucide="sun"
+            class="absolute top-10 right-4 w-6 h-6 text-white/30 animate-bounce text-left text-left"></i>
+
+          <img src="https://cdn-icons-png.flaticon.com/512/3295/3295964.png"
+            class="w-20 h-20 mx-auto mb-4 drop-shadow-xl" alt="Mascot" />
+          <h3 class="font-black text-2xl uppercase tracking-tighter mb-2 drop-shadow-md text-center">
+            Halo Penjelajah Cilik!
+          </h3>
+          <p
+            class="text-sm font-medium leading-relaxed bg-white/20 p-3 rounded-xl border border-white/30 text-center text-left text-left text-left text-left">
+            Tahukah kamu? Zaman dahulu ada pabrik raksasa dengan 5 cerobong
+            asap sangat tinggi yang pakai mesin dari Jerman untuk membuat
+            genteng ini lho! Ayo lihat videonya!
+          </p>
+        </div>
+
+        <button onclick="openAnimation()"
+          class="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black uppercase tracking-widest py-5 rounded-2xl shadow-xl shadow-yellow-100 border-b-4 border-yellow-600 active:scale-95 active:border-b-0 transition-all text-center flex items-center justify-center gap-2">
+          <i data-lucide="play-circle" class="w-6 h-6 text-yellow-900 text-left text-left"></i>
+          Tonton Pembuatan Genteng
+        </button>
+      </div>
+
+      <!-- Tombol Dapatkan Lencana (Kuis) -->
+      <div id="badge-trigger-container"
+        class="mt-8 text-center bg-white p-6 rounded-3xl border border-amber-200 shadow-lg shadow-amber-100/50">
+        <div class="w-16 h-16 mx-auto bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-3">
+          <i data-lucide="award" class="w-8 h-8"></i>
+        </div>
+        <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight mb-1">
+          Tantangan Lencana
+        </h3>
+        <p class="text-xs font-medium text-slate-500 mb-4 max-w-sm mx-auto">
+          Uji pengetahuanmu dengan 10 pertanyaan seputar Genteng Sokka dan
+          dapatkan lencana eksklusif untuk Geo-Passport milikmu!
+        </p>
+        <button onclick="startQuiz()"
+          class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-black uppercase tracking-widest py-4 px-8 rounded-2xl shadow-xl shadow-amber-200 active:scale-95 transition-all w-full md:w-auto">
+          Mulai Kuis Sekarang
+        </button>
+      </div>
+
+      <!-- LOGO DUKUNGAN -->
+      <div class="pt-10 pb-4 border-t border-slate-200 text-center text-left text-left text-left">
+        <p class="text-[9px] font-bold text-slate-400 uppercase mb-4 tracking-[0.2em] text-center font-black">
+          Pelestari Budaya Geopark
+        </p>
+        <div class="flex justify-around items-center gap-6 flex-wrap px-4 text-left">
+          <img
+            src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+            class="h-10 object-contain text-left" alt="Kebumen Geopark" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Lambang_Kabupaten_Kebumen.jpg"
+            class="h-10 object-contain text-left" alt="Pemkab Kebumen" />
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6NiLBrpE5XvpewWqMsu-BadPFEvnO0XbdA&s"
+            class="h-10 object-contain text-left" alt="Kemenparekraf" />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Logo_Pesona_Indonesia_%28Kementerian_Pariwisata%29.png"
+            class="h-10 object-contain text-left" alt="Pesona Indonesia" />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Logo_UNESCO_2021.svg/1280px-Logo_UNESCO_2021.svg.png"
+            class="h-8 object-contain text-left" alt="UNESCO" />
+        </div>
+        <div class="mt-8 text-center text-left text-left">
+          <p class="text-[8px] font-medium text-slate-400 tracking-widest uppercase font-black text-center">
+            © 2026 Badan Pengelola Kebumen Geopark
+          </p>
         </div>
       </div>
     </div>
+  </main>
 
+  <!-- Chat FAB -->
+  <button onclick="openChat()"
+    class="fixed bottom-6 right-6 z-[90] bg-slate-900 text-white p-4 rounded-full shadow-2xl active:scale-90 transition-transform border border-white/20 text-left">
+    <i data-lucide="sparkles" class="w-6 h-6 text-amber-400 animate-pulse text-left"></i>
+  </button>
+
+  <!-- VR MODAL -->
+  <div id="vr-modal" class="fixed inset-0 z-[200] bg-black hidden flex flex-col text-left">
+    <div id="panorama"></div>
+    <div
+      class="absolute top-0 left-0 right-0 p-4 flex justify-between items-center bg-gradient-to-b from-black/90 to-transparent pointer-events-none text-left">
+      <div class="text-white pointer-events-auto text-left">
+        <h3 class="font-black text-lg shadow-sm uppercase tracking-tight text-left text-left">
+          Galeri Pabrik 360°
+        </h3>
+        <button onclick="closeVR()"
+          class="bg-white/20 backdrop-blur-md p-2.5 rounded-full text-white pointer-events-auto border border-white/30 active:scale-90 transition-all text-left">
+          <i data-lucide="x" class="w-6 h-6 text-white text-left"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Chat Gemini -->
+  <div id="chat-modal"
+    class="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm hidden flex flex-col justify-end text-left text-left text-left">
+    <div
+      class="bg-white rounded-t-[2.5rem] h-[85vh] flex flex-col shadow-2xl border-t border-slate-200 overflow-hidden text-left text-left text-left text-left text-left">
+      <div
+        class="px-6 py-5 border-b flex justify-between items-center bg-slate-50 text-left text-left text-left text-left">
+        <div class="flex items-center gap-3 text-left">
+          <div
+            class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 border border-amber-200 text-left">
+            <i data-lucide="hammer" class="w-5 text-amber-600 text-left text-left text-left"></i>
+          </div>
+          <div class="text-left text-slate-800">
+            <h3 class="font-black text-sm uppercase leading-none mb-1 text-left">
+              Guru Geo AI
+            </h3>
+            <p
+              class="text-[9px] text-emerald-500 font-black uppercase tracking-widest animate-pulse text-left text-left">
+              Online
+            </p>
+          </div>
+        </div>
+        <button onclick="closeChat()"
+          class="p-2 bg-slate-100 rounded-full transition-colors active:bg-slate-200 text-left text-left text-left">
+          <i data-lucide="x" class="w-5 h-5 text-slate-400 text-left text-left"></i>
+        </button>
+      </div>
+      <div id="chat-messages"
+        class="flex-1 p-5 overflow-y-auto flex flex-col gap-4 text-sm text-left leading-relaxed bg-slate-50/50 text-left">
+        <div
+          class="bg-white p-4 rounded-3xl rounded-tl-sm self-start max-w-[85%] border border-slate-100 shadow-sm text-slate-700 text-left">
+          Halo! Aku Guru Geo. Penasaran kenapa tanah liat Sokka bisa sangat
+          kuat atau sejarah awal pabriknya? Yuk tanya aku!
+        </div>
+      </div>
+      <div class="p-4 border-t bg-white flex gap-2 text-left">
+        <input type="text" id="chat-input" placeholder="Tanya tentang Genteng Sokka..."
+          class="flex-1 bg-slate-100 rounded-2xl px-5 py-4 outline-none text-sm font-medium focus:ring-2 focus:ring-amber-400 transition-all text-left"
+          onkeypress="handleKeyPress(event)" />
+        <button onclick="sendChatMessage()"
+          class="w-14 h-14 bg-sky-600 rounded-2xl text-white flex items-center justify-center shadow-lg shadow-sky-200 active:scale-90 transition-all text-left">
+          <i data-lucide="send" class="w-6 ml-1 text-white text-left text-left text-left text-left"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="api-config.js"></script>
     <script>
       lucide.createIcons();
-      const apiKey = "";
-      let isPlaying = false,
-        currentAudio = null;
+    // apiKey is loaded from api-config.js
+    let isPlaying = false,
+      currentAudio = null;
 
-      // FUNGSI INISIALISASI CAROUSEL GAMBAR
-      function initCarousel() {
-        const slides = document.querySelectorAll(".hero-slide");
-        let current = 0;
+    // FUNGSI INISIALISASI CAROUSEL GAMBAR
+    function initCarousel() {
+      const slides = document.querySelectorAll(".hero-slide");
+      let current = 0;
 
-        if (slides.length < 2) return;
+      if (slides.length < 2) return;
 
-        setInterval(() => {
-          slides[current].classList.remove("opacity-60", "z-10");
-          slides[current].classList.add("opacity-0", "z-0");
-          current = (current + 1) % slides.length;
-          slides[current].classList.remove("opacity-0", "z-0");
-          slides[current].classList.add("opacity-60", "z-10");
-        }, 3500);
-      }
+      setInterval(() => {
+        slides[current].classList.remove("opacity-60", "z-10");
+        slides[current].classList.add("opacity-0", "z-0");
+        current = (current + 1) % slides.length;
+        slides[current].classList.remove("opacity-0", "z-0");
+        slides[current].classList.add("opacity-60", "z-10");
+      }, 3500);
+    }
 
-      // DATA PERTANYAAN KUIS
-      const quizData = [
-        {
-          q: "Apa nama stasiun kereta api yang lokasinya sangat dekat dengan pabrik genteng pertama di Kebumen?",
-          options: ["Stasiun Kebumen", "Stasiun Sokka", "Stasiun Karanganyar"],
-          correct: "Stasiun Sokka",
-        },
-        {
-          q: "Pada tahun berapakah pemerintah kolonial Belanda melalui Balai Keramik mulai memetakan daerah untuk bahan atap?",
-          options: ["Tahun 1900-an", "Tahun 1920-an", "Tahun 1940-an"],
-          correct: "Tahun 1920-an",
-        },
-        {
-          q: "Dari negara manakah mesin cetak pabrik Genteng Sokka pertama kali didatangkan oleh H. Abu Ngamar?",
-          options: ["Belanda", "Jerman", "China"],
-          correct: "Jerman",
-        },
-        {
-          q: "Di daerah manakah sentra gerabah awal berada sebelum berkembangnya industri genteng Sokka?",
-          options: ["Pejagoan", "Sruweng", "Gebangsari, Klirong"],
-          correct: "Gebangsari, Klirong",
-        },
-        {
-          q: "Di manakah lokasi spesifik lima cerobong asap tua pabrik 'AB Sokka' yang saat ini masih dapat ditemui?",
-          options: ["Desa Kedawung", "Pantai Menganti", "Goa Jatijajar"],
-          correct: "Desa Kedawung",
-        },
-        {
-          q: "Siapakah orang Jawa pertama yang membuat kerajinan genteng secara manual di Kebumen?",
-          options: ["H. Ahmad", "H. Abu Ngamar", "Bupati Kebumen"],
-          correct: "H. Ahmad",
-        },
-        {
-          q: "Apa nama institusi bentukan Belanda di Bandung yang meneliti potensi tanah untuk bahan atap di Kebumen?",
-          options: ["Balai Geologi", "Balai Keramik", "Balai Penelitian Tanah"],
-          correct: "Balai Keramik",
-        },
-        {
-          q: "Menurut sejarah, keahlian warga Kebumen membuat gerabah konon merupakan hasil interaksi dengan kebudayaan mana?",
-          options: ["India", "Arab", "China"],
-          correct: "China",
-        },
-        {
-          q: "Pada zaman dahulu, Genteng Sokka sangat diakui kualitasnya dan banyak digunakan khusus untuk atap bangunan apa di seluruh Jawa?",
-          options: ["Pabrik Gula", "Stasiun Kereta", "Kantor Bupati"],
-          correct: "Pabrik Gula",
-        },
-        {
-          q: "Apa nama merek genteng legendaris yang pertama kali diproduksi menggunakan mesin oleh H. Abu Ngamar?",
-          options: ["Sokka Jaya", "AB Sokka", "Sokka Mas"],
-          correct: "AB Sokka",
-        },
-      ];
+    // DATA PERTANYAAN KUIS
+    const quizData = [
+      {
+        q: "Apa nama stasiun kereta api yang lokasinya sangat dekat dengan pabrik genteng pertama di Kebumen?",
+        options: ["Stasiun Kebumen", "Stasiun Sokka", "Stasiun Karanganyar"],
+        correct: "Stasiun Sokka",
+      },
+      {
+        q: "Pada tahun berapakah pemerintah kolonial Belanda melalui Balai Keramik mulai memetakan daerah untuk bahan atap?",
+        options: ["Tahun 1900-an", "Tahun 1920-an", "Tahun 1940-an"],
+        correct: "Tahun 1920-an",
+      },
+      {
+        q: "Dari negara manakah mesin cetak pabrik Genteng Sokka pertama kali didatangkan oleh H. Abu Ngamar?",
+        options: ["Belanda", "Jerman", "China"],
+        correct: "Jerman",
+      },
+      {
+        q: "Di daerah manakah sentra gerabah awal berada sebelum berkembangnya industri genteng Sokka?",
+        options: ["Pejagoan", "Sruweng", "Gebangsari, Klirong"],
+        correct: "Gebangsari, Klirong",
+      },
+      {
+        q: "Di manakah lokasi spesifik lima cerobong asap tua pabrik 'AB Sokka' yang saat ini masih dapat ditemui?",
+        options: ["Desa Kedawung", "Pantai Menganti", "Goa Jatijajar"],
+        correct: "Desa Kedawung",
+      },
+      {
+        q: "Siapakah orang Jawa pertama yang membuat kerajinan genteng secara manual di Kebumen?",
+        options: ["H. Ahmad", "H. Abu Ngamar", "Bupati Kebumen"],
+        correct: "H. Ahmad",
+      },
+      {
+        q: "Apa nama institusi bentukan Belanda di Bandung yang meneliti potensi tanah untuk bahan atap di Kebumen?",
+        options: ["Balai Geologi", "Balai Keramik", "Balai Penelitian Tanah"],
+        correct: "Balai Keramik",
+      },
+      {
+        q: "Menurut sejarah, keahlian warga Kebumen membuat gerabah konon merupakan hasil interaksi dengan kebudayaan mana?",
+        options: ["India", "Arab", "China"],
+        correct: "China",
+      },
+      {
+        q: "Pada zaman dahulu, Genteng Sokka sangat diakui kualitasnya dan banyak digunakan khusus untuk atap bangunan apa di seluruh Jawa?",
+        options: ["Pabrik Gula", "Stasiun Kereta", "Kantor Bupati"],
+        correct: "Pabrik Gula",
+      },
+      {
+        q: "Apa nama merek genteng legendaris yang pertama kali diproduksi menggunakan mesin oleh H. Abu Ngamar?",
+        options: ["Sokka Jaya", "AB Sokka", "Sokka Mas"],
+        correct: "AB Sokka",
+      },
+    ];
 
-      let currentQuestion = 0;
-      let correctAnswers = 0;
+    let currentQuestion = 0;
+    let correctAnswers = 0;
 
-      // LOGIKA PENGECEKAN STATUS LENCANA DI AWAL
-      function checkBadgeStatus() {
-        const siteId = "budaya_sokka";
-        let unlocked = JSON.parse(localStorage.getItem("geo_badges") || "[]");
-        if (unlocked.includes(siteId)) {
-          const btnContainer = document.getElementById(
-            "badge-trigger-container",
-          );
-          if (btnContainer) {
-            btnContainer.innerHTML = `
+    // LOGIKA PENGECEKAN STATUS LENCANA DI AWAL
+    function checkBadgeStatus() {
+      const siteId = "budaya_sokka";
+      let unlocked = JSON.parse(localStorage.getItem("geo_badges") || "[]");
+      if (unlocked.includes(siteId)) {
+        const btnContainer = document.getElementById(
+          "badge-trigger-container",
+        );
+        if (btnContainer) {
+          btnContainer.innerHTML = `
                   <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-3">
                       <i data-lucide="check-circle" class="w-8 h-8"></i>
                   </div>
                   <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight mb-1">Lencana Selesai!</h3>
                   <p class="text-xs font-medium text-slate-500 mb-4 max-w-sm mx-auto">Kamu sudah berhasil menjawab kuis dan mendapatkan Lencana Genteng Sokka.</p>
               `;
-            lucide.createIcons();
-          }
+          lucide.createIcons();
         }
       }
+    }
 
-      function openQuiz() {
-        const modal = document.getElementById("quiz-modal");
-        const content = document.getElementById("quiz-content");
-        modal.classList.replace("hidden", "flex");
-        void modal.offsetWidth; // Trigger reflow
-        modal.classList.remove("opacity-0");
-        content.classList.remove("scale-95");
-      }
+    function openQuiz() {
+      const modal = document.getElementById("quiz-modal");
+      const content = document.getElementById("quiz-content");
+      modal.classList.replace("hidden", "flex");
+      void modal.offsetWidth; // Trigger reflow
+      modal.classList.remove("opacity-0");
+      content.classList.remove("scale-95");
+    }
 
-      function closeQuiz() {
-        const modal = document.getElementById("quiz-modal");
-        const content = document.getElementById("quiz-content");
-        modal.classList.add("opacity-0");
-        content.classList.add("scale-95");
-        setTimeout(() => {
-          modal.classList.replace("flex", "hidden");
-        }, 300);
-      }
+    function closeQuiz() {
+      const modal = document.getElementById("quiz-modal");
+      const content = document.getElementById("quiz-content");
+      modal.classList.add("opacity-0");
+      content.classList.add("scale-95");
+      setTimeout(() => {
+        modal.classList.replace("flex", "hidden");
+      }, 300);
+    }
 
-      function startQuiz() {
-        currentQuestion = 0;
-        correctAnswers = 0;
-        document.getElementById("quiz-close-btn").classList.remove("hidden");
-        openQuiz();
-        loadQuestion();
-      }
+    function startQuiz() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      document.getElementById("quiz-close-btn").classList.remove("hidden");
+      openQuiz();
+      loadQuestion();
+    }
 
-      function loadQuestion() {
-        const qData = quizData[currentQuestion];
-        document.getElementById("quiz-progress").innerText =
-          `Pertanyaan ${currentQuestion + 1} dari ${quizData.length}`;
-        document.getElementById("quiz-question-text").innerHTML = qData.q;
+    function loadQuestion() {
+      const qData = quizData[currentQuestion];
+      document.getElementById("quiz-progress").innerText =
+        `Pertanyaan ${currentQuestion + 1} dari ${quizData.length}`;
+      document.getElementById("quiz-question-text").innerHTML = qData.q;
 
-        const optionsContainer = document.getElementById("quiz-options");
-        optionsContainer.innerHTML = ""; // Kosongkan opsi sebelumnya
+      const optionsContainer = document.getElementById("quiz-options");
+      optionsContainer.innerHTML = ""; // Kosongkan opsi sebelumnya
 
-        const labels = ["A", "B", "C"];
-        qData.options.forEach((opt, idx) => {
-          const btn = document.createElement("button");
-          btn.className =
-            "w-full text-left p-3 rounded-xl border-2 border-slate-100 hover:border-amber-300 hover:bg-amber-50 font-medium text-sm text-slate-700 transition-all";
-          btn.innerHTML = `<strong class="text-slate-900">${labels[idx]}.</strong> ${opt}`;
-          btn.onclick = () => checkAnswer(opt, btn, qData.correct);
-          optionsContainer.appendChild(btn);
-        });
-
-        document.getElementById("quiz-feedback").classList.add("hidden");
-      }
-
-      function checkAnswer(selected, btnElement, correct) {
-        const options = document.getElementById("quiz-options").children;
-        // Nonaktifkan semua tombol setelah dipilih
-        for (let btn of options) {
-          btn.disabled = true;
-          btn.classList.add("opacity-50");
-          btn.onclick = null;
-        }
-        btnElement.classList.remove("opacity-50"); // Tetap terang untuk yang dipilih
-
-        const feedback = document.getElementById("quiz-feedback");
-        feedback.classList.remove("hidden", "text-red-500", "text-emerald-600");
-
-        if (selected === correct) {
-          btnElement.classList.replace(
-            "border-slate-100",
-            "border-emerald-500",
-          );
-          btnElement.classList.replace("hover:bg-amber-50", "bg-emerald-50");
-          btnElement.classList.add("text-emerald-700");
-          feedback.innerText = "Benar! 👍";
-          feedback.classList.add("text-emerald-600");
-          correctAnswers++;
-        } else {
-          btnElement.classList.replace("border-slate-100", "border-red-500");
-          btnElement.classList.replace("hover:bg-amber-50", "bg-red-50");
-          btnElement.classList.add("text-red-700");
-          feedback.innerText = `Salah. Jawaban yang benar: ${correct}`;
-          feedback.classList.add("text-red-500");
-        }
-
-        // Lanjut ke pertanyaan berikutnya setelah 2 detik
-        setTimeout(() => {
-          currentQuestion++;
-          if (currentQuestion < quizData.length) {
-            loadQuestion();
-          } else {
-            finishQuiz();
-          }
-        }, 2000);
-      }
-
-      function finishQuiz() {
-        document.getElementById("quiz-progress").innerText = "Kuis Selesai";
-        document.getElementById("quiz-question-text").innerText =
-          `Kamu menjawab benar ${correctAnswers} dari ${quizData.length} pertanyaan.`;
-        document.getElementById("quiz-options").innerHTML = ""; // Kosongkan opsi
-        document.getElementById("quiz-close-btn").classList.add("hidden");
-
-        const feedback = document.getElementById("quiz-feedback");
-        feedback.classList.remove("hidden", "text-red-500", "text-emerald-600");
-
-        // Cek Kelulusan (Minimal 7 benar)
-        if (correctAnswers >= 7) {
-          feedback.innerText = "Selamat! Kamu berhasil mendapatkan lencana! 🎉";
-          feedback.classList.add("text-emerald-600");
-          setTimeout(() => {
-            closeQuiz();
-            claimBadge(); // Simpan lencana ke localstorage
-            checkBadgeStatus(); // Ubah UI tombol menjadi Selesai
-          }, 2000);
-        } else {
-          feedback.innerText =
-            "Skormu belum cukup (minimal 7). Ayo baca sejarahnya lagi dan coba lagi ya!";
-          feedback.classList.add("text-red-500");
-
-          const retryBtn = document.createElement("button");
-          retryBtn.className =
-            "mt-4 w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-black py-4 rounded-xl shadow-lg uppercase tracking-widest active:scale-95 transition-transform";
-          retryBtn.innerText = "Ulangi Kuis";
-          retryBtn.onclick = startQuiz;
-          document.getElementById("quiz-options").appendChild(retryBtn);
-
-          const closeBtn = document.createElement("button");
-          closeBtn.className =
-            "mt-3 w-full text-[10px] text-slate-400 font-bold uppercase tracking-widest hover:text-slate-600 text-center transition-colors";
-          closeBtn.innerText = "Nanti Saja";
-          closeBtn.onclick = closeQuiz;
-          document.getElementById("quiz-options").appendChild(closeBtn);
-        }
-      }
-
-      function claimBadge() {
-        const siteId = "budaya_sokka";
-        let unlocked = JSON.parse(localStorage.getItem("geo_badges") || "[]");
-        if (!unlocked.includes(siteId)) {
-          unlocked.push(siteId);
-          localStorage.setItem("geo_badges", JSON.stringify(unlocked));
-        }
-
-        // Tampilkan animasi popup lencana
-        const popup = document.getElementById("badge-popup");
-        if (popup) {
-          popup.classList.replace("hidden", "flex");
-          popup.style.opacity = "1";
-
-          setTimeout(() => {
-            popup.style.opacity = "0";
-            popup.style.transition = "opacity 0.5s ease";
-            setTimeout(() => popup.classList.replace("flex", "hidden"), 500);
-          }, 4000);
-        }
-      }
-
-      window.addEventListener("DOMContentLoaded", () => {
-        checkBadgeStatus();
-        initCarousel();
+      const labels = ["A", "B", "C"];
+      qData.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className =
+          "w-full text-left p-3 rounded-xl border-2 border-slate-100 hover:border-amber-300 hover:bg-amber-50 font-medium text-sm text-slate-700 transition-all";
+        btn.innerHTML = `<strong class="text-slate-900">${labels[idx]}.</strong> ${opt}`;
+        btn.onclick = () => checkAnswer(opt, btn, qData.correct);
+        optionsContainer.appendChild(btn);
       });
 
-      async function fetchWithRetry(url, options, retries = 5, backoff = 1000) {
-        try {
-          const response = await fetch(url, options);
-          if (!response.ok) throw new Error(response.statusText);
-          return response;
-        } catch (error) {
-          if (retries <= 0) throw error;
-          await new Promise((resolve) => setTimeout(resolve, backoff));
-          return fetchWithRetry(url, options, retries - 1, backoff * 2);
+      document.getElementById("quiz-feedback").classList.add("hidden");
+    }
+
+    function checkAnswer(selected, btnElement, correct) {
+      const options = document.getElementById("quiz-options").children;
+      // Nonaktifkan semua tombol setelah dipilih
+      for (let btn of options) {
+        btn.disabled = true;
+        btn.classList.add("opacity-50");
+        btn.onclick = null;
+      }
+      btnElement.classList.remove("opacity-50"); // Tetap terang untuk yang dipilih
+
+      const feedback = document.getElementById("quiz-feedback");
+      feedback.classList.remove("hidden", "text-red-500", "text-emerald-600");
+
+      if (selected === correct) {
+        btnElement.classList.replace(
+          "border-slate-100",
+          "border-emerald-500",
+        );
+        btnElement.classList.replace("hover:bg-amber-50", "bg-emerald-50");
+        btnElement.classList.add("text-emerald-700");
+        feedback.innerText = "Benar! 👍";
+        feedback.classList.add("text-emerald-600");
+        correctAnswers++;
+      } else {
+        btnElement.classList.replace("border-slate-100", "border-red-500");
+        btnElement.classList.replace("hover:bg-amber-50", "bg-red-50");
+        btnElement.classList.add("text-red-700");
+        feedback.innerText = `Salah. Jawaban yang benar: ${correct}`;
+        feedback.classList.add("text-red-500");
+      }
+
+      // Lanjut ke pertanyaan berikutnya setelah 2 detik
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < quizData.length) {
+          loadQuestion();
+        } else {
+          finishQuiz();
+        }
+      }, 2000);
+    }
+
+    function finishQuiz() {
+      document.getElementById("quiz-progress").innerText = "Kuis Selesai";
+      document.getElementById("quiz-question-text").innerText =
+        `Kamu menjawab benar ${correctAnswers} dari ${quizData.length} pertanyaan.`;
+      document.getElementById("quiz-options").innerHTML = ""; // Kosongkan opsi
+      document.getElementById("quiz-close-btn").classList.add("hidden");
+
+      const feedback = document.getElementById("quiz-feedback");
+      feedback.classList.remove("hidden", "text-red-500", "text-emerald-600");
+
+      // Cek Kelulusan (Minimal 7 benar)
+      if (correctAnswers >= 7) {
+        feedback.innerText = "Selamat! Kamu berhasil mendapatkan lencana! 🎉";
+        feedback.classList.add("text-emerald-600");
+        setTimeout(() => {
+          closeQuiz();
+          claimBadge(); // Simpan lencana ke localstorage
+          checkBadgeStatus(); // Ubah UI tombol menjadi Selesai
+        }, 2000);
+      } else {
+        feedback.innerText =
+          "Skormu belum cukup (minimal 7). Ayo baca sejarahnya lagi dan coba lagi ya!";
+        feedback.classList.add("text-red-500");
+
+        const retryBtn = document.createElement("button");
+        retryBtn.className =
+          "mt-4 w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-black py-4 rounded-xl shadow-lg uppercase tracking-widest active:scale-95 transition-transform";
+        retryBtn.innerText = "Ulangi Kuis";
+        retryBtn.onclick = startQuiz;
+        document.getElementById("quiz-options").appendChild(retryBtn);
+
+        const closeBtn = document.createElement("button");
+        closeBtn.className =
+          "mt-3 w-full text-[10px] text-slate-400 font-bold uppercase tracking-widest hover:text-slate-600 text-center transition-colors";
+        closeBtn.innerText = "Nanti Saja";
+        closeBtn.onclick = closeQuiz;
+        document.getElementById("quiz-options").appendChild(closeBtn);
+      }
+    }
+
+    function claimBadge() {
+      const siteId = "budaya_sokka";
+      let unlocked = JSON.parse(localStorage.getItem("geo_badges") || "[]");
+      if (!unlocked.includes(siteId)) {
+        unlocked.push(siteId);
+        localStorage.setItem("geo_badges", JSON.stringify(unlocked));
+      }
+
+      // Tampilkan animasi popup lencana
+      const popup = document.getElementById("badge-popup");
+      if (popup) {
+        popup.classList.replace("hidden", "flex");
+        popup.style.opacity = "1";
+
+        setTimeout(() => {
+          popup.style.opacity = "0";
+          popup.style.transition = "opacity 0.5s ease";
+          setTimeout(() => popup.classList.replace("flex", "hidden"), 500);
+        }, 4000);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      checkBadgeStatus();
+      initCarousel();
+    });
+
+    async function fetchWithRetry(url, options, retries = 5, backoff = 1000) {
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) throw new Error(response.statusText);
+        return response;
+      } catch (error) {
+        if (retries <= 0) throw error;
+        await new Promise((resolve) => setTimeout(resolve, backoff));
+        return fetchWithRetry(url, options, retries - 1, backoff * 2);
+      }
+    }
+
+    function pcmToWav(pcmData, sampleRate) {
+      const buffer = new ArrayBuffer(44 + pcmData.length * 2),
+        view = new DataView(buffer);
+      const writeString = (v, o, s) => {
+        for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i));
+      };
+      writeString(view, 0, "RIFF");
+      view.setUint32(4, 32 + pcmData.length * 2, true);
+      writeString(view, 8, "WAVE");
+      writeString(view, 12, "fmt ");
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      writeString(view, 36, "data");
+      view.setUint32(40, pcmData.length * 2, true);
+      for (let i = 0; i < pcmData.length; i++)
+        view.setInt16(44 + i * 2, pcmData[i], true);
+      return buffer;
+    }
+
+    // FUNGSI MEMPERBAIKI SUARA OFFLINE AGAR TIDAK KAKU
+    function speakFallback(text) {
+      if (!window.speechSynthesis) return;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "id-ID";
+      utterance.rate = 0.9;
+      utterance.pitch = 1.0;
+
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        const idVoices = voices.filter(
+          (v) => v.lang.includes("id") || v.lang.includes("ID"),
+        );
+        const bestVoice =
+          idVoices.find(
+            (v) =>
+              v.name.includes("Google") ||
+              v.name.includes("Premium") ||
+              v.name.includes("Damayanti"),
+          ) || idVoices[0];
+        if (bestVoice) {
+          utterance.voice = bestVoice;
         }
       }
 
-      function pcmToWav(pcmData, sampleRate) {
-        const buffer = new ArrayBuffer(44 + pcmData.length * 2),
-          view = new DataView(buffer);
-        const writeString = (v, o, s) => {
-          for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i));
-        };
-        writeString(view, 0, "RIFF");
-        view.setUint32(4, 32 + pcmData.length * 2, true);
-        writeString(view, 8, "WAVE");
-        writeString(view, 12, "fmt ");
-        view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);
-        view.setUint16(22, 1, true);
-        view.setUint32(24, sampleRate, true);
-        view.setUint32(28, sampleRate * 2, true);
-        view.setUint16(32, 2, true);
-        view.setUint16(34, 16, true);
-        writeString(view, 36, "data");
-        view.setUint32(40, pcmData.length * 2, true);
-        for (let i = 0; i < pcmData.length; i++)
-          view.setInt16(44 + i * 2, pcmData[i], true);
-        return buffer;
+      utterance.onstart = () => {
+        document
+          .getElementById("audio-icon")
+          .setAttribute("data-lucide", "pause");
+        document
+          .getElementById("audio-progress-container")
+          .classList.remove("hidden");
+        lucide.createIcons();
+      };
+      utterance.onend = () => stopAudioUI();
+      window.speechSynthesis.speak(utterance);
+    }
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = function () {
+        window.speechSynthesis.getVoices();
+      };
+    }
+
+    async function handleAudioPlay() {
+      if (isPlaying) {
+        if (currentAudio) currentAudio.pause();
+        if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+        stopAudioUI();
+        return;
       }
+      const textToRead =
+        "Halo semuanya! Tahukah kamu bahwa industri Genteng Sokka berawal dari keterampilan masyarakat Gebangsari Klirong membuat gerabah seperti padasan dan gentong sejak sebelum abad dua puluh? Kemudian, lewat penelitian Balai Keramik Bandung pada tahun sembilan belas dua puluhan, Kebumen ditetapkan sebagai sentra tanah terbaik. Bapak Haji Ahmad memulainya secara manual, lalu putranya Haji Abu Ngamar mendatangkan mesin dari Jerman untuk pabriknya di dekat Stasiun Sokka. Keren sekali ya, sampai sekarang lima cerobong asap pabrik kunonya masih ada di Desa Kedawung!";
 
-      // FUNGSI MEMPERBAIKI SUARA OFFLINE AGAR TIDAK KAKU
-      function speakFallback(text) {
-        if (!window.speechSynthesis) return;
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = "id-ID";
-        utterance.rate = 0.9;
-        utterance.pitch = 1.0;
+      try {
+        isPlaying = true;
+        document.getElementById("audio-status").innerText =
+          "AI sedang merancang suara...";
 
-        const voices = window.speechSynthesis.getVoices();
-        if (voices.length > 0) {
-          const idVoices = voices.filter(
-            (v) => v.lang.includes("id") || v.lang.includes("ID"),
-          );
-          const bestVoice =
-            idVoices.find(
-              (v) =>
-                v.name.includes("Google") ||
-                v.name.includes("Premium") ||
-                v.name.includes("Damayanti"),
-            ) || idVoices[0];
-          if (bestVoice) {
-            utterance.voice = bestVoice;
-          }
+        const response = await fetchWithRetry(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: "Say cheerfully in Indonesian: " + textToRead,
+                    },
+                  ],
+                },
+              ],
+              generationConfig: {
+                responseModalities: ["AUDIO"],
+                speechConfig: {
+                  voiceConfig: {
+                    prebuiltVoiceConfig: { voiceName: "Aoede" },
+                  },
+                },
+              },
+              model: "models/gemini-2.5-flash-preview-tts",
+            }),
+          },
+        );
+
+        const result = await response.json();
+        const audioPart =
+          result.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+
+        if (!audioPart) {
+          speakFallback(textToRead);
+          return;
         }
 
-        utterance.onstart = () => {
+        const binaryString = atob(audioPart.data);
+        const pcmData = new Int16Array(binaryString.length / 2);
+        for (let i = 0; i < binaryString.length; i += 2) {
+          pcmData[i / 2] =
+            (binaryString.charCodeAt(i + 1) << 8) |
+            binaryString.charCodeAt(i);
+        }
+
+        currentAudio = new Audio(
+          URL.createObjectURL(
+            new Blob([pcmToWav(pcmData, 24000)], { type: "audio/wav" }),
+          ),
+        );
+        currentAudio.onplay = () => {
+          document.getElementById("audio-status").innerText =
+            "Kisah Tanah Liat Sokka";
           document
             .getElementById("audio-icon")
             .setAttribute("data-lucide", "pause");
@@ -1139,242 +995,157 @@
             .classList.remove("hidden");
           lucide.createIcons();
         };
-        utterance.onend = () => stopAudioUI();
-        window.speechSynthesis.speak(utterance);
+        currentAudio.onended = () => stopAudioUI();
+        currentAudio.play();
+      } catch (e) {
+        console.error(e);
+        speakFallback(textToRead);
       }
+    }
 
-      if (window.speechSynthesis) {
-        window.speechSynthesis.onvoiceschanged = function () {
-          window.speechSynthesis.getVoices();
-        };
-      }
+    function stopAudioUI() {
+      isPlaying = false;
+      document.getElementById("audio-status").innerText =
+        "Kisah Tanah Liat Sokka";
+      document
+        .getElementById("audio-icon")
+        .setAttribute("data-lucide", "play");
+      document
+        .getElementById("audio-progress-container")
+        .classList.add("hidden");
+      lucide.createIcons();
+    }
 
-      async function handleAudioPlay() {
-        if (isPlaying) {
-          if (currentAudio) currentAudio.pause();
-          if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
-          stopAudioUI();
-          return;
+    function switchTab(tabId) {
+      ["edu", "origin", "kids"].forEach((id) => {
+        const viewEl = document.getElementById(`view-${id}`);
+        const tabEl = document.getElementById(`tab-${id}`);
+        if (viewEl) viewEl.classList.add("hidden");
+        if (tabEl) {
+          tabEl.classList.remove(
+            "text-amber-600",
+            "border-b-2",
+            "border-amber-600",
+          );
+          tabEl.classList.add("text-slate-400");
         }
-        const textToRead =
-          "Halo semuanya! Tahukah kamu bahwa industri Genteng Sokka berawal dari keterampilan masyarakat Gebangsari Klirong membuat gerabah seperti padasan dan gentong sejak sebelum abad dua puluh? Kemudian, lewat penelitian Balai Keramik Bandung pada tahun sembilan belas dua puluhan, Kebumen ditetapkan sebagai sentra tanah terbaik. Bapak Haji Ahmad memulainya secara manual, lalu putranya Haji Abu Ngamar mendatangkan mesin dari Jerman untuk pabriknya di dekat Stasiun Sokka. Keren sekali ya, sampai sekarang lima cerobong asap pabrik kunonya masih ada di Desa Kedawung!";
+      });
+      document.getElementById(`view-${tabId}`).classList.remove("hidden");
+      document
+        .getElementById(`tab-${tabId}`)
+        .classList.add("text-amber-600", "border-b-2", "border-amber-600");
+    }
 
-        try {
-          isPlaying = true;
-          document.getElementById("audio-status").innerText =
-            "AI sedang merancang suara...";
+    let viewer = null;
+    function openVR() {
+      document.getElementById("vr-modal").classList.replace("hidden", "flex");
+      if (!viewer) {
+        viewer = pannellum.viewer("panorama", {
+          type: "equirectangular",
+          panorama: "image/vr_sokka.jpg", // <--- Pastikan ganti dengan foto 360 asli Anda di sini
+          autoLoad: true,
+          autoRotate: -1,
+          showControls: false,
+        });
+      }
+    }
+    function closeVR() {
+      document.getElementById("vr-modal").classList.replace("flex", "hidden");
+    }
+    function openAnimation() {
+      window.open(
+        "https://www.youtube.com/results?search_query=pembuatan+genteng+sokka+kebumen",
+        "_blank",
+      );
+    }
+    function openChat() {
+      document
+        .getElementById("chat-modal")
+        .classList.replace("hidden", "flex");
+    }
+    function closeChat() {
+      document
+        .getElementById("chat-modal")
+        .classList.replace("flex", "hidden");
+    }
 
-          const response = await fetchWithRetry(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                contents: [
+    async function sendChatMessage() {
+      const input = document.getElementById("chat-input");
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = "";
+      appendMsg(text, true);
+
+      const container = document.getElementById("chat-messages");
+      const loadingDiv = document.createElement("div");
+      loadingDiv.id = "chat-loading";
+      loadingDiv.className =
+        "bg-white p-4 rounded-3xl rounded-tl-sm self-start max-w-[85%] border border-slate-100 shadow-sm text-slate-500 mb-2 font-medium italic text-sm text-left animate-pulse";
+      loadingDiv.innerText = "Guru Geo AI sedang mengetik...";
+      container.appendChild(loadingDiv);
+      container.scrollTop = container.scrollHeight;
+
+      try {
+        const res = await fetchWithRetry(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: text }] }],
+              systemInstruction: {
+                parts: [
                   {
-                    parts: [
-                      {
-                        text: "Say cheerfully in Indonesian: " + textToRead,
-                      },
-                    ],
+                    text: "Kamu adalah Guru Geo AI, asisten virtual dari Geopark Kebumen. Jelaskan tentang sejarah dan industri Genteng Sokka Kebumen, termasuk sejarah gerabah di Gebangsari Klirong, penelitian Balai Keramik Bandung tahun 1920-an, H. Ahmad, pabrik H. Abu Ngamar, mesin dari Jerman, dan sisa cerobong di Kedawung. Gunakan bahasa Indonesia yang ramah, ringkas, dan ceria.",
                   },
                 ],
-                generationConfig: {
-                  responseModalities: ["AUDIO"],
-                  speechConfig: {
-                    voiceConfig: {
-                      prebuiltVoiceConfig: { voiceName: "Aoede" },
-                    },
-                  },
-                },
-                model: "models/gemini-2.5-flash-preview-tts",
-              }),
-            },
-          );
+              },
+            }),
+          },
+        );
 
-          const result = await response.json();
-          const audioPart =
-            result.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+        const data = await res.json();
 
-          if (!audioPart) {
-            speakFallback(textToRead);
-            return;
-          }
+        const loadingEl = document.getElementById("chat-loading");
+        if (loadingEl) loadingEl.remove();
 
-          const binaryString = atob(audioPart.data);
-          const pcmData = new Int16Array(binaryString.length / 2);
-          for (let i = 0; i < binaryString.length; i += 2) {
-            pcmData[i / 2] =
-              (binaryString.charCodeAt(i + 1) << 8) |
-              binaryString.charCodeAt(i);
-          }
-
-          currentAudio = new Audio(
-            URL.createObjectURL(
-              new Blob([pcmToWav(pcmData, 24000)], { type: "audio/wav" }),
-            ),
-          );
-          currentAudio.onplay = () => {
-            document.getElementById("audio-status").innerText =
-              "Kisah Tanah Liat Sokka";
-            document
-              .getElementById("audio-icon")
-              .setAttribute("data-lucide", "pause");
-            document
-              .getElementById("audio-progress-container")
-              .classList.remove("hidden");
-            lucide.createIcons();
-          };
-          currentAudio.onended = () => stopAudioUI();
-          currentAudio.play();
-        } catch (e) {
-          console.error(e);
-          speakFallback(textToRead);
+        if (data.candidates && data.candidates.length > 0) {
+          appendMsg(data.candidates[0].content.parts[0].text, false);
+        } else {
+          throw new Error("Gagal mendapatkan respons AI");
         }
-      }
+      } catch (e) {
+        console.error(e);
+        const loadingEl = document.getElementById("chat-loading");
+        if (loadingEl) loadingEl.remove();
 
-      function stopAudioUI() {
-        isPlaying = false;
-        document.getElementById("audio-status").innerText =
-          "Kisah Tanah Liat Sokka";
-        document
-          .getElementById("audio-icon")
-          .setAttribute("data-lucide", "play");
-        document
-          .getElementById("audio-progress-container")
-          .classList.add("hidden");
-        lucide.createIcons();
-      }
-
-      function switchTab(tabId) {
-        ["edu", "origin", "kids"].forEach((id) => {
-          const viewEl = document.getElementById(`view-${id}`);
-          const tabEl = document.getElementById(`tab-${id}`);
-          if (viewEl) viewEl.classList.add("hidden");
-          if (tabEl) {
-            tabEl.classList.remove(
-              "text-amber-600",
-              "border-b-2",
-              "border-amber-600",
-            );
-            tabEl.classList.add("text-slate-400");
-          }
-        });
-        document.getElementById(`view-${tabId}`).classList.remove("hidden");
-        document
-          .getElementById(`tab-${tabId}`)
-          .classList.add("text-amber-600", "border-b-2", "border-amber-600");
-      }
-
-      let viewer = null;
-      function openVR() {
-        document.getElementById("vr-modal").classList.replace("hidden", "flex");
-        if (!viewer) {
-          viewer = pannellum.viewer("panorama", {
-            type: "equirectangular",
-            panorama: "image/vr_sokka.jpg", // <--- Pastikan ganti dengan foto 360 asli Anda di sini
-            autoLoad: true,
-            autoRotate: -1,
-            showControls: false,
-          });
-        }
-      }
-      function closeVR() {
-        document.getElementById("vr-modal").classList.replace("flex", "hidden");
-      }
-      function openAnimation() {
-        window.open(
-          "https://www.youtube.com/results?search_query=pembuatan+genteng+sokka+kebumen",
-          "_blank",
+        appendMsg(
+          "Maaf, saat ini Guru Geo AI sedang tidak dapat terhubung ke server. Silakan coba beberapa saat lagi ya!",
+          false,
         );
       }
-      function openChat() {
-        document
-          .getElementById("chat-modal")
-          .classList.replace("hidden", "flex");
-      }
-      function closeChat() {
-        document
-          .getElementById("chat-modal")
-          .classList.replace("flex", "hidden");
-      }
+    }
 
-      async function sendChatMessage() {
-        const input = document.getElementById("chat-input");
-        const text = input.value.trim();
-        if (!text) return;
+    function appendMsg(t, u) {
+      const container = document.getElementById("chat-messages"),
+        div = document.createElement("div");
+      div.className = u
+        ? "bg-sky-600 text-white p-4 rounded-3xl rounded-tr-sm self-end max-w-[85%] shadow-md mb-2 font-medium"
+        : "bg-white p-4 rounded-3xl rounded-tl-sm self-start max-w-[85%] border border-slate-100 shadow-sm text-slate-700 mb-2 leading-relaxed";
 
-        input.value = "";
-        appendMsg(text, true);
+      div.innerHTML = t
+        .replace(/\n/g, "<br/>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-        const container = document.getElementById("chat-messages");
-        const loadingDiv = document.createElement("div");
-        loadingDiv.id = "chat-loading";
-        loadingDiv.className =
-          "bg-white p-4 rounded-3xl rounded-tl-sm self-start max-w-[85%] border border-slate-100 shadow-sm text-slate-500 mb-2 font-medium italic text-sm text-left animate-pulse";
-        loadingDiv.innerText = "Guru Geo AI sedang mengetik...";
-        container.appendChild(loadingDiv);
-        container.scrollTop = container.scrollHeight;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      lucide.createIcons();
+    }
+    function handleKeyPress(e) {
+      if (e.key === "Enter") sendChatMessage();
+    }
+  </script>
+</body>
 
-        try {
-          const res = await fetchWithRetry(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: text }] }],
-                systemInstruction: {
-                  parts: [
-                    {
-                      text: "Kamu adalah Guru Geo AI, asisten virtual dari Geopark Kebumen. Jelaskan tentang sejarah dan industri Genteng Sokka Kebumen, termasuk sejarah gerabah di Gebangsari Klirong, penelitian Balai Keramik Bandung tahun 1920-an, H. Ahmad, pabrik H. Abu Ngamar, mesin dari Jerman, dan sisa cerobong di Kedawung. Gunakan bahasa Indonesia yang ramah, ringkas, dan ceria.",
-                    },
-                  ],
-                },
-              }),
-            },
-          );
-
-          const data = await res.json();
-
-          const loadingEl = document.getElementById("chat-loading");
-          if (loadingEl) loadingEl.remove();
-
-          if (data.candidates && data.candidates.length > 0) {
-            appendMsg(data.candidates[0].content.parts[0].text, false);
-          } else {
-            throw new Error("Gagal mendapatkan respons AI");
-          }
-        } catch (e) {
-          console.error(e);
-          const loadingEl = document.getElementById("chat-loading");
-          if (loadingEl) loadingEl.remove();
-
-          appendMsg(
-            "Maaf, saat ini Guru Geo AI sedang tidak dapat terhubung ke server. Silakan coba beberapa saat lagi ya!",
-            false,
-          );
-        }
-      }
-
-      function appendMsg(t, u) {
-        const container = document.getElementById("chat-messages"),
-          div = document.createElement("div");
-        div.className = u
-          ? "bg-sky-600 text-white p-4 rounded-3xl rounded-tr-sm self-end max-w-[85%] shadow-md mb-2 font-medium"
-          : "bg-white p-4 rounded-3xl rounded-tl-sm self-start max-w-[85%] border border-slate-100 shadow-sm text-slate-700 mb-2 leading-relaxed";
-
-        div.innerHTML = t
-          .replace(/\n/g, "<br/>")
-          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
-        lucide.createIcons();
-      }
-      function handleKeyPress(e) {
-        if (e.key === "Enter") sendChatMessage();
-      }
-    </script>
-  </body>
 </html>
