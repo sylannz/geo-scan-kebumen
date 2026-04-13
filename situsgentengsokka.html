@@ -580,10 +580,9 @@
     </div>
   </div>
 
-  <script src="api-config.js"></script>
-    <script>
-      lucide.createIcons();
-    // apiKey is loaded from api-config.js
+  <script>
+    lucide.createIcons();
+    const apiKey = "AIzaSyAmINV8IOSj2lJgVxgvBxJhF1pOGa6LjB8";
     let isPlaying = false,
       currentAudio = null;
 
@@ -1042,7 +1041,7 @@
       if (!viewer) {
         viewer = pannellum.viewer("panorama", {
           type: "equirectangular",
-          panorama: "image/vr_sokka.jpg", // <--- Pastikan ganti dengan foto 360 asli Anda di sini
+          panorama: "https://pannellum.org/images/alma.jpg", // Dummy 360 image dari Pannellum
           autoLoad: true,
           autoRotate: -1,
           showControls: false,
