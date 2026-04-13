@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geo-Scan Krenova - Geopark Kebumen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <!-- LIBRARY PETA INTERAKTIF -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: #f8fafc;
+        overflow-x: hidden;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      .view-container {
+        animation: fadeIn 0.4s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes bounce-slow {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+      .animate-bounce-slow {
+        animation: bounce-slow 2s infinite;
+      }
+
+      @keyframes scan-anim {
+        0%,
+        100% {
+          top: 0%;
+          opacity: 0.3;
+        }
+        50% {
+          top: 100%;
+          opacity: 0.8;
+        }
+      }
+      .scanner-line {
+        height: 3px;
+        background: #0ea5e9;
+        position: absolute;
+        width: 100%;
+        box-shadow: 0 0 20px #0ea5e9;
+        animation: scan-anim 2s linear infinite;
+        z-index: 10;
+      }
+
+      @keyframes float-icon {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-15px) rotate(5deg);
+        }
+      }
+      .animate-float {
+        animation: float-icon 4s ease-in-out infinite;
+      }
+
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      #qr-reader video {
+        object-fit: cover !important;
+        border-radius: 2rem;
+      }
+      /* Mengatasi padding internal library html5-qrcode */
+      #qr-reader__dashboard {
+        display: none !important;
+      }
+      #qr-reader__status_span {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen relative text-slate-900 text-left">
+    <!-- HEADER -->
+    <header
+      id="main-header"
+      class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-50 px-4 py-3 flex justify-between items-center shadow-sm hidden text-left"
+    >
+      <div class="flex items-center gap-2 text-left">
+        <img
+          src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+          class="w-10 h-10 object-contain text-left"
+        />
+        <div class="text-left">
+          <h1
+            class="text-sm font-black leading-tight uppercase tracking-tight text-slate-800 text-left"
+          >
+            GEO-SCAN
+          </h1>
+          <p
+            class="text-[9px] text-sky-600 uppercase tracking-widest font-bold text-left"
+          >
+            UNESCO Geopark
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 text-left">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/7/71/Lambang_Kabupaten_Kebumen.jpg"
+          class="h-9 w-auto object-contain text-left"
+        />
+      </div>
+    </header>
+
+    <main class="max-w-md mx-auto pb-32">
+      <!-- VIEW: LOGIN -->
+      <div
+        id="view-login"
+        class="view-container min-h-screen bg-sky-50 flex flex-col items-center justify-center p-6 relative overflow-hidden hidden text-left"
+      >
+        <div class="z-10 w-full max-w-sm text-center">
+          <div
+            class="w-28 h-28 bg-white rounded-full mx-auto mb-6 flex items-center justify-center shadow-xl shadow-sky-100 animate-float p-4 border border-sky-100 text-left"
+          >
+            <img
+              src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+              class="w-full h-full object-contain"
+            />
+          </div>
+          <h1
+            class="text-4xl font-black text-slate-800 tracking-tighter mb-2 uppercase text-center"
+          >
+            GEO-SCAN
+          </h1>
+          <p
+            class="text-xs font-bold text-sky-600 uppercase tracking-widest mb-10 text-center"
+          >
+            Jelajah Pintar Bumi Kebumen
+          </p>
+          <div
+            class="bg-white/80 backdrop-blur-xl p-8 rounded-[2.5rem] border border-sky-100 shadow-2xl text-left"
+          >
+            <label
+              class="text-[10px] font-black text-sky-600 uppercase tracking-widest ml-1 mb-3 block text-left"
+              >NAMA PENJELAJAH</label
+            >
+            <input
+              type="text"
+              id="login-name"
+              placeholder="Siapa namamu?"
+              class="w-full bg-sky-50 border-2 border-sky-100 rounded-2xl py-4 px-5 text-slate-700 focus:ring-2 focus:ring-sky-400 outline-none mb-4 transition-all text-left"
+            />
+            <button
+              onclick="handleLogin()"
+              class="w-full bg-gradient-to-r from-sky-400 to-sky-600 text-white font-black uppercase tracking-widest py-4 rounded-2xl shadow-lg active:scale-95 text-center"
+            >
+              Mulai Menjelajah
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: HOME -->
+      <div id="view-home" class="view-container hidden px-5 text-left">
+        <section class="flex justify-between items-end mb-6 pt-8 text-left">
+          <div class="text-left">
+            <p
+              id="txt-greeting-sub"
+              class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 font-black text-left"
+            >
+              HALO!
+            </p>
+            <h2
+              id="greeting-text"
+              class="text-2xl font-black text-slate-800 tracking-tight leading-none text-left"
+            >
+              Selamat Datang
+            </h2>
+          </div>
+          <div
+            class="w-14 h-14 bg-sky-100 rounded-full border-4 border-white shadow-xl flex items-center justify-center cursor-pointer active:scale-90 overflow-hidden transition-all duration-500 text-left"
+            onclick="switchView('profile')"
+          >
+            <img
+              id="home-avatar"
+              src=""
+              class="w-full h-full object-cover text-left"
+              alt="Avatar"
+            />
+          </div>
+        </section>
+
+        <!-- GEO-PASSPORT -->
+        <section class="mb-8">
+          <div
+            id="passport-card"
+            class="bg-gradient-to-r from-sky-400 to-sky-600 rounded-3xl p-6 text-white shadow-xl shadow-sky-100 relative overflow-hidden transition-all duration-700 text-left"
+          >
+            <div
+              class="relative z-10 flex justify-between items-center text-left"
+            >
+              <div class="text-left">
+                <div class="flex items-center gap-2 text-left">
+                  <i
+                    id="rank-icon-main"
+                    data-lucide="medal"
+                    class="w-5 h-5 text-left"
+                  ></i>
+                  <h3
+                    class="text-sm font-black uppercase tracking-tight font-black text-left"
+                  >
+                    Geo-Passport
+                  </h3>
+                </div>
+                <p
+                  id="passport-desc"
+                  class="text-[10px] font-medium text-white/90 mt-1 font-black text-left"
+                >
+                  Level Penjelajah Ber-Evolusi!
+                </p>
+              </div>
+              <div class="text-right text-left">
+                <span id="badge-count" class="text-2xl font-black text-left"
+                  >0/10</span
+                >
+              </div>
+            </div>
+
+            <div class="-mx-6 mt-2 relative z-10">
+              <div
+                id="badge-container"
+                class="flex gap-3 overflow-x-auto px-6 pt-3 pb-4 hide-scrollbar snap-x snap-mandatory w-full"
+                style="-webkit-overflow-scrolling: touch; touch-action: pan-x"
+              ></div>
+            </div>
+
+            <div
+              class="mt-2 w-full h-1 bg-black/10 rounded-full overflow-hidden text-left"
+            >
+              <div
+                id="passport-progress"
+                class="h-full bg-white transition-all duration-1000 shadow-[0_0_8px_white]"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <div
+            class="mt-3 bg-white border border-slate-100 p-3 rounded-2xl flex items-center justify-between shadow-sm text-left"
+          >
+            <div class="flex items-center gap-2 text-left">
+              <div
+                id="rank-indicator-box"
+                class="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center text-left"
+              >
+                <i
+                  id="rank-icon-small"
+                  data-lucide="medal"
+                  class="w-4 h-4 text-sky-600 text-left"
+                ></i>
+              </div>
+              <span
+                class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left"
+                >Peringkat:</span
+              >
+            </div>
+            <span
+              id="rank-text"
+              class="text-[10px] font-black text-sky-600 uppercase tracking-widest bg-sky-50 px-3 py-1 rounded-full border border-sky-100 text-left"
+              >Pemula</span
+            >
+          </div>
+        </section>
+
+        <!-- CAROUSEL SITUS -->
+        <section class="mb-10 -mx-5 pl-5 relative text-left">
+          <div
+            class="flex gap-4 overflow-x-auto snap-x snap-mandatory pr-5 pb-4 hide-scrollbar"
+          >
+            <div
+              class="snap-center shrink-0 w-[85%] relative rounded-[2rem] p-6 text-white overflow-hidden shadow-xl min-h-[220px] flex flex-col justify-end border border-slate-100/20 text-left"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800"
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"
+              ></div>
+              <div class="relative z-10 text-left">
+                <span
+                  class="inline-block px-2.5 py-1 bg-white/20 rounded-full text-[8px] font-bold uppercase tracking-[0.2em] border border-white/30 mb-3 font-black"
+                  >Geosite Utama</span
+                >
+                <h3
+                  class="text-2xl font-black leading-tight mb-1 tracking-tighter text-left"
+                >
+                  Watu Kelir
+                </h3>
+                <p
+                  class="text-[10px] text-slate-200 font-medium mb-4 line-clamp-2 text-left"
+                >
+                  Lantai samudra purba terangkat 120 juta tahun lalu.
+                </p>
+                <a
+                  href="situswatukelir.html"
+                  class="inline-flex items-center gap-2 bg-white text-slate-900 px-4 py-2.5 rounded-xl text-[10px] font-black text-left"
+                  >Jelajahi
+                  <i data-lucide="arrow-right" class="w-3 h-3 text-left"></i
+                ></a>
+              </div>
+            </div>
+            <div
+              class="snap-center shrink-0 w-[85%] relative rounded-[2rem] p-6 text-white overflow-hidden shadow-xl min-h-[220px] flex flex-col justify-end border border-slate-100/20 text-left"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=800"
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"
+              ></div>
+              <div class="relative z-10 text-left">
+                <span
+                  class="inline-block px-2.5 py-1 bg-white/20 rounded-full text-[8px] font-bold uppercase tracking-[0.2em] border border-white/30 mb-3 font-black text-left"
+                  >Biosite</span
+                >
+                <h3
+                  class="text-2xl font-black leading-tight mb-1 tracking-tighter text-left"
+                >
+                  Penyu Kaliratu
+                </h3>
+                <p
+                  class="text-[10px] text-slate-200 font-medium mb-4 line-clamp-2 text-left"
+                >
+                  Pusat konservasi penyu lekang selatan.
+                </p>
+                <a
+                  href="situspantaikaliratu.html"
+                  class="inline-flex items-center gap-2 bg-white text-slate-900 px-4 py-2.5 rounded-xl text-[10px] font-black text-left"
+                  >Jelajahi
+                  <i data-lucide="arrow-right" class="w-3 h-3 text-left"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MENU CEPAT -->
+        <section class="grid grid-cols-2 gap-4 mb-10 text-center text-left">
+          <button
+            onclick="switchView('map')"
+            class="flex flex-col items-center gap-2 group text-left text-left"
+          >
+            <div
+              class="w-full h-16 bg-blue-500 rounded-2xl shadow-lg flex items-center justify-center text-white active:scale-95 transition-transform text-left text-left"
+            >
+              <i data-lucide="map" class="w-7 h-7 text-left text-left"></i>
+            </div>
+            <span
+              class="text-[10px] font-black text-slate-500 uppercase tracking-widest text-left"
+              >Peta Geo</span
+            >
+          </button>
+          <button
+            onclick="startScanner()"
+            class="flex flex-col items-center gap-2 group text-left text-left"
+          >
+            <div
+              class="w-full h-16 bg-sky-400 rounded-2xl shadow-lg flex items-center justify-center text-white active:scale-95 transition-transform text-left text-left"
+            >
+              <i data-lucide="camera" class="w-7 h-7 text-left text-left"></i>
+            </div>
+            <span
+              class="text-[10px] font-black text-slate-500 uppercase tracking-widest font-black text-left"
+              >Scan Geo</span
+            >
+          </button>
+        </section>
+      </div>
+
+      <!-- VIEW: MAP -->
+      <div
+        id="view-map"
+        class="view-container hidden px-5 pt-8 text-left pb-10"
+      >
+        <div class="flex items-center gap-4 mb-6 text-left">
+          <button
+            onclick="switchView('home')"
+            class="bg-white p-3 border border-slate-200 rounded-2xl shadow-sm text-left"
+          >
+            <i
+              data-lucide="arrow-left"
+              class="w-5 h-5 text-slate-700 text-left"
+            ></i>
+          </button>
+          <div class="text-left">
+            <h2
+              class="text-2xl font-black text-slate-800 tracking-tight leading-none text-left text-left"
+            >
+              Peta Geosite
+            </h2>
+            <p
+              class="text-[10px] font-bold text-sky-600 uppercase tracking-widest mt-1 font-black text-left"
+            >
+              Kebumen Geopark Network
+            </p>
+          </div>
+        </div>
+        <div
+          class="w-full h-[65vh] bg-slate-200 rounded-[2.5rem] overflow-hidden shadow-lg relative z-10 text-left"
+        >
+          <div id="interactive-map" class="w-full h-full text-left"></div>
+        </div>
+      </div>
+
+      <!-- VIEW: PROFILE -->
+      <div
+        id="view-profile"
+        class="view-container hidden px-5 pt-8 text-left pb-20"
+      >
+        <h2
+          class="text-2xl font-black text-slate-800 tracking-tight mb-6 uppercase text-left"
+        >
+          Profil Penjelajah
+        </h2>
+        <div
+          class="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm text-center mb-8"
+        >
+          <div
+            class="w-28 h-28 bg-sky-100 rounded-full mx-auto mb-4 border-4 border-white shadow-xl flex items-center justify-center overflow-hidden transition-all duration-700 text-left text-left"
+          >
+            <img
+              id="profile-avatar"
+              src=""
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <h3
+            id="profile-name"
+            class="text-xl font-black text-slate-800 uppercase tracking-tight text-center text-left"
+          >
+            USER
+          </h3>
+          <p
+            id="profile-rank-badge"
+            class="mt-2 inline-flex items-center gap-2 bg-sky-100 text-sky-600 text-[10px] font-black px-4 py-1.5 rounded-full uppercase border border-sky-200 text-left text-left"
+          >
+            <i
+              id="rank-icon-profile"
+              data-lucide="medal"
+              class="w-3.5 h-3.5 text-left text-left text-left"
+            ></i
+            ><span id="rank-text-profile">Level: Pemula</span>
+          </p>
+          <div
+            class="grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-slate-50 text-center text-left"
+          >
+            <div class="text-left text-center">
+              <p
+                class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 text-center"
+              >
+                Total Lencana
+              </p>
+              <p
+                id="profile-badge-count"
+                class="text-2xl font-black text-slate-800 leading-none text-center"
+              >
+                0
+              </p>
+            </div>
+            <div class="text-left text-center">
+              <p
+                class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 font-black text-center"
+              >
+                Target
+              </p>
+              <p
+                id="profile-next-target"
+                class="text-2xl font-black text-sky-500 leading-none text-center"
+              >
+                10
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4
+            class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4 mb-2"
+          >
+            PENGATURAN AKUN
+          </h4>
+          <button
+            onclick="resetBadges()"
+            class="w-full bg-white text-slate-700 font-bold py-5 px-6 rounded-3xl border border-slate-200 flex items-center justify-between active:scale-95 transition-all shadow-sm text-left"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center text-sky-600"
+              >
+                <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+              </div>
+              <div class="text-left">
+                <p class="text-sm font-black uppercase tracking-tight">
+                  Mulai Dari Awal
+                </p>
+                <p class="text-[9px] text-slate-400 font-black text-left">
+                  Hapus semua lencana
+                </p>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-300"></i>
+          </button>
+
+          <button
+            onclick="showLogoutModal()"
+            class="w-full bg-red-50 text-red-600 font-bold py-5 px-6 rounded-3xl border border-red-100 flex items-center justify-between active:scale-95 text-left transition-all shadow-sm"
+          >
+            <div class="flex items-center gap-4 text-left">
+              <div
+                class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center text-red-600 text-left"
+              >
+                <i data-lucide="log-out" class="w-5 h-5 text-left"></i>
+              </div>
+              <div class="text-left">
+                <p
+                  class="text-sm font-black uppercase tracking-tight text-left"
+                >
+                  Keluar Sesi
+                </p>
+                <p class="text-[9px] text-red-400 font-black text-left">
+                  Ganti Nama Penjelajah
+                </p>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-5 h-5 text-red-300"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Scanner Overlay -->
+    <div
+      id="scanner-overlay"
+      class="fixed inset-0 z-[200] bg-black hidden flex flex-col text-left"
+    >
+      <div id="qr-reader" class="w-full h-full relative text-left"></div>
+      <div class="scanner-line"></div>
+      <button
+        onclick="stopScanner()"
+        class="absolute top-10 right-10 w-14 h-14 bg-white/20 backdrop-blur-xl border border-white/30 rounded-full flex items-center justify-center text-white z-[210] active:scale-90 text-left text-left"
+      >
+        <i data-lucide="x" class="w-8 h-8 text-left"></i>
+      </button>
+      <div class="absolute bottom-20 left-0 right-0 z-[210] px-10 text-center">
+        <div
+          class="bg-black/40 backdrop-blur-md border border-white/20 p-4 rounded-2xl"
+        >
+          <p
+            class="text-white text-xs font-black uppercase tracking-widest text-center text-center"
+          >
+            Pindai Kode QR Situs
+          </p>
+          <p class="text-white/60 text-[9px] mt-1 text-center text-center">
+            Arahkan kamera ke tanda informasi Geopark
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div
+      id="bottom-nav"
+      class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[85%] max-w-[360px] z-[120] hidden text-left"
+    >
+      <nav
+        class="bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl py-3 px-10 flex justify-between items-center border border-slate-200/50 text-left text-left"
+      >
+        <button
+          onclick="switchView('home')"
+          id="nav-btn-home"
+          class="flex flex-col items-center gap-1 text-sky-600 transition-colors text-left text-left"
+        >
+          <i data-lucide="home" class="w-6 h-6 text-left"></i
+          ><span class="text-[9px] font-black uppercase tracking-tighter"
+            >Beranda</span
+          >
+        </button>
+        <button
+          onclick="startScanner()"
+          class="w-16 h-16 bg-sky-400 rounded-full shadow-lg shadow-sky-200 flex items-center justify-center text-white -mt-14 border-4 border-slate-50 active:scale-90 transition-all text-left text-left text-left"
+        >
+          <i data-lucide="qr-code" class="w-8 h-8 text-left"></i>
+        </button>
+        <button
+          onclick="switchView('profile')"
+          id="nav-btn-profile"
+          class="flex flex-col items-center gap-1 text-slate-300 transition-colors text-left text-left text-left"
+        >
+          <i data-lucide="user" class="w-6 h-6 text-left"></i
+          ><span
+            class="text-[9px] font-black uppercase tracking-tighter text-left"
+            >Profil</span
+          >
+        </button>
+      </nav>
+    </div>
+
+    <script>
+      function getRankTheme(count) {
+        if (count >= 50)
+          return {
+            name: "Master Penjelajah",
+            colors: "from-rose-500 to-amber-500",
+            icon: "crown",
+            target: 100,
+            avatar: "https://cdn-icons-png.flaticon.com/512/1995/1995531.png",
+          };
+        if (count >= 35)
+          return {
+            name: "Pakar Geopark",
+            colors: "from-violet-600 to-indigo-700",
+            icon: "gem",
+            target: 50,
+            avatar: "https://cdn-icons-png.flaticon.com/512/2782/2782845.png",
+          };
+        if (count >= 20)
+          return {
+            name: "Penjelajah Aktif",
+            colors: "from-emerald-500 to-teal-600",
+            icon: "shield-check",
+            target: 35,
+            avatar: "https://cdn-icons-png.flaticon.com/512/1995/1995562.png",
+          };
+        if (count >= 10)
+          return {
+            name: "Penjelajah Muda",
+            colors: "from-blue-500 to-indigo-600",
+            icon: "compass",
+            target: 20,
+            avatar: "https://cdn-icons-png.flaticon.com/512/2829/2829835.png",
+          };
+        return {
+          name: "Pemula",
+          colors: "from-sky-400 to-sky-600",
+          icon: "medal",
+          target: 10,
+          avatar: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+        };
+      }
+
+      // KATEGORI LENCANA LENGKAP (7 Kategori)
+      const badgeData = {
+        // 1. Kategori Pegunungan & Perbukitan (Warna Hijau)
+        watukelir: { icon: "mountain", color: "text-emerald-600" },
+        pentulu: { icon: "mountain", color: "text-emerald-600" },
+        pegunungan: { icon: "mountain", color: "text-emerald-600" },
+
+        // 2. Kategori Pantai & Laut (Warna Biru)
+        kaliratu: { icon: "waves", color: "text-blue-500" },
+        menganti: { icon: "waves", color: "text-blue-500" },
+        kembar: { icon: "waves", color: "text-blue-500" },
+        pantai: { icon: "waves", color: "text-blue-500" },
+
+        // 3. Kategori Gua & Karst (Warna Ungu)
+        goabarat: { icon: "wind", color: "text-purple-500" },
+        jatijajar: { icon: "droplets", color: "text-purple-500" },
+        gua: { icon: "tent", color: "text-purple-500" },
+
+        // 4. Kategori Koleksi Batuan (Warna Merah/Permata)
+        rijang: { icon: "gem", color: "text-rose-500" },
+        lavabantal: { icon: "gem", color: "text-rose-500" },
+        mika: { icon: "gem", color: "text-rose-500" },
+        batuan: { icon: "gem", color: "text-rose-500" },
+
+        // 5. Kategori Budaya (Warna Emas/Kuning)
+        budaya: { icon: "palette", color: "text-amber-500" },
+        tari: { icon: "music", color: "text-amber-500" },
+        anyaman: { icon: "palette", color: "text-amber-500" },
+
+        // 6. Kategori Kuliner (Warna Oranye)
+        kuliner: { icon: "utensils", color: "text-orange-500" },
+        lanting: { icon: "utensils", color: "text-orange-500" },
+        sateamabal: { icon: "utensils", color: "text-orange-500" },
+
+        // 7. Kategori Sejarah (Warna Cokelat/Batu)
+        sejarah: { icon: "landmark", color: "text-stone-600" },
+        benteng: { icon: "landmark", color: "text-stone-600" },
+        pabrik: { icon: "landmark", color: "text-stone-600" },
+      };
+
+      let html5QrCode = null;
+      let geoMap = null;
+
+      window.addEventListener("pageshow", (event) => {
+        const u = localStorage.getItem("geo_user");
+        if (u) {
+          initUserData(u);
+          if (
+            document.getElementById("view-home").classList.contains("hidden") &&
+            document.getElementById("view-login").classList.contains("flex")
+          ) {
+            switchView("home");
+          } else {
+            loadBadges();
+          }
+        } else {
+          switchView("login");
+        }
+      });
+
+      function handleLogin() {
+        const nameEl = document.getElementById("login-name");
+        const name = nameEl ? nameEl.value.trim() : "";
+        if (!name) return;
+        localStorage.setItem("geo_user", name);
+        initUserData(name);
+        switchView("home");
+      }
+
+      function initUserData(name) {
+        const sub = document.getElementById("txt-greeting-sub");
+        if (sub) sub.innerText = `HALO, ${name.toUpperCase()}!`;
+        const profileName = document.getElementById("profile-name");
+        if (profileName) profileName.innerText = name;
+        loadBadges();
+      }
+
+      function loadBadges() {
+        const unlocked = JSON.parse(localStorage.getItem("geo_badges") || "[]");
+        const count = unlocked.length;
+        const theme = getRankTheme(count);
+
+        const card = document.getElementById("passport-card");
+        if (card)
+          card.className = `bg-gradient-to-r ${theme.colors} rounded-3xl p-6 text-white shadow-xl relative overflow-hidden transition-all duration-700`;
+
+        const mainIcon = document.getElementById("rank-icon-main");
+        if (mainIcon) mainIcon.setAttribute("data-lucide", theme.icon);
+
+        const badgeCountEl = document.getElementById("badge-count");
+        if (badgeCountEl) badgeCountEl.innerText = `${count}/${theme.target}`;
+
+        const progressEl = document.getElementById("passport-progress");
+        if (progressEl)
+          progressEl.style.width = `${(count / theme.target) * 100}%`;
+
+        const profileBadgeEl = document.getElementById("profile-badge-count");
+        if (profileBadgeEl) profileBadgeEl.innerText = count;
+
+        const profileTargetEl = document.getElementById("profile-next-target");
+        if (profileTargetEl) profileTargetEl.innerText = theme.target;
+
+        const rankTextEl = document.getElementById("rank-text");
+        if (rankTextEl) rankTextEl.innerText = theme.name;
+
+        const rankTextProfileEl = document.getElementById("rank-text-profile");
+        if (rankTextProfileEl)
+          rankTextProfileEl.innerText = `Level: ${theme.name}`;
+
+        const iconProfileEl = document.getElementById("rank-icon-profile");
+        if (iconProfileEl)
+          iconProfileEl.setAttribute("data-lucide", theme.icon);
+
+        const iconSmallEl = document.getElementById("rank-icon-small");
+        if (iconSmallEl) iconSmallEl.setAttribute("data-lucide", theme.icon);
+
+        const homeAvatar = document.getElementById("home-avatar");
+        if (homeAvatar) homeAvatar.src = theme.avatar;
+        const profileAvatar = document.getElementById("profile-avatar");
+        if (profileAvatar) profileAvatar.src = theme.avatar;
+
+        const container = document.getElementById("badge-container");
+        if (container) {
+          container.innerHTML = "";
+          for (let i = 0; i < theme.target; i++) {
+            if (i < count) {
+              const b = badgeData[unlocked[i]] || {
+                icon: "award",
+                color: "text-amber-500",
+              };
+              container.innerHTML += `<div class="w-12 h-12 shrink-0 bg-white rounded-full flex items-center justify-center shadow-md border border-amber-200 snap-center animate-bounce-slow"><i data-lucide="${b.icon}" class="w-6 h-6 ${b.color}"></i></div>`;
+            } else {
+              container.innerHTML += `<div class="w-12 h-12 shrink-0 bg-white/20 rounded-full flex items-center justify-center border border-white/30 backdrop-blur-sm snap-center"><i data-lucide="lock" class="w-5 h-5 text-white/40"></i></div>`;
+            }
+          }
+        }
+        lucide.createIcons();
+      }
+
+      function switchView(view) {
+        ["login", "home", "map", "profile"].forEach((v) => {
+          const el = document.getElementById(`view-${v}`);
+          if (el) el.classList.add("hidden");
+        });
+        const targetView = document.getElementById(`view-${view}`);
+        if (targetView) targetView.classList.remove("hidden");
+
+        const header = document.getElementById("main-header");
+        if (header) header.classList.toggle("hidden", view === "login");
+
+        const nav = document.getElementById("bottom-nav");
+        if (nav) nav.classList.toggle("hidden", view === "login");
+
+        const btnHome = document.getElementById("nav-btn-home");
+        const btnProfile = document.getElementById("nav-btn-profile");
+
+        if (btnHome)
+          btnHome.className =
+            "flex flex-col items-center gap-1 text-slate-300 transition-colors";
+        if (btnProfile)
+          btnProfile.className =
+            "flex flex-col items-center gap-1 text-slate-300 transition-colors";
+
+        if (view === "home" && btnHome)
+          btnHome.classList.replace("text-slate-300", "text-sky-600");
+        else if (view === "profile" && btnProfile)
+          btnProfile.classList.replace("text-slate-300", "text-sky-600");
+
+        if (view === "map") setTimeout(initMap, 200);
+        window.scrollTo(0, 0);
+      }
+
+      function initMap() {
+        if (geoMap) {
+          geoMap.invalidateSize();
+          return;
+        }
+        geoMap = L.map("interactive-map").setView([-7.6333, 109.65], 11);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+          geoMap,
+        );
+      }
+
+      async function startScanner() {
+        if (
+          html5QrCode &&
+          (html5QrCode.getState() === 2 || html5QrCode.getState() === 3)
+        ) {
+          try {
+            await html5QrCode.stop();
+          } catch (e) {}
+        }
+
+        const overlay = document.getElementById("scanner-overlay");
+        if (overlay) overlay.classList.remove("hidden");
+
+        html5QrCode = new Html5Qrcode("qr-reader");
+
+        // Peningkatan Responsivitas: Konfigurasi Box dinamis dan FPS tinggi
+        const qrboxFunction = (viewfinderWidth, viewfinderHeight) => {
+          let minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+          let qrboxSize = Math.floor(minEdge * 0.7);
+          return {
+            width: qrboxSize,
+            height: qrboxSize,
+          };
+        };
+
+        const config = {
+          fps: 25, // Ditingkatkan dari 10 ke 25 untuk deteksi lebih instan
+          qrbox: qrboxFunction,
+          aspectRatio: 1.0,
+          videoConstraints: {
+            facingMode: "environment",
+            focusMode: "continuous", // Fokus otomatis jika didukung browser
+          },
+        };
+
+        try {
+          await html5QrCode.start(
+            { facingMode: "environment" },
+            config,
+            (txt) => {
+              stopScanner();
+              const lowerText = txt.toLowerCase();
+              if (!txt.startsWith("http")) {
+                if (lowerText.includes("watukelir"))
+                  window.location.href = "situswatukelir.html";
+                else if (lowerText.includes("kaliratu"))
+                  window.location.href = "situspantaikaliratu.html";
+                else if (lowerText.includes("pentulu"))
+                  window.location.href = "situs_pentulu.html";
+                else window.location.href = txt;
+              } else {
+                window.location.href = txt;
+              }
+            },
+          );
+        } catch (e) {
+          console.error("Gagal memulai scanner:", e);
+        }
+      }
+
+      function stopScanner() {
+        const overlay = document.getElementById("scanner-overlay");
+        if (
+          html5QrCode &&
+          (html5QrCode.getState() === 2 || html5QrCode.getState() === 3)
+        ) {
+          html5QrCode.stop().finally(() => {
+            if (overlay) overlay.classList.add("hidden");
+            html5QrCode.clear();
+          });
+        } else {
+          if (overlay) overlay.classList.add("hidden");
+        }
+      }
+
+      function showLogoutModal() {
+        if (confirm("Yakin ingin keluar sesi?")) {
+          localStorage.removeItem("geo_user");
+          localStorage.removeItem("geo_avatar");
+          window.location.reload();
+        }
+      }
+
+      function resetBadges() {
+        if (confirm("Hapus semua lencana dan mulai dari awal?")) {
+          localStorage.removeItem("geo_badges");
+          window.location.reload();
+        }
+      }
+    </script>
+  </body>
+</html>

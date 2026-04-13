@@ -1,0 +1,977 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geo-Scan - Tari Cepetan (Warisan Budaya)</title>
+    <!-- Tailwind & Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- LIBRARY UNTUK VIRTUAL TOUR 360 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: #f8fafc;
+        overflow-x: hidden;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      @keyframes popIn {
+        0% {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .animate-popIn {
+        animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+
+      @keyframes progress {
+        0% {
+          width: 0%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+      .animate-progress {
+        animation: progress 30s linear infinite;
+      }
+
+      #panorama {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900 pb-24 text-left">
+    <!-- Header dengan Logo yang sudah dikembalikan -->
+    <header
+      class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-50 px-4 py-3 flex justify-between items-center shadow-sm"
+    >
+      <div class="flex items-center gap-3 text-left">
+        <button
+          onclick="window.history.back()"
+          class="p-2 bg-slate-100 rounded-full transition-transform active:scale-90"
+        >
+          <i data-lucide="arrow-left" class="w-4 h-4 text-slate-600"></i>
+        </button>
+        <!-- Logo dikembalikan di sini -->
+        <img
+          src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+          class="w-10 h-10 object-contain"
+          alt="Logo Geopark"
+        />
+        <div>
+          <h1
+            class="text-sm font-black leading-tight uppercase tracking-tight text-slate-800"
+          >
+            GEO-SCAN
+          </h1>
+          <p
+            class="text-[9px] text-sky-600 uppercase tracking-widest font-bold"
+          >
+            Jelajah Budaya
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span
+          class="bg-amber-50 text-amber-600 text-[9px] font-bold px-2 py-1 rounded-md border border-amber-100 uppercase font-black tracking-tighter"
+          >Warisan Budaya</span
+        >
+      </div>
+    </header>
+
+    <!-- Modal Badge Gamifikasi (Kategori Budaya - Amber) -->
+    <div
+      id="badge-popup"
+      class="fixed top-24 inset-x-0 mx-auto z-[100] w-[90%] max-w-sm bg-white rounded-3xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-2 border-amber-400 flex items-center gap-4 animate-popIn"
+    >
+      <div
+        class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center shrink-0 border border-amber-100 shadow-inner"
+      >
+        <i data-lucide="palette" class="w-8 h-8 text-amber-600"></i>
+      </div>
+      <div class="text-left flex-1">
+        <p
+          class="text-[10px] font-black text-amber-600 uppercase tracking-[0.2em] mb-0.5"
+        >
+          Lencana Terbuka!
+        </p>
+        <p class="text-base font-black text-slate-800 leading-tight">
+          Tari Cepetan
+        </p>
+        <p class="text-[10px] text-slate-400 font-medium italic">
+          Tersimpan di Geo-Passport
+        </p>
+      </div>
+      <button
+        onclick="document.getElementById('badge-popup').style.display = 'none'"
+        class="p-1 text-slate-300 hover:text-slate-500 transition-colors"
+      >
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <main>
+      <!-- Hero Area -->
+      <div class="relative h-80 bg-slate-800 overflow-hidden text-left">
+        <img
+          src="https://images.unsplash.com/photo-1547333590-47fae5f58d21?auto=format&fit=crop&q=80&w=1000"
+          class="absolute inset-0 w-full h-full object-cover opacity-70"
+          alt="Tari Cepetan"
+        />
+
+        <div
+          class="absolute bottom-20 left-5 right-5 text-white z-10 text-left"
+        >
+          <span
+            class="bg-amber-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest mb-2 inline-block shadow-md font-black italic text-left"
+            >Kesenian Rakyat Karangsambung</span
+          >
+          <h2
+            class="text-3xl font-black leading-none mb-1 drop-shadow-lg uppercase tracking-tight text-left text-left"
+          >
+            Tari Cepetan
+          </h2>
+          <p
+            class="text-xs font-medium tracking-widest text-slate-200 flex items-center gap-1 drop-shadow-md text-left"
+          >
+            <i data-lucide="music" class="w-3 h-3 text-amber-400"></i> Warisan:
+            Seni Topeng Kayu
+          </p>
+        </div>
+
+        <div class="absolute bottom-5 left-5 right-5 z-20 text-left">
+          <button
+            onclick="openVR()"
+            class="w-full bg-white/20 backdrop-blur-xl border border-white/40 text-white rounded-2xl py-3 px-4 flex items-center justify-between shadow-2xl active:scale-95 transition-all text-left"
+          >
+            <div class="flex items-center gap-3 text-left">
+              <div class="bg-amber-500 p-2 rounded-xl shadow-lg">
+                <i data-lucide="view" class="w-5 h-5 text-white"></i>
+              </div>
+              <div class="text-left text-white text-left">
+                <p
+                  class="text-sm font-black uppercase tracking-tight leading-none mb-1"
+                >
+                  Virtual Galeri 360°
+                </p>
+                <p
+                  class="text-[9px] font-medium opacity-80 uppercase tracking-widest font-black text-left"
+                >
+                  Sentuh & Jelajahi Seni
+                </p>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-5 h-5 text-white"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Navigasi -->
+      <div class="px-5 mt-6 text-left">
+        <div
+          class="flex gap-4 border-b border-slate-200 overflow-x-auto pb-2 hide-scrollbar text-left text-left text-left"
+        >
+          <button
+            onclick="switchTab('edu')"
+            id="tab-edu"
+            class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-amber-600 border-b-2 border-amber-600 transition-all text-left"
+          >
+            Makna Seni
+          </button>
+          <button
+            onclick="switchTab('origin')"
+            id="tab-origin"
+            class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-slate-400 transition-all text-left text-left"
+          >
+            Sejarah Asal
+          </button>
+          <button
+            onclick="switchTab('kids')"
+            id="tab-kids"
+            class="whitespace-nowrap pb-1 text-xs font-black uppercase tracking-widest text-slate-400 transition-all flex items-center gap-1 text-left"
+          >
+            Geo-Kids <i data-lucide="smile" class="w-3 h-3 text-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- KONTEN TABS -->
+      <div class="px-5 mt-6 space-y-8 pb-10 text-left">
+        <!-- 1. VIEW EDU -->
+        <div id="view-edu" class="space-y-8 block text-left">
+          <section class="text-left">
+            <h3
+              class="font-black text-lg text-slate-800 mb-3 flex items-center gap-2 uppercase tracking-tight text-left"
+            >
+              <i
+                data-lucide="feather"
+                class="w-5 h-5 text-amber-600 text-left"
+              ></i>
+              Filosofi Topeng Kayu
+            </h3>
+            <div
+              class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-left"
+            >
+              <p
+                class="text-sm text-slate-700 leading-relaxed font-medium text-left"
+              >
+                Tari Cepetan adalah seni pertunjukan magis dan unik dari
+                Kebumen, khususnya daerah Karanggayam dan Karangsambung. Nama
+                "Cepetan" berasal dari kata "Cepet", yang berarti mahluk halus
+                atau dedemit penjaga hutan. Tarian ini menampilkan penari dengan
+                topeng kayu yang menyeramkan namun memiliki makna yang sangat
+                dalam bagi masyarakat.
+              </p>
+              <div class="space-y-3 pt-2 text-left">
+                <div
+                  class="flex items-start gap-3 bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left"
+                >
+                  <div class="p-2 bg-amber-500 rounded-lg text-white text-left">
+                    <i data-lucide="users" class="w-4 h-4 text-white"></i>
+                  </div>
+                  <div class="text-left text-left">
+                    <p
+                      class="text-xs font-black text-amber-800 uppercase tracking-tight text-left"
+                    >
+                      Kearifan Lokal
+                    </p>
+                    <p
+                      class="text-[11px] text-amber-700 leading-snug text-left text-left"
+                    >
+                      Tarian ini bukan sekadar hiburan, melainkan ritual tolak
+                      bala dan pengingat warga untuk terus menjaga kelestarian
+                      hutan dan bukit-bukit di kawasan Karangsambung agar
+                      terhindar dari bencana.
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-start gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left"
+                >
+                  <div class="p-2 bg-slate-500 rounded-lg text-white text-left">
+                    <i data-lucide="palette" class="w-4 h-4 text-white"></i>
+                  </div>
+                  <div class="text-left">
+                    <p
+                      class="text-xs font-black text-slate-800 uppercase tracking-tight text-left"
+                    >
+                      Pahat Tangan
+                    </p>
+                    <p class="text-[11px] text-slate-700 leading-snug">
+                      Setiap topeng dipahat secara manual menggunakan kayu Pule
+                      atau kayu randu pilihan dari lereng bukit lokal, dicat
+                      dengan warna-warna tegas seperti merah, hitam, dan putih.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- AUDIO PENDAMPING BELAJAR -->
+          <section
+            class="bg-slate-900 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden text-left"
+          >
+            <div
+              class="relative z-10 flex justify-between items-center text-left"
+            >
+              <div class="flex items-center gap-4 text-left">
+                <button
+                  onclick="handleAudioPlay()"
+                  id="audio-btn"
+                  class="bg-white text-slate-900 p-3 rounded-full shadow-lg active:scale-95 transition-transform flex items-center justify-center text-left text-left"
+                >
+                  <i
+                    id="audio-icon"
+                    data-lucide="play"
+                    class="w-5 h-5 fill-current text-slate-800"
+                  ></i>
+                </button>
+                <div class="text-left">
+                  <h4
+                    class="font-bold text-sm tracking-tight text-left text-left"
+                  >
+                    Dengarkan Cerita Budaya
+                  </h4>
+                  <p
+                    id="audio-status"
+                    class="text-[10px] opacity-60 uppercase font-bold tracking-tighter text-left"
+                  >
+                    Kisah Rahasia Topeng Cepetan
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              id="audio-progress-container"
+              class="absolute bottom-0 left-0 right-0 h-1 bg-amber-500/30 hidden text-left"
+            >
+              <div class="h-full bg-amber-500 animate-progress text-left"></div>
+            </div>
+          </section>
+
+          <!-- RINGKASAN TEKNIS LENGKAP -->
+          <section
+            class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left"
+          >
+            <h4
+              class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 italic text-left"
+            >
+              Data Warisan Budaya Cepetan
+            </h4>
+            <div class="grid grid-cols-2 gap-4 text-left text-left">
+              <div class="text-left">
+                <p
+                  class="text-[9px] font-bold text-slate-400 uppercase text-left text-left"
+                >
+                  Kategori
+                </p>
+                <p
+                  class="text-xs font-black text-slate-700 uppercase text-left"
+                >
+                  Seni Pertunjukan
+                </p>
+              </div>
+              <div class="text-left">
+                <p
+                  class="text-[9px] font-bold text-slate-400 uppercase text-left text-left"
+                >
+                  Properti Utama
+                </p>
+                <p class="text-xs font-black text-slate-700 text-left">
+                  Topeng Kayu Pule
+                </p>
+              </div>
+              <div class="text-left text-left">
+                <p
+                  class="text-[9px] font-bold text-slate-400 uppercase text-left text-left"
+                >
+                  Iringan Musik
+                </p>
+                <p
+                  class="text-xs font-black text-slate-700 text-left text-left text-left"
+                >
+                  Kentongan & Gamelan
+                </p>
+              </div>
+              <div class="text-left">
+                <p
+                  class="text-[9px] font-bold text-slate-400 uppercase text-left text-left"
+                >
+                  Makna Tarian
+                </p>
+                <p
+                  class="text-xs font-black text-slate-700 text-left text-left text-left"
+                >
+                  Tolak Bala & Semangat
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- 2. VIEW ASAL USUL -->
+        <div
+          id="view-origin"
+          class="hidden space-y-6 text-left relative before:absolute before:w-1 before:h-full before:bg-slate-200 before:left-[19px] py-4 text-left text-left"
+        >
+          <div class="relative pl-14 pb-8 text-left text-left text-left">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-red-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left"
+            >
+              <i data-lucide="shield" class="w-5 text-white"></i>
+            </div>
+            <h4
+              class="text-[10px] font-black text-red-600 uppercase tracking-widest mb-1 text-left"
+            >
+              Langkah 1: Taktik Perjuangan
+            </h4>
+            <p class="text-sm font-black text-slate-800 uppercase text-left">
+              Menakuti Penjajah (Era Kolonial)
+            </p>
+            <p
+              class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left text-left"
+            >
+              Sejarah bermula dari kecerdasan warga Karanggayam yang membuat
+              topeng dedemit (mahluk halus) dari kayu. Tujuannya untuk
+              menakut-nakuti pasukan Belanda yang berniat merambah hutan dan
+              menjajah desa mereka.
+            </p>
+          </div>
+          <div class="relative pl-14 pb-8 text-left text-left text-left">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-amber-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left"
+            >
+              <i data-lucide="wheat" class="w-5 text-white"></i>
+            </div>
+            <h4
+              class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1 text-left"
+            >
+              Langkah 2: Simbol Agraris
+            </h4>
+            <p class="text-sm font-black text-slate-800 uppercase text-left">
+              Ritual Tolak Bala
+            </p>
+            <p
+              class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left text-left"
+            >
+              Setelah Indonesia merdeka, tarian ini beralih fungsi menjadi
+              kesenian rakyat yang sering dipentaskan saat musim panen atau
+              kemarau panjang, sebagai doa penolak bala dan hama penyakit
+              tanaman.
+            </p>
+          </div>
+          <div class="relative pl-14 text-left text-left text-left">
+            <div
+              class="absolute left-0 top-0 w-10 h-10 bg-sky-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-white text-left"
+            >
+              <i
+                data-lucide="heart"
+                class="w-5 text-white text-left text-left"
+              ></i>
+            </div>
+            <h4
+              class="text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 text-left text-left"
+            >
+              Langkah 3: Masa Sekarang
+            </h4>
+            <p
+              class="text-sm font-black text-slate-800 uppercase font-black text-left text-left"
+            >
+              Ikon Budaya Geopark
+            </p>
+            <p
+              class="text-xs text-slate-500 mt-2 leading-relaxed font-medium text-left"
+            >
+              Kini Tari Cepetan menjadi kebanggaan seni pertunjukan Kebumen yang
+              dipelajari anak-anak muda dan dipentaskan di festival-festival
+              budaya Geopark berskala internasional.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3. VIEW GEO-KIDS -->
+        <div
+          id="view-kids"
+          class="space-y-6 hidden text-left text-left text-left text-left"
+        >
+          <div
+            class="bg-gradient-to-b from-amber-300 to-amber-500 rounded-[2.5rem] p-6 text-white text-center shadow-lg relative overflow-hidden text-left border border-amber-200"
+          >
+            <i
+              data-lucide="music"
+              class="absolute top-4 left-4 w-8 h-8 text-white/40 animate-pulse text-left text-left"
+            ></i>
+            <i
+              data-lucide="star"
+              class="absolute top-10 right-4 w-6 h-6 text-white/30 animate-bounce text-left text-left"
+            ></i>
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3295/3295964.png"
+              class="w-20 h-20 mx-auto mb-4 drop-shadow-xl"
+              alt="Mascot"
+            />
+            <h3
+              class="font-black text-2xl uppercase tracking-tighter mb-2 drop-shadow-md text-center"
+            >
+              Halo Penari Cilik!
+            </h3>
+            <p
+              class="text-sm font-medium leading-relaxed bg-white/20 p-3 rounded-xl border border-white/30 text-center text-left text-left text-left text-left"
+            >
+              Ayo lihat serunya gerakan tari menggunakan topeng lucu! Kamu akan
+              belajar tentang persatuan. Klik tombol di bawah ya!
+            </p>
+          </div>
+
+          <button
+            onclick="openAnimation()"
+            class="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black uppercase tracking-widest py-5 rounded-2xl shadow-xl shadow-yellow-100 border-b-4 border-yellow-600 active:scale-95 active:border-b-0 transition-all text-center flex items-center justify-center gap-2"
+          >
+            <i
+              data-lucide="play-circle"
+              class="w-6 h-6 text-yellow-900 text-left text-left"
+            ></i>
+            Tonton Video Tari Cepetan
+          </button>
+        </div>
+
+        <!-- LOGO DUKUNGAN -->
+        <div
+          class="pt-10 pb-4 border-t border-slate-200 text-center text-left text-left text-left"
+        >
+          <p
+            class="text-[9px] font-bold text-slate-400 uppercase mb-4 tracking-[0.2em] text-center font-black"
+          >
+            Pelestari Budaya Geopark
+          </p>
+          <div
+            class="flex justify-around items-center gap-6 flex-wrap px-4 text-left"
+          >
+            <img
+              src="https://kebumengeopark.id/wp-content/uploads/2025/09/cropped-e446a7e3bfdda552d60815cf77fcb2f6-removebg-preview.png"
+              class="h-10 object-contain text-left"
+              alt="Kebumen Geopark"
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/7/71/Lambang_Kabupaten_Kebumen.jpg"
+              class="h-10 object-contain text-left"
+              alt="Pemkab Kebumen"
+            />
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6NiLBrpE5XvpewWqMsu-BadPFEvnO0XbdA&s"
+              class="h-10 object-contain text-left"
+              alt="Kemenparekraf"
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Logo_Pesona_Indonesia_%28Kementerian_Pariwisata%29.png"
+              class="h-10 object-contain text-left"
+              alt="Pesona Indonesia"
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Logo_UNESCO_2021.svg/1280px-Logo_UNESCO_2021.svg.png"
+              class="h-8 object-contain text-left"
+              alt="UNESCO"
+            />
+          </div>
+          <div class="mt-8 text-center text-left text-left">
+            <p
+              class="text-[8px] font-medium text-slate-400 tracking-widest uppercase font-black text-center"
+            >
+              © 2026 Badan Pengelola Kebumen Geopark
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Chat FAB -->
+    <button
+      onclick="openChat()"
+      class="fixed bottom-6 right-6 z-[90] bg-slate-900 text-white p-4 rounded-full shadow-2xl active:scale-90 transition-transform border border-white/20 text-left"
+    >
+      <i
+        data-lucide="sparkles"
+        class="w-6 h-6 text-amber-400 animate-pulse text-left"
+      ></i>
+    </button>
+
+    <!-- VR MODAL -->
+    <div
+      id="vr-modal"
+      class="fixed inset-0 z-[200] bg-black hidden flex flex-col text-left"
+    >
+      <div id="panorama"></div>
+      <div
+        class="absolute top-0 left-0 right-0 p-4 flex justify-between items-center bg-gradient-to-b from-black/90 to-transparent pointer-events-none text-left"
+      >
+        <div class="text-white pointer-events-auto text-left">
+          <h3
+            class="font-black text-lg shadow-sm uppercase tracking-tight text-left text-left"
+          >
+            Galeri Seni Topeng 360°
+          </h3>
+          <button
+            onclick="closeVR()"
+            class="bg-white/20 backdrop-blur-md p-2.5 rounded-full text-white pointer-events-auto border border-white/30 active:scale-90 transition-all text-left"
+          >
+            <i data-lucide="x" class="w-6 h-6 text-white text-left"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Chat Gemini -->
+    <div
+      id="chat-modal"
+      class="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm hidden flex flex-col justify-end text-left text-left text-left"
+    >
+      <div
+        class="bg-white rounded-t-[2.5rem] h-[85vh] flex flex-col shadow-2xl border-t border-slate-200 overflow-hidden text-left text-left text-left text-left text-left"
+      >
+        <div
+          class="px-6 py-5 border-b flex justify-between items-center bg-slate-50 text-left text-left text-left text-left"
+        >
+          <div class="flex items-center gap-3 text-left">
+            <div
+              class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 border border-amber-200 text-left"
+            >
+              <i
+                data-lucide="palette"
+                class="w-5 text-amber-600 text-left text-left text-left"
+              ></i>
+            </div>
+            <div class="text-left text-slate-800">
+              <h3
+                class="font-black text-sm uppercase leading-none mb-1 text-left"
+              >
+                Guru Geo AI
+              </h3>
+              <p
+                class="text-[9px] text-emerald-500 font-black uppercase tracking-widest animate-pulse text-left text-left"
+              >
+                Online
+              </p>
+            </div>
+          </div>
+          <button
+            onclick="closeChat()"
+            class="p-2 bg-slate-100 rounded-full transition-colors active:bg-slate-200 text-left text-left text-left"
+          >
+            <i
+              data-lucide="x"
+              class="w-5 h-5 text-slate-400 text-left text-left"
+            ></i>
+          </button>
+        </div>
+        <div
+          id="chat-messages"
+          class="flex-1 p-5 overflow-y-auto flex flex-col gap-4 text-sm text-left leading-relaxed bg-slate-50/50 text-left"
+        >
+          <div
+            class="bg-white p-4 rounded-3xl rounded-tl-sm self-start max-w-[85%] border border-slate-100 shadow-sm text-slate-700 text-left"
+          >
+            Halo! Aku Guru Geo. Penasaran tentang filosofi di balik Tari Cepetan
+            atau cara pembuatan topeng kayunya? Yuk tanya aku!
+          </div>
+        </div>
+        <div class="p-4 border-t bg-white flex gap-2 text-left">
+          <input
+            type="text"
+            id="chat-input"
+            placeholder="Tanya tentang Budaya..."
+            class="flex-1 bg-slate-100 rounded-2xl px-5 py-4 outline-none text-sm font-medium focus:ring-2 focus:ring-amber-400 transition-all text-left"
+            onkeypress="handleKeyPress(event)"
+          />
+          <button
+            onclick="sendChatMessage()"
+            class="w-14 h-14 bg-sky-600 rounded-2xl text-white flex items-center justify-center shadow-lg shadow-sky-200 active:scale-90 transition-all text-left"
+          >
+            <i
+              data-lucide="send"
+              class="w-6 ml-1 text-white text-left text-left text-left text-left"
+            ></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+      const apiKey = "";
+      let isPlaying = false,
+        currentAudio = null;
+
+      // LOGIKA SIMPAN BADGE OTOMATIS (SINKRONISASI PASPOR)
+      function saveBadge() {
+        const siteId = "budaya";
+        let unlocked = JSON.parse(localStorage.getItem("geo_badges") || "[]");
+        if (!unlocked.includes(siteId)) {
+          unlocked.push(siteId);
+          localStorage.setItem("geo_badges", JSON.stringify(unlocked));
+        } else {
+          const popup = document.getElementById("badge-popup");
+          if (popup) popup.style.display = "none";
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", saveBadge);
+
+      setTimeout(() => {
+        const popup = document.getElementById("badge-popup");
+        if (popup) {
+          popup.style.opacity = "0";
+          popup.style.transition = "opacity 0.5s ease";
+          setTimeout(() => (popup.style.display = "none"), 500);
+        }
+      }, 4000);
+
+      const localResponses = {
+        apa: "Tari Cepetan adalah kesenian tradisional Kebumen yang penarinya menggunakan topeng kayu seram tapi sebenarnya untuk tujuan yang baik lho, yaitu menjaga alam Karangsambung.",
+        topeng:
+          "Topeng Cepetan mewakili karakter mahluk gaib dan leluhur. Dibuat dengan pahatan tangan dari kayu Pule dan dicat warna merah, hitam, atau putih.",
+        sejarah:
+          "Konon tarian ini dipakai rakyat Kebumen zaman dulu sebagai taktik penyamaran untuk menakuti penjajah Belanda yang ingin merusak hutan leluhur Karangsambung.",
+        musik:
+          "Tarian ini biasanya diiringi oleh alat musik tradisional yang rancak, seperti bende, kendang, dan alat dari bambu yaitu kentongan.",
+        makna:
+          "Maknanya sangat dalam, yaitu mengajarkan kita untuk gotong royong, berani membela tanah air, dan menjaga kelestarian lingkungan agar tidak terjadi bencana.",
+        siapa:
+          "Aku Guru Geo, asisten pintar Geopark Kebumen yang siap menjawab pertanyaanmu!",
+        default:
+          "Wah, pertanyaan budaya yang menarik sekali! Coba tanya tentang 'Bentuk Topeng', 'Sejarah penjajahan', atau 'Alat musiknya' ya!",
+      };
+
+      async function fetchWithRetry(url, options, retries = 5, backoff = 1000) {
+        try {
+          const response = await fetch(url, options);
+          if (!response.ok) throw new Error(response.statusText);
+          return response;
+        } catch (error) {
+          if (retries <= 0) throw error;
+          await new Promise((resolve) => setTimeout(resolve, backoff));
+          return fetchWithRetry(url, options, retries - 1, backoff * 2);
+        }
+      }
+
+      function pcmToWav(pcmData, sampleRate) {
+        const buffer = new ArrayBuffer(44 + pcmData.length * 2),
+          view = new DataView(buffer);
+        const writeString = (v, o, s) => {
+          for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i));
+        };
+        writeString(view, 0, "RIFF");
+        view.setUint32(4, 32 + pcmData.length * 2, true);
+        writeString(view, 8, "WAVE");
+        writeString(view, 12, "fmt ");
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(view, 36, "data");
+        view.setUint32(40, pcmData.length * 2, true);
+        for (let i = 0; i < pcmData.length; i++)
+          view.setInt16(44 + i * 2, pcmData[i], true);
+        return buffer;
+      }
+
+      function speakFallback(text) {
+        if (!window.speechSynthesis) return;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "id-ID";
+        utterance.onstart = () => {
+          document
+            .getElementById("audio-icon")
+            .setAttribute("data-lucide", "pause");
+          document
+            .getElementById("audio-progress-container")
+            .classList.remove("hidden");
+          lucide.createIcons();
+        };
+        utterance.onend = () => stopAudioUI();
+        window.speechSynthesis.speak(utterance);
+      }
+
+      async function handleAudioPlay() {
+        if (isPlaying) {
+          if (currentAudio) currentAudio.pause();
+          if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+          stopAudioUI();
+          return;
+        }
+        const textToRead =
+          "Selamat datang di Jelajah Budaya Kebumen! Pernah dengar Tari Cepetan? Ini adalah tarian yang sangat berani dan keren. Penarinya memakai topeng kayu gagah untuk menjaga hutan Karangsambung. Dulu, topeng ini dipakai warga untuk menakuti penjajah lho! Tarian ini mengajarkan kita tentang sejarah perjuangan, gotong royong, dan kecintaan pada alam Indonesia kita tercinta.";
+        try {
+          isPlaying = true;
+          document.getElementById("audio-status").innerText =
+            "AI sedang merancang suara...";
+          const response = await fetchWithRetry(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [
+                  {
+                    parts: [
+                      {
+                        text:
+                          "Bicaralah sebagai guru seni yang bersemangat: " +
+                          textToRead,
+                      },
+                    ],
+                  },
+                ],
+                generationConfig: {
+                  responseModalities: ["AUDIO"],
+                  speechConfig: {
+                    voiceConfig: {
+                      prebuiltVoiceConfig: { voiceName: "Aoede" },
+                    },
+                  },
+                },
+              }),
+            },
+          );
+          const result = await response.json();
+          const audioPart =
+            result.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+          if (!audioPart) {
+            speakFallback(textToRead);
+            return;
+          }
+          const binaryString = atob(audioPart.data);
+          const pcmData = new Int16Array(binaryString.length / 2);
+          for (let i = 0; i < binaryString.length; i += 2) {
+            pcmData[i / 2] =
+              (binaryString.charCodeAt(i + 1) << 8) |
+              binaryString.charCodeAt(i);
+          }
+          currentAudio = new Audio(
+            URL.createObjectURL(
+              new Blob([pcmToWav(pcmData, 24000)], { type: "audio/wav" }),
+            ),
+          );
+          currentAudio.onplay = () => {
+            document
+              .getElementById("audio-icon")
+              .setAttribute("data-lucide", "pause");
+            document
+              .getElementById("audio-progress-container")
+              .classList.remove("hidden");
+            lucide.createIcons();
+          };
+          currentAudio.onended = () => stopAudioUI();
+          currentAudio.play();
+        } catch (e) {
+          speakFallback(textToRead);
+        }
+      }
+
+      function stopAudioUI() {
+        isPlaying = false;
+        document.getElementById("audio-status").innerText =
+          "Kisah Rahasia Topeng Cepetan";
+        document
+          .getElementById("audio-icon")
+          .setAttribute("data-lucide", "play");
+        document
+          .getElementById("audio-progress-container")
+          .classList.add("hidden");
+        lucide.createIcons();
+      }
+
+      function switchTab(tabId) {
+        ["edu", "origin", "kids"].forEach((id) => {
+          const viewEl = document.getElementById(`view-${id}`);
+          const tabEl = document.getElementById(`tab-${id}`);
+          if (viewEl) viewEl.classList.add("hidden");
+          if (tabEl) {
+            tabEl.classList.remove(
+              "text-amber-600",
+              "border-b-2",
+              "border-amber-600",
+            );
+            tabEl.classList.add("text-slate-400");
+          }
+        });
+        document.getElementById(`view-${tabId}`).classList.remove("hidden");
+        document
+          .getElementById(`tab-${tabId}`)
+          .classList.add("text-amber-600", "border-b-2", "border-amber-600");
+      }
+
+      let viewer = null;
+      function openVR() {
+        document.getElementById("vr-modal").classList.replace("hidden", "flex");
+        if (!viewer) {
+          viewer = pannellum.viewer("panorama", {
+            type: "equirectangular",
+            panorama: "https://pannellum.org/images/alma.jpg",
+            autoLoad: true,
+            autoRotate: -1,
+            showControls: false,
+          });
+        }
+      }
+      function closeVR() {
+        document.getElementById("vr-modal").classList.replace("flex", "hidden");
+      }
+      function openAnimation() {
+        window.open(
+          "https://www.youtube.com/results?search_query=tari+cepetan+kebumen",
+          "_blank",
+        );
+      }
+      function openChat() {
+        document
+          .getElementById("chat-modal")
+          .classList.replace("hidden", "flex");
+      }
+      function closeChat() {
+        document
+          .getElementById("chat-modal")
+          .classList.replace("flex", "hidden");
+      }
+
+      async function sendChatMessage() {
+        const input = document.getElementById("chat-input"),
+          text = input.value.trim().toLowerCase();
+        if (!text) return;
+        input.value = "";
+        appendMsg(text, true);
+        let reply = "";
+        if (apiKey === "") {
+          if (text.includes("apa")) reply = localResponses["apa"];
+          else if (text.includes("topeng")) reply = localResponses["topeng"];
+          else if (text.includes("sejarah")) reply = localResponses["sejarah"];
+          else reply = localResponses["default"];
+          setTimeout(() => appendMsg(reply, false), 500);
+          return;
+        }
+        try {
+          const res = await fetchWithRetry(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: text }] }],
+                systemInstruction: {
+                  parts: [
+                    {
+                      text: "Kamu Guru Geo, jelaskan Tari Cepetan dengan ceria.",
+                    },
+                  ],
+                },
+              }),
+            },
+          );
+          const data = await res.json();
+          appendMsg(data.candidates[0].content.parts[0].text, false);
+        } catch (e) {
+          appendMsg(localResponses["default"], false);
+        }
+      }
+
+      function appendMsg(t, u) {
+        const container = document.getElementById("chat-messages"),
+          div = document.createElement("div");
+        div.className = u
+          ? "bg-sky-600 text-white p-4 rounded-3xl rounded-tr-sm self-end max-w-[85%] shadow-md mb-2 font-medium"
+          : "bg-white p-4 rounded-3xl rounded-tl-sm self-start max-w-[85%] border border-slate-100 shadow-sm text-slate-700 mb-2 leading-relaxed";
+        div.innerText = t;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+        lucide.createIcons();
+      }
+      function handleKeyPress(e) {
+        if (e.key === "Enter") sendChatMessage();
+      }
+    </script>
+  </body>
+</html>
